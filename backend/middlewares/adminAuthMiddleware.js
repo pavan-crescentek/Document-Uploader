@@ -9,13 +9,12 @@ const { StatusCodes } = require('http-status-codes');
 const adminAuthCheckMiddleware = async function authFetchChecker(req, res, next) {
   try {
     const header = req.headers.authorization;
-    console.log('🚀 ~ adminAuthCheckMiddleware ~ header:', header);
     if (!_.isUndefined(header)) {
       const token = header.replace('Bearer ', '');
       const user = await jwt.verify(token, secret);
       const fetchedUser = await userController.getUserByEmail(user.email);
 
-      if (!fetchedUser || !fetchedUser.role || !fetchedUser.role.includes('ADMIN')) {
+      if (!fetchedUser || !fetchedUser.role || !fetchedUser.role.includes('ADMIN') || fetchedUser.isActive === "DISABLED") {
         return utils.sendResponse(res, StatusCodes.UNAUTHORIZED, messages.unauthorized);
       }
       req.user = fetchedUser;

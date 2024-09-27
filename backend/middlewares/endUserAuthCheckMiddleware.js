@@ -6,7 +6,7 @@ const secret = process.env.Secret;
 const userController = require('../controller/users');
 const { StatusCodes } = require('http-status-codes');
 
-const authCheckMiddleware = async function authFetchChecker(req, res, next) {
+const endUserAuthCheckMiddleware = async function authFetchChecker(req, res, next) {
   try {
     const header = req.headers.authorization;
     if (!_.isUndefined(header)) {
@@ -14,10 +14,10 @@ const authCheckMiddleware = async function authFetchChecker(req, res, next) {
       const user = await jwt.verify(token, secret);
       const fetchedUser = await userController.getUserByEmail(user.email);
 
-      if (fetchedUser.isSuccess && fetchedUser.data.length == 0) {
-        return utils.sendResponse(res, StatusCodes.UNAUTHORIZED, messages.userNotExist);
+      if (!fetchedUser || !fetchedUser.role || !fetchedUser.role.includes('ENDUSER') || fetchedUser.isActive === "DISABLED") {
+        return utils.sendResponse(res, StatusCodes.UNAUTHORIZED, messages.unauthorized);
       }
-      req.user = fetchedUser.data[0];
+      req.user = fetchedUser;
       next();
     } else {
       return utils.sendResponse(res, StatusCodes.UNAUTHORIZED, messages.pleaseCheckAuth);
@@ -27,4 +27,4 @@ const authCheckMiddleware = async function authFetchChecker(req, res, next) {
   }
 };
 
-module.exports = { authCheckMiddleware };
+module.exports = { endUserAuthCheckMiddleware };
