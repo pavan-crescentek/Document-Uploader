@@ -1,0 +1,34 @@
+.loader-wrapper {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+.loader-wrapper > div {
+  margin: 0 !important;
+  padding: 0 !important;
+}
+.margin-right-20px {
+  margin-right: 20px;
+}
+.offcanvas-foorter {
+  position: absolute;
+  bottom: 0;
+  width: 100%;
+}
+.previewImageMainDiv {
+  display: contents;
+}
+.my-custom-dropzone {
+  max-width: 110px !important;
+  max-height: 110px !important;
+  min-width: 110px !important;
+  min-height: 110px !important;
+}
+.img-thumbnail {
+  max-width: 110px !important;
+  max-height: 110px !important;
+  min-width: 110px !important;
+  min-height: 110px !important;
+  object-fit: cover;
+}

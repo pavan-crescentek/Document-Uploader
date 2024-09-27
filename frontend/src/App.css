@@ -1,0 +1,70 @@
+.App {
+  text-align: center;
+}
+
+.App-logo {
+  height: 40vmin;
+  pointer-events: none;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .App-logo {
+    animation: App-logo-spin infinite 20s linear;
+  }
+}
+
+.App-header {
+  background-color: #282c34;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  font-size: calc(10px + 2vmin);
+  color: white;
+}
+
+.App-link {
+  color: #61dafb;
+}
+
+@keyframes App-logo-spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+.groundOffCanvas {
+  width: 70% !important;
+}
+@media print {
+  /* Hide everything else in the document */
+  body * {
+    visibility: hidden;
+    /* width: 100% !important; */
+  }
+  .table {
+    width: 100%;
+  }
+
+  /* Make the specific invoice section visible */
+  #invoice-to-print, #invoice-to-print * {
+    visibility: visible;
+  }
+
+  /* Position the printable section at the top left corner of the page */
+  #invoice-to-print {
+    position: absolute;
+    left: 0;
+    top: 0;
+  }
+
+  /* Hide the elements with the no-print class */
+  .no-print {
+    display: none;
+  }
+
+  
+}
