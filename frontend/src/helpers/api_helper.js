@@ -83,7 +83,7 @@ class APIClient {
 
     return response
       .then((res) => {
-        if (!res.status) {
+        if (res.code !== 200) {
           res?.message && toast.error(res.message);
           return res;
         }
@@ -103,7 +103,7 @@ class APIClient {
     const response = axios.post(url, data, { headers });
     return response
       .then((res) => {
-        if (!res.status) {
+        if (res.code !== 200) {
           res.message && toast.error(res.message);
           return res;
         }
@@ -123,7 +123,7 @@ class APIClient {
     const response = axios.patch(url, data);
     return response
       .then((res) => {
-        if (!res.status) {
+        if (res.status !== 200) {
           res.message && toast.error(res.message);
           return res;
         }
@@ -141,7 +141,7 @@ class APIClient {
     const response = axios.put(url, data);
     return response
       .then((res) => {
-        if (!res.status) {
+        if (res.status !== 200) {
           res.message && toast.error(res.message);
           return res;
         }
@@ -161,7 +161,7 @@ class APIClient {
     const response = axios.delete(url, { ...config });
     return response
       .then((res) => {
-        if (!res.status) {
+        if (res.status !== 200) {
           res.message && toast.error(res.message);
           return res;
         }

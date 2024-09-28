@@ -7,6 +7,7 @@ export const getAllUsersData = () => async (dispatch) => {
     dispatch(starteLoader());
     let response = await getAllUsersApi();
 
+    console.log('🚀 ~ getAllUsersData ~ response.code:', response.code);
     if (response.code) {
       dispatch(usersFetchedSuccess(response));
     } else {
