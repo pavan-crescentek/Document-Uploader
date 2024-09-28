@@ -8,6 +8,6 @@ module.exports = {
     APP_ID: '',
   },
   api: {
-    API_URL: 'https://turf-booking-api.devmaster.ovh',
+    API_URL: 'http://localhost:3333',
   },
 };

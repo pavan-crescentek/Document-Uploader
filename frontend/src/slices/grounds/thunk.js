@@ -15,7 +15,7 @@ import {
   getStatesOfCountry as getStatesOfCountryApi,
   updateGround as updateGroundApi,
   updateGroundsSlot as updateGroundsSlotApi,
-} from '../../helpers/fakebackend_helper';
+} from '../../helpers/backend_helper';
 import {
   LoaderOff,
   UpdatedImage,

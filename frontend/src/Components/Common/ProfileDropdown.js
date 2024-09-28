@@ -32,15 +32,11 @@ const ProfileDropdown = () => {
       const obj = JSON.parse(sessionStorage.getItem('authUser'));
 
       setUserName(
-        process.env.REACT_APP_DEFAULTAUTH === 'fake'
-          ? obj.username === undefined
+        obj.username === undefined
+          ? user.first_name
             ? user.first_name
-              ? user.first_name
-              : obj.first_name
-            : 'Admin' || 'Admin'
-          : process.env.REACT_APP_DEFAULTAUTH === 'firebase'
-            ? obj.email && obj.email
-            : obj.name
+            : obj.first_name
+          : 'Admin' || 'Admin'
       );
     }
   }, [userName, user]);
@@ -79,7 +75,9 @@ const ProfileDropdown = () => {
           <DropdownItem className="p-0">
             <Link
               to={
-                userProfile.role.toLowerCase() === 'admin'
+                userProfile.role.some((role) =>
+                  role.toLowerCase().includes('admin')
+                )
                   ? '/profile'
                   : '/partner/profile'
               }

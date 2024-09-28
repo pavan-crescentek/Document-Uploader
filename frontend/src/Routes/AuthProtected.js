@@ -10,14 +10,13 @@ import { logoutUser } from '../slices/auth/login/thunk';
 const AdminAuthProtected = (props) => {
   const dispatch = useDispatch();
   const { userProfile, loading, token } = useProfile();
-
   useEffect(() => {
     if (
       userProfile &&
       !loading &&
       token &&
       userProfile.role &&
-      userProfile.role.toLowerCase() === 'admin'
+      userProfile.role.some((role) => role.toLowerCase().includes('admin'))
     ) {
       setAuthorization(token);
     } else if ((!userProfile || !token) && loading) {
@@ -31,7 +30,8 @@ const AdminAuthProtected = (props) => {
 
   if (
     (!userProfile && loading && !token) ||
-    (userProfile.role && userProfile.role !== 'admin')
+    (userProfile.role &&
+      !userProfile.role.some((role) => role.toLowerCase().includes('admin')))
   ) {
     dispatch(logoutUser());
     return (
@@ -52,7 +52,7 @@ const PartnerAuthProtected = (props) => {
       !loading &&
       token &&
       userProfile.role &&
-      userProfile.role.toLowerCase() === 'partner'
+      userProfile.role.some((role) => role.toLowerCase().includes('enduser'))
     ) {
       setAuthorization(token);
     } else if ((!userProfile || !token) && loading) {
@@ -66,7 +66,8 @@ const PartnerAuthProtected = (props) => {
 
   if (
     (!userProfile && loading && !token) ||
-    (userProfile.role && userProfile.role !== 'partner')
+    (userProfile.role &&
+      userProfile.role.some((role) => role.toLowerCase().includes('enduser')))
   ) {
     dispatch(logoutUser());
     return (

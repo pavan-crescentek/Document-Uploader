@@ -32,7 +32,6 @@ import Users from '../pages/Users/index';
 // Send Notification
 
 //APi Key
-import APIKey from '../pages/APIKey/index';
 
 //login
 import Login from '../pages/Authentication/Login';
@@ -49,7 +48,7 @@ const adminAuthProtectedRoutes = [
   // { path: '/index', component: <DashboardEcommerce /> },
 
   //Api Key
-  { path: '/apps-api-key', component: <APIKey /> },
+  // { path: '/apps-api-key', component: <APIKey /> },
 
   //User Profile
   { path: '/profile', component: <UserProfile /> },

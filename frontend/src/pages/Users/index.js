@@ -43,32 +43,16 @@ const UsersList = () => {
     setUsersList(usersListData);
   }, [usersListData]);
 
-  const Status = (cell) => {
-    return (
-      <React.Fragment>
-        {cell.getValue() === true ? (
-          <span className="badge bg-success-subtle text-success text-uppercase">
-            Active
-          </span>
-        ) : cell.getValue() === false ? (
-          <span className="badge bg-warning-subtle text-warning text-uppercase">
-            Inactive
-          </span>
-        ) : null}
-      </React.Fragment>
-    );
-  };
-
   const IsVerified = (cell) => {
     return (
       <React.Fragment>
-        {cell.getValue() === true ? (
+        {cell.getValue() === 'ACTIVE' ? (
           <span className="badge bg-success-subtle text-success text-uppercase">
-            Verified
+            ACTIVE
           </span>
-        ) : cell.getValue() === false ? (
+        ) : cell.getValue() === 'DISABLED' ? (
           <span className="badge bg-warning-subtle text-warning text-uppercase">
-            Not Verified
+            DISABLED
           </span>
         ) : null}
       </React.Fragment>
@@ -76,10 +60,7 @@ const UsersList = () => {
   };
 
   // Users Column
-  const columns = useMemo(
-    () => usersListTableFields(Status, IsVerified),
-    [usersList]
-  );
+  const columns = useMemo(() => usersListTableFields(IsVerified), [usersList]);
 
   // const addPartnerbutton = (
   //   <button

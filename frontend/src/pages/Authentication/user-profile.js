@@ -99,7 +99,9 @@ const UserProfile = () => {
         old_password: values.old_password,
       };
       let response;
-      if (userProfile.role.toLowerCase() === 'admin') {
+      if (
+        userProfile.role.some((role) => role.toLowerCase().includes('admin'))
+      ) {
         response = await dispatch(editProfileForAdmin(payload));
       } else {
         response = await dispatch(editProfileForPartner(payload));

@@ -5,7 +5,7 @@ import {
   getAllCategiry as getAllCategiryApi,
   getAllCategiryForPartner as getAllCategiryForPartnerApi,
   updateCategiry as updateCategorytApi,
-} from '../../helpers/fakebackend_helper';
+} from '../../helpers/backend_helper';
 import {
   apiError,
   categoryCreatedSuccess,
@@ -21,10 +21,11 @@ export const getAllCategoryData = (userProfile) => async (dispatch) => {
   try {
     dispatch(starteLoader());
     dispatch(resetCategoryData());
-    let response =
-      userProfile.role.toLowerCase() === 'admin'
-        ? await getAllCategiryApi()
-        : await getAllCategiryForPartnerApi();
+    let response = userProfile.role.some((role) =>
+      role.toLowerCase().includes('admin')
+    )
+      ? await getAllCategiryApi()
+      : await getAllCategiryForPartnerApi();
 
     if (response && response.status) {
       dispatch(categoryFetchedSuccess(response));

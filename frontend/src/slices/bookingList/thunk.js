@@ -1,5 +1,5 @@
 // Include Both Helper File with needed methods
-import { getBookingList as getBookingListApi } from '../../helpers/fakebackend_helper';
+import { getBookingList as getBookingListApi } from '../../helpers/backend_helper';
 import { apiError, bookingFetchedSuccess, starteLoader } from './reducer';
 
 export const getBookingListData = () => async (dispatch) => {

@@ -6,7 +6,7 @@ import {
   getAllPartner as getAllPartnerApi,
   updatePartnerBankDetails as updatePartnerBankDetailsApi,
   updatePartner as updatePartnertApi,
-} from '../../helpers/fakebackend_helper';
+} from '../../helpers/backend_helper';
 import {
   apiError,
   partnerBankDetailsDelete,

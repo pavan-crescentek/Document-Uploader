@@ -19,7 +19,7 @@ const loginSlice = createSlice({
       state.errorMsg = true;
     },
     loginSuccess(state, action) {
-      state.user = action.payload.data;
+      state.user = action.payload;
       state.loading = false;
       state.errorMsg = false;
     },

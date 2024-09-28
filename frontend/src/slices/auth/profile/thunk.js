@@ -2,7 +2,7 @@
 import {
   updateProfileForAdmin as updateProfileForAdminApi,
   updateProfileForPartner as updateProfileForPartnerAPI,
-} from '../../../helpers/fakebackend_helper';
+} from '../../../helpers/backend_helper';
 
 // action
 import {

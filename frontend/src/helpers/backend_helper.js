@@ -17,7 +17,7 @@ export const isUserAuthenticated = () => {
 };
 
 // Login Method
-export const postFakeLogin = (data) => api.create(url.POST_FAKE_LOGIN, data);
+export const postLogin = (data) => api.create(url.POST_LOGIN, data);
 
 // Register Method
 export const postJwtRegister = (url, data) => {

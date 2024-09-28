@@ -1,18 +1,21 @@
-import { emojiCountryCode } from 'country-code-emoji';
 import React from 'react';
-import Flag from 'react-flagkit';
 
-const usersListTableFields = (Status, IsVerified) => {
+const usersListTableFields = (IsVerified) => {
   return [
+    // {
+    //   id: '#',
+    //   accessorKey: 'id',
+    //   enableColumnFilter: false,
+    //   enableSorting: false,
+    // },
     {
-      id: '#',
-      accessorKey: 'id',
+      header: 'First Name',
+      accessorKey: 'firstName',
       enableColumnFilter: false,
-      enableSorting: false,
     },
     {
-      header: 'Name',
-      accessorKey: 'name',
+      header: 'Last Name',
+      accessorKey: 'lastName',
       enableColumnFilter: false,
     },
     {
@@ -36,69 +39,24 @@ const usersListTableFields = (Status, IsVerified) => {
       },
     },
     {
-      header: 'Phone Number',
-      accessorKey: 'phone_number',
+      header: 'Role',
+      accessorKey: 'role',
       enableColumnFilter: false,
       cell: (cell) => {
-        const rowData = cell.row.original;
-        const countryCode = rowData.country_code;
+        const roles = cell.getValue();
         return (
           <div className="d-flex align-items-center">
-            {cell.getValue() ? (
-              <>
-                <a
-                  href={`tel:+${countryCode}${cell.getValue()}`}
-                  className="clickable"
-                >
-                  +{countryCode}-<span className="">{cell.getValue()}</span>
-                </a>
-              </>
-            ) : (
-              '-'
-            )}
+            {Array.isArray(roles) && roles.length > 0 ? roles.join(', ') : '-'}
           </div>
         );
       },
     },
     {
-      header: 'Country',
-      accessorKey: 'country_name',
-      enableColumnFilter: false,
-      cell: (cell) => {
-        const rowData = cell.row.original;
-        const countryCode = [rowData.emoji].map(emojiCountryCode);
-        return (
-          <div className="d-flex align-items-center">
-            <Flag country={countryCode[0]} size={15} />
-            <span className="ms-2">{cell.getValue()}</span>
-          </div>
-        );
-      },
-    },
-    {
-      header: 'State',
-      accessorKey: 'state_name',
-      enableColumnFilter: false,
-    },
-    {
-      header: 'City',
-      accessorKey: 'city_name',
-      enableColumnFilter: false,
-    },
-    {
-      header: 'Is Verified',
-      accessorKey: 'is_verified',
+      header: 'Is Active',
+      accessorKey: 'isActive',
       enableColumnFilter: false,
       cell: (cell) => {
         return <IsVerified {...cell} />;
-      },
-    },
-    {
-      header: 'Status',
-      accessorKey: 'active',
-      enableColumnFilter: false,
-      cell: (cell) => {
-        return <Status {...cell} />;
       },
     },
   ];

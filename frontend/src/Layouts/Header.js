@@ -88,7 +88,9 @@ const Header = ({ onChangeLayoutMode, layoutModeType, headerClass }) => {
               <div className="navbar-brand-box horizontal-logo">
                 <Link
                   to={
-                    userProfile.role.toLowerCase() === 'admin'
+                    userProfile.role.some((role) =>
+                      role.toLowerCase().includes('admin')
+                    )
                       ? '/'
                       : '/partner/index'
                   }

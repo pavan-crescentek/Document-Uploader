@@ -1,5 +1,5 @@
 // Include Both Helper File with needed methods
-import { sendNotificationApi } from '../../helpers/fakebackend_helper';
+import { sendNotificationApi } from '../../helpers/backend_helper';
 import { apiError, sendNotificationSuccess, startLoader } from './reducer';
 
 export const sendNotification = (notificationData) => async (dispatch) => {

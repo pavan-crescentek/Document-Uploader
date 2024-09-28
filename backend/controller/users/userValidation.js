@@ -13,7 +13,20 @@ const loginUserSchema = Joi.object({
   password: Joi.string().min(6).required(),
 });
 
+const statusChange = Joi.object({
+  id: Joi.string().required(),
+});
+
+const updateUserByAdminValidation = Joi.object({
+  id: Joi.string().required(),
+  firstName: Joi.string().min(3).max(30),
+  lastName: Joi.string().min(3).max(30),
+  password: Joi.string().min(6),
+});
+
 module.exports = {
   registrationUserSchema,
   loginUserSchema,
+  statusChange,
+  updateUserByAdminValidation,
 };

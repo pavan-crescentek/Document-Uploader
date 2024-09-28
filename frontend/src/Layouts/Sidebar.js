@@ -50,7 +50,9 @@ const Sidebar = ({ layoutType }) => {
         <div className="navbar-brand-box">
           <Link
             to={
-              userProfile.role.toLowerCase() === 'admin'
+              userProfile.role.some((role) =>
+                role.toLowerCase().includes('admin')
+              )
                 ? '/'
                 : '/partner/index'
             }
@@ -66,7 +68,9 @@ const Sidebar = ({ layoutType }) => {
 
           <Link
             to={
-              userProfile.role.toLowerCase() === 'admin'
+              userProfile.role.some((role) =>
+                role.toLowerCase().includes('admin')
+              )
                 ? '/'
                 : '/partner/index'
             }

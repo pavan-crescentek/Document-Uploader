@@ -1,5 +1,5 @@
 // Include Both Helper File with needed methods
-import { getAllUsers as getAllUsersApi } from '../../helpers/fakebackend_helper';
+import { getAllUsers as getAllUsersApi } from '../../helpers/backend_helper';
 import { apiError, starteLoader, usersFetchedSuccess } from './reducer';
 
 export const getAllUsersData = () => async (dispatch) => {
@@ -7,7 +7,7 @@ export const getAllUsersData = () => async (dispatch) => {
     dispatch(starteLoader());
     let response = await getAllUsersApi();
 
-    if (response.status) {
+    if (response.code) {
       dispatch(usersFetchedSuccess(response));
     } else {
       dispatch(apiError(response));

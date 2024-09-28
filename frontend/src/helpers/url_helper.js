@@ -1,8 +1,8 @@
 //REGISTER
-export const POST_FAKE_REGISTER = '/auth/signup';
+export const POST_REGISTER = '/auth/signup';
 
 //LOGIN
-export const POST_FAKE_LOGIN = '/admin/login';
+export const POST_LOGIN = '/login';
 
 // Dashboard Ecommerce
 // Revenue
@@ -34,7 +34,7 @@ export const DELETE_GROUND_IMAGES = '/partner/delete_ground_image';
 export const GET_INDIVIDUAL_GROUND_DETAILS = '/partner/get_ground_details';
 
 // Users
-export const GET_ALL_USERS = '/admin/get_users';
+export const GET_ALL_USERS = '/users-list';
 
 // Booking List
 export const GET_BOOKING_LIST = '/partner/get_booking';

@@ -1,4 +1,4 @@
-import { getPartnerDashboardStatistics as getPartnerDashboardStatisticsApi } from '../../helpers/fakebackend_helper';
+import { getPartnerDashboardStatistics as getPartnerDashboardStatisticsApi } from '../../helpers/backend_helper';
 import { apiError, starteLoader, statisticsFetchedSuccess } from './reducer';
 
 export const getPartnerDashboardStatisticsData = () => async (dispatch) => {

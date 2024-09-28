@@ -1,34 +1,34 @@
 import React, { useEffect, useState } from 'react';
 import {
+  Alert,
+  Button,
   Card,
   CardBody,
   Col,
   Container,
+  Form,
+  FormFeedback,
   Input,
   Label,
   Row,
-  Button,
-  Form,
-  FormFeedback,
-  Alert,
   Spinner,
 } from 'reactstrap';
 import ParticlesAuth from '../AuthenticationInner/ParticlesAuth';
 
 //redux
-import { useSelector, useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 
 import { Link } from 'react-router-dom';
 import withRouter from '../../Components/Common/withRouter';
 // Formik validation
-import * as Yup from 'yup';
 import { useFormik } from 'formik';
+import * as Yup from 'yup';
 
 // actions
-import { loginUser, socialLogin, resetLoginFlag } from '../../slices/thunks';
+import { loginUser, resetLoginFlag } from '../../slices/thunks';
 
-import logoLight from '../../assets/images/logo-light.png';
 import { createSelector } from 'reselect';
+import logoLight from '../../assets/images/logo-light.png';
 //import images
 
 const Login = (props) => {
@@ -49,14 +49,8 @@ const Login = (props) => {
 
   useEffect(() => {
     if (user && user) {
-      const updatedUserData =
-        process.env.REACT_APP_DEFAULTAUTH === 'firebase'
-          ? user.multiFactor.user.email
-          : user.email;
-      const updatedUserPassword =
-        process.env.REACT_APP_DEFAULTAUTH === 'firebase'
-          ? ''
-          : user.confirm_password;
+      const updatedUserData = user.email;
+      const updatedUserPassword = user.confirm_password;
       setUserLogin({
         email: updatedUserData,
         password: updatedUserPassword,
@@ -80,18 +74,6 @@ const Login = (props) => {
       dispatch(loginUser(values, props.router.navigate));
     },
   });
-
-  const signIn = (type) => {
-    dispatch(socialLogin(type, props.router.navigate));
-  };
-
-  //handleTwitterLoginResponse
-  // const twitterResponse = e => {}
-
-  //for facebook and google authentication
-  const socialResponse = (type) => {
-    signIn(type);
-  };
 
   useEffect(() => {
     if (errorMsg) {
@@ -246,57 +228,10 @@ const Login = (props) => {
                             Sign In
                           </Button>
                         </div>
-
-                        <div className="mt-4 text-center">
-                          <div className="signin-other-title">
-                            <h5 className="fs-13 mb-4 title">Sign In with</h5>
-                          </div>
-                          <div>
-                            <Link
-                              to="#"
-                              className="btn btn-primary btn-icon me-1"
-                              onClick={(e) => {
-                                e.preventDefault();
-                                socialResponse('facebook');
-                              }}
-                            >
-                              <i className="ri-facebook-fill fs-16" />
-                            </Link>
-                            <Link
-                              to="#"
-                              className="btn btn-danger btn-icon me-1"
-                              onClick={(e) => {
-                                e.preventDefault();
-                                socialResponse('google');
-                              }}
-                            >
-                              <i className="ri-google-fill fs-16" />
-                            </Link>
-                            <Button color="dark" className="btn-icon">
-                              <i className="ri-github-fill fs-16"></i>
-                            </Button>{' '}
-                            <Button color="info" className="btn-icon">
-                              <i className="ri-twitter-fill fs-16"></i>
-                            </Button>
-                          </div>
-                        </div>
                       </Form>
                     </div>
                   </CardBody>
                 </Card>
-
-                <div className="mt-4 text-center">
-                  <p className="mb-0">
-                    Don't have an account ?{' '}
-                    <Link
-                      to="/register"
-                      className="fw-semibold text-primary text-decoration-underline"
-                    >
-                      {' '}
-                      Signup{' '}
-                    </Link>{' '}
-                  </p>
-                </div>
               </Col>
             </Row>
           </Container>

@@ -6,15 +6,9 @@ const Navdata = () => {
   const { userProfile } = useProfile();
   const history = useNavigate();
   //state data
-  const [isDashboard, setIsDashboard] = useState(false);
-  const [isCategorys, setIsCategorys] = useState(false);
-  const [isPartnerrs, setIsPartnerrs] = useState(false);
   const [isUsers, setIsUsers] = useState(false);
-  const [isGrounds, setIsGrounds] = useState(false);
-  const [isBookings, setIsBookings] = useState(false);
-  const [isSendNotification, setIsSendNotification] = useState(false);
 
-  const [iscurrentState, setIscurrentState] = useState('Dashboard');
+  const [iscurrentState, setIscurrentState] = useState('Users');
 
   function updateIconSidebar(e) {
     if (e && e.target && e.target.getAttribute('subitems')) {
@@ -32,87 +26,15 @@ const Navdata = () => {
 
   useEffect(() => {
     document.body.classList.remove('twocolumn-panel');
-    if (iscurrentState !== 'Dashboard') {
-      setIsDashboard(false);
-    }
-    if (iscurrentState !== 'Category') {
-      setIsCategorys(false);
-    }
-    if (isPartnerrs !== 'Partners') {
-      setIsPartnerrs(false);
-    }
-    if (isSendNotification !== 'SendNotification') {
-      setIsSendNotification(false);
-    }
     if (isUsers !== 'Users') {
       setIsUsers(false);
     }
-    if (isGrounds !== 'Grounds') {
-      setIsGrounds(false);
-    }
-    if (isBookings !== 'Bookings') {
-      setIsBookings(false);
-    }
-  }, [
-    history,
-    iscurrentState,
-    isDashboard,
-    isGrounds,
-    isUsers,
-    isPartnerrs,
-    isSendNotification,
-    isBookings,
-  ]);
+  }, [history, isUsers]);
 
   const menuItems = [
     {
       label: 'Menu',
       isHeader: true,
-    },
-    {
-      id: 'dashboard',
-      label: 'Dashboards',
-      icon: 'ri-dashboard-2-line',
-      link: '/#',
-      stateVariables: isDashboard,
-      click: function (e) {
-        e.preventDefault();
-        setIsDashboard(!isDashboard);
-        setIscurrentState('Dashboard');
-        updateIconSidebar(e);
-      },
-      isForPartner: false,
-      isForAdmin: true,
-    },
-    {
-      id: 'category',
-      label: 'Category',
-      icon: 'ri-apps-2-line',
-      link: '/category',
-      click: function (e) {
-        e.preventDefault();
-        setIsCategorys(!isCategorys);
-        setIscurrentState('Category');
-        updateIconSidebar(e);
-      },
-      stateVariables: isCategorys,
-      isForPartner: false,
-      isForAdmin: true,
-    },
-    {
-      id: 'pertners',
-      label: 'Pertners',
-      icon: 'ri-team-line',
-      link: '/partners',
-      click: function (e) {
-        e.preventDefault();
-        setIsPartnerrs(!isPartnerrs);
-        setIscurrentState('Partners');
-        updateIconSidebar(e);
-      },
-      stateVariables: isPartnerrs,
-      isForPartner: false,
-      isForAdmin: true,
     },
     {
       id: 'users',
@@ -129,72 +51,13 @@ const Navdata = () => {
       isForPartner: false,
       isForAdmin: true,
     },
-    {
-      id: 'notification',
-      label: 'Send Notification',
-      icon: ' ri-send-plane-fill',
-      link: '/sendNotification',
-      click: function (e) {
-        e.preventDefault();
-        setIsSendNotification(!isSendNotification);
-        setIscurrentState('SendNotification');
-        updateIconSidebar(e);
-      },
-      stateVariables: isSendNotification,
-      isForPartner: false,
-      isForAdmin: true,
-    },
-    {
-      id: 'dashboard',
-      label: 'Dashboards',
-      icon: 'ri-dashboard-2-line',
-      link: '/partner/index',
-      stateVariables: isDashboard,
-      click: function (e) {
-        e.preventDefault();
-        setIsDashboard(!isDashboard);
-        setIscurrentState('Dashboard');
-        updateIconSidebar(e);
-      },
-      isForPartner: true,
-      isForAdmin: false,
-    },
-    {
-      id: 'ground',
-      label: 'Grounds',
-      icon: 'ri-map-2-line',
-      link: '/partner/ground',
-      stateVariables: isGrounds,
-      click: function (e) {
-        e.preventDefault();
-        setIsGrounds(!isGrounds);
-        setIscurrentState('Grounds');
-        updateIconSidebar(e);
-      },
-      isForPartner: true,
-      isForAdmin: false,
-    },
-    {
-      id: 'bookings',
-      label: 'Bookings',
-      icon: 'ri-calendar-check-fill',
-      link: '/partner/bookings',
-      stateVariables: isBookings,
-      click: function (e) {
-        e.preventDefault();
-        setIsBookings(!isBookings);
-        setIscurrentState('Bookings');
-        updateIconSidebar(e);
-      },
-      isForPartner: true,
-      isForAdmin: false,
-    },
   ];
   const partnerItems = menuItems.filter((item) => item.isForPartner);
   const adminItems = menuItems.filter((item) => item.isForAdmin);
   return (
     <React.Fragment>
-      {userProfile.role && userProfile.role.toLowerCase() === 'admin'
+      {userProfile.role &&
+      userProfile.role.some((role) => role.toLowerCase().includes('admin'))
         ? adminItems
         : partnerItems}
     </React.Fragment>
