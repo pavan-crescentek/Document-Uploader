@@ -38,12 +38,10 @@ const UserListSlice = createSlice({
     },
     userUpdatedSuccess(state, action) {
       const updatedUser = action.payload;
-      console.log('🚀 ~ userUpdatedSuccess ~ updatedUser:', updatedUser);
 
       const index = state.usersList.findIndex(
         (users) => users._id === updatedUser._id
       );
-      console.log('🚀 ~ userUpdatedSuccess ~ index:', index);
 
       if (index !== -1) {
         state.usersList[index] = updatedUser;

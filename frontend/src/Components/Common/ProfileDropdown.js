@@ -33,9 +33,9 @@ const ProfileDropdown = () => {
 
       setUserName(
         obj.username === undefined
-          ? user.first_name
-            ? user.first_name
-            : obj.first_name
+          ? user.firstName
+            ? user.firstName
+            : obj.firstName
           : 'Admin' || 'Admin'
       );
     }
@@ -65,7 +65,13 @@ const ProfileDropdown = () => {
                 {userName}
               </span>
               <span className="d-none d-xl-block ms-1 fs-12 text-muted user-name-sub-text">
-                {capitalize(userProfile.role)}
+                {capitalize(
+                  userProfile.role.some((role) =>
+                    role.toLowerCase().includes('admin')
+                  )
+                    ? 'admin'
+                    : 'user'
+                )}
               </span>
             </span>
           </span>

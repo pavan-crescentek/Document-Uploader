@@ -58,14 +58,14 @@ const UserProfile = () => {
       const obj = JSON.parse(sessionStorage.getItem('authUser'));
 
       if (!isEmpty(user)) {
-        obj.first_name = user.first_name;
+        obj.firstName = user.firstName;
         sessionStorage.removeItem('authUser');
         sessionStorage.setItem('authUser', JSON.stringify(obj));
       }
 
-      setUserName(obj.name);
+      setUserName(obj.firstName);
       setEmail(obj.email);
-      setIdx(obj.id || '1');
+      setIdx(obj._id || '1');
 
       setTimeout(() => {
         dispatch(resetProfileFlag());
@@ -76,14 +76,14 @@ const UserProfile = () => {
   const validation = useFormik({
     enableReinitialize: true,
     initialValues: {
-      first_name: userName || 'Admin',
+      firstName: userName || 'Admin',
       old_password: '',
       new_password: '',
       confirm_password: '',
       idx: idx || '',
     },
     validationSchema: Yup.object({
-      first_name: Yup.string().required('Please Enter Your UserName'),
+      firstName: Yup.string().required('Please Enter Your UserName'),
       old_password: Yup.string().required('Please Enter Your Old Password'),
       new_password: Yup.string()
         .required('Please Enter Your New Password')
@@ -94,7 +94,7 @@ const UserProfile = () => {
     }),
     onSubmit: async (values) => {
       const payload = {
-        name: values.first_name,
+        firstName: values.firstName,
         password: values.new_password,
         old_password: values.old_password,
       };
@@ -169,24 +169,24 @@ const UserProfile = () => {
                 <FormGroup className="mb-3">
                   <Label className="form-label">User Name</Label>
                   <Input
-                    name="first_name"
+                    name="firstName"
                     className="form-control"
                     placeholder="Enter User Name"
                     type="text"
                     onChange={validation.handleChange}
                     onBlur={validation.handleBlur}
-                    value={validation.values.first_name || ''}
+                    value={validation.values.firstName || ''}
                     invalid={
-                      validation.touched.first_name &&
-                      validation.errors.first_name
+                      validation.touched.firstName &&
+                      validation.errors.firstName
                         ? true
                         : false
                     }
                   />
-                  {validation.touched.first_name &&
-                  validation.errors.first_name ? (
+                  {validation.touched.firstName &&
+                  validation.errors.firstName ? (
                     <FormFeedback type="invalid">
-                      {validation.errors.first_name}
+                      {validation.errors.firstName}
                     </FormFeedback>
                   ) : null}
                   <Input name="idx" value={idx} type="hidden" />
