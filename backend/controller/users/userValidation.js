@@ -6,6 +6,7 @@ const registrationUserSchema = Joi.object({
   lastName: Joi.string().min(3).max(30).required(),
   password: Joi.string().min(6).required(),
   role: Joi.array().items(Joi.string().valid('ADMIN', 'ENDUSER')).min(1).unique(),
+  isActive: Joi.string().valid('true', 'false').optional(),
 });
 
 const loginUserSchema = Joi.object({
@@ -19,11 +20,13 @@ const statusChange = Joi.object({
 
 const updateUserByAdminValidation = Joi.object({
   id: Joi.string().required(),
-  firstName: Joi.string().min(3).max(30),
-  lastName: Joi.string().min(3).max(30),
-  password: Joi.string().min(6),
-  isActive: Joi.string(),
+  firstName: Joi.string().min(3).max(30).optional(),
+  lastName: Joi.string().min(3).max(30).optional(),
+  password: Joi.string().min(6).optional(),
+  isActive: Joi.string().valid('true', 'false').optional(),
+  email: Joi.string().optional(),
 });
+
 
 module.exports = {
   registrationUserSchema,

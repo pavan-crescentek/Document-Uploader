@@ -1,5 +1,14 @@
 import React, { useCallback, useEffect, useMemo, useState } from 'react';
-import { Card, Col, Container, Form, Input, Label, OffcanvasBody, Row } from 'reactstrap';
+import {
+  Card,
+  Col,
+  Container,
+  Form,
+  Input,
+  Label,
+  OffcanvasBody,
+  Row,
+} from 'reactstrap';
 
 import './users.css';
 
@@ -16,8 +25,16 @@ import { createSelector } from 'reselect';
 import SimpleBar from 'simplebar-react';
 import Loader from '../../Components/Common/Loader';
 import RenderFormSingleColumn from '../../Components/Common/RenderFormSingleColumn';
-import { getAllUsersData } from '../../slices/thunks';
-import { usersFieldsInitialValues, usersFormFields, usersFormFieldsValidation } from './formsFields';
+import {
+  addNewUserThunk,
+  getAllUsersData,
+  updateUser,
+} from '../../slices/thunks';
+import {
+  usersFieldsInitialValues,
+  usersFormFields,
+  usersFormFieldsValidation,
+} from './formsFields';
 import usersListTableFields from './tableFields';
 
 const UsersList = () => {
@@ -27,7 +44,6 @@ const UsersList = () => {
   const [isEdit, setIsEdit] = useState(false);
   const [isRight, setIsRight] = useState(false);
   const [modal, setModal] = useState(false);
-
 
   const toggleRightCanvas = () => {
     validation.resetForm();
@@ -42,20 +58,19 @@ const UsersList = () => {
     }
   }, [modal]);
 
-  const selectLayoutState = (state) => ({
-    usersList: state.UsersList,
-  });
+  const selectLayoutState = (state) => state.UsersList;
   const UsersListProperties = createSelector(
     selectLayoutState,
-    ({ usersList }) => ({
-      usersListData: usersList.usersListData,
-      error: usersList.error,
-      loading: usersList.loading,
-      addEditLoading: usersList.addEditLoading,
+    (usersInfo) => ({
+      usersListData: usersInfo.usersList,
+      error: usersInfo.error,
+      loading: usersInfo.loading,
+      addEditLoading: usersInfo.addEditLoading,
     })
   );
   // Inside your component
-  const { usersListData, error, loading, addEditLoading } = useSelector(UsersListProperties);
+  const { usersListData, error, loading, addEditLoading } =
+    useSelector(UsersListProperties);
 
   useEffect(() => {
     if (usersList) {
@@ -87,7 +102,7 @@ const UsersList = () => {
   const handleCustomerClick = useCallback(
     (arg) => {
       const user = arg;
-        setSelectedUser({
+      setSelectedUser({
         id: user._id,
         firstName: user.firstName,
         lastName: user.lastName,
@@ -109,23 +124,10 @@ const UsersList = () => {
   };
 
   // Users Column
-  const columns = useMemo(() => usersListTableFields(Status, handleCustomerClick), [handleCustomerClick]);
-
-
-  // const addPartnerbutton = (
-  //   <button
-  //     type="button"
-  //     className="btn btn-success add-btn"
-  //     id="create-btn"
-  //     onClick={() => {
-  //       setSelectPartner('');
-  //       setIsEdit(false);
-  //       toggleRightCanvas();
-  //     }}
-  //   >
-  //     <i className="ri-add-line align-bottom me-1"></i> Add Partner
-  //   </button>
-  // );
+  const columns = useMemo(
+    () => usersListTableFields(Status, handleCustomerClick),
+    [handleCustomerClick]
+  );
 
   const statusOption = [
     {
@@ -138,64 +140,68 @@ const UsersList = () => {
     },
   ];
 
-    // validation
-    const validation = useFormik({
-      // enableReinitialize : use this flag when initial values needs to be changed
-      enableReinitialize: true,
-  
-      initialValues: usersFieldsInitialValues(selectedUser),
-  
-      validationSchema: usersFormFieldsValidation(isEdit),
-      onSubmit: async (values) => {
-        console.log("🚀 ~ onSubmit: ~ values:", values)
-        if (!isEdit && !photos) {
+  // validation
+  const validation = useFormik({
+    // enableReinitialize : use this flag when initial values needs to be changed
+    enableReinitialize: true,
+
+    initialValues: usersFieldsInitialValues(selectedUser),
+
+    validationSchema: usersFormFieldsValidation(isEdit),
+    onSubmit: async (values) => {
+      let result;
+      if (isEdit) {
+        const updateCategoryData = {
+          id: values.id,
+          firstName: values.firstName,
+          lastName: values.lastName,
+          email: values.email,
+          isActive: values.isActive,
+        };
+        if (values.password) {
+          updateCategoryData['password'] = values.password;
+        }
+        // update category
+        result = await dispatch(updateUser(updateCategoryData));
+        if (!result) {
           return;
         }
-        if (isEdit) {
-          const updateCategoryData = {
-            id: values.id,
-            firstName: values.firstName,
-            lastName: values.lastName,
-            email: values.email,
-            isActive: values.isActive,
-          };
-          if (values.password) {
-            updateCategoryData['password'] = values.password;
-          }
-          // update category
-          await dispatch(updateCategory(updateCategoryData));
-          setSelectedUser();
-          validation.resetForm();
-          toggleRightCanvas();
-          toggle();
-        } else {
-          const newCustomer = {
-            firstName: values.firstName,
-            lastName: values.lastName,
-            email: values.email,
-            isActive: values.isActive,
-            password: values.password,
-          };
-          // save new category
-          await dispatch(addNewCategory(newCustomer));
-          setSelectedUser();
-          validation.resetForm();
-          toggleRightCanvas();
+        setSelectedUser();
+        validation.resetForm();
+        toggleRightCanvas();
+        toggle();
+      } else {
+        const newCustomer = {
+          firstName: values.firstName,
+          lastName: values.lastName,
+          email: values.email,
+          isActive: values.isActive,
+          password: values.password,
+        };
+        // save new category
+        result = await dispatch(addNewUserThunk(newCustomer));
+        if (!result) {
+          return;
         }
-      },
-    });
-
-
+        setSelectedUser();
+        validation.resetForm();
+        toggleRightCanvas();
+      }
+    },
+  });
 
   const fields = usersFormFields(statusOption);
 
   const renderFields = (fieldNames) => {
-    return <RenderFormSingleColumn
-      	fieldNames={fieldNames}
-      	fields={fields}
-      	validation={validation}
-    	/>
-  }
+    return (
+      <RenderFormSingleColumn
+        fieldNames={fieldNames}
+        fields={fields}
+        validation={validation}
+        isEdit={isEdit}
+      />
+    );
+  };
 
   const renderFieldsData = [
     renderFields(['email', 'firstName', 'lastName', 'password', 'isActive']),
@@ -268,6 +274,21 @@ const UsersList = () => {
     );
   };
 
+  const addUserButton = (
+    <button
+      type="button"
+      className="btn btn-success add-btn"
+      id="create-btn"
+      onClick={() => {
+        setSelectedUser('');
+        setIsEdit(false);
+        toggleRightCanvas();
+      }}
+    >
+      <i className="ri-add-line align-bottom me-1"></i> Add User
+    </button>
+  );
+
   document.title = 'Users | Velzon - React Admin & Dashboard Template';
   return (
     <React.Fragment>
@@ -290,7 +311,7 @@ const UsersList = () => {
                         isGlobalFilter={true}
                         title={'Users List'}
                         SearchPlaceholder="Search for users..."
-                        // addContentButton={addPartnerbutton}
+                        addContentButton={addUserButton}
                         divClass="table-responsive table-card"
                         tableClass="align-middle table-nowrap"
                         theadClass="table-light text-muted"

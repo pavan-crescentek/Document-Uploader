@@ -22,7 +22,7 @@ router.get('/', (req, res, next) => {
 router.post('/registration', adminAuthCheckMiddleware, UsersController.registerNewUser);
 router.post('/login', UsersController.loginUser);
 router.get('/users-list', adminAuthCheckMiddleware, UsersController.getUsersList);
-router.post('/user-change-status', adminAuthCheckMiddleware, UsersController.changeUserStatus);
+// router.post('/user-change-status', adminAuthCheckMiddleware, UsersController.changeUserStatus);
 router.post('/user-update', adminAuthCheckMiddleware, UsersController.updateUserByAdmin);
 
 // File upload

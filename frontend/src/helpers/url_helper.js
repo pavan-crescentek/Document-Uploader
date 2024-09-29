@@ -35,6 +35,8 @@ export const GET_INDIVIDUAL_GROUND_DETAILS = '/partner/get_ground_details';
 
 // Users
 export const GET_ALL_USERS = '/users-list';
+export const ADD_NEW_USER = '/registration';
+export const UPDATE_USERS = '/user-update';
 
 // Booking List
 export const GET_BOOKING_LIST = '/partner/get_booking';

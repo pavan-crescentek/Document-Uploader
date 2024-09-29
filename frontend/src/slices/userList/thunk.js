@@ -1,19 +1,72 @@
 // Include Both Helper File with needed methods
-import { getAllUsers as getAllUsersApi } from '../../helpers/backend_helper';
-import { apiError, starteLoader, usersFetchedSuccess } from './reducer';
+import {
+  addNewUser as addNewUserApi,
+  getAllUsers as getAllUsersApi,
+  updateUserApi,
+} from '../../helpers/backend_helper';
+import {
+  apiError,
+  startAddEditLoader,
+  startLoader,
+  stopLoader,
+  userCreatedSuccess,
+  usersFetchedSuccess,
+  userUpdatedSuccess,
+} from './reducer';
 
 export const getAllUsersData = () => async (dispatch) => {
   try {
-    dispatch(starteLoader());
+    dispatch(startLoader());
     let response = await getAllUsersApi();
 
-    console.log('🚀 ~ getAllUsersData ~ response.code:', response.code);
-    if (response.code) {
+    if (response.code === 200) {
       dispatch(usersFetchedSuccess(response));
+      return true;
     } else {
       dispatch(apiError(response));
+      return false;
     }
+    dispatch(stopLoader());
   } catch (error) {
+    dispatch(stopLoader());
+    dispatch(apiError(error));
+  }
+};
+
+export const addNewUserThunk = (newPartner) => async (dispatch) => {
+  try {
+    dispatch(startAddEditLoader());
+    const response = await addNewUserApi(newPartner);
+
+    if (response.code === 200) {
+      dispatch(userCreatedSuccess(response.data));
+      return true;
+    } else {
+      dispatch(apiError(response));
+      return false;
+    }
+    dispatch(stopLoader());
+  } catch (error) {
+    dispatch(stopLoader());
+    dispatch(apiError(error));
+  }
+};
+
+export const updateUser = (partner) => async (dispatch) => {
+  try {
+    dispatch(startAddEditLoader());
+    const response = await updateUserApi(partner);
+
+    if (response.code === 200) {
+      dispatch(userUpdatedSuccess(response.data));
+      return true;
+    } else {
+      dispatch(apiError(response));
+      return false;
+    }
+    dispatch(stopLoader());
+  } catch (error) {
+    dispatch(stopLoader());
     dispatch(apiError(error));
   }
 };

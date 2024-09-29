@@ -107,6 +107,9 @@ export const addNewPartner = (newPartner) =>
 
 // UsersList
 export const getAllUsers = () => api.get(url.GET_ALL_USERS);
+export const addNewUser = (newUser) => api.create(url.ADD_NEW_USER, newUser);
+export const updateUserApi = (userData) =>
+  api.create(url.UPDATE_USERS, userData);
 
 // Booking List
 export const getBookingList = () => api.create(url.GET_BOOKING_LIST);
