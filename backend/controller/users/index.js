@@ -50,7 +50,7 @@ const registerNewUser = async (req, res) => {
     const plainUser = await usersModel.findById(newUser._id).lean().exec();
 
     delete plainUser.password;
-    return utils.sendResponse(res, StatusCodes.CREATED, messages.userRegisteredSuccessfully, plainUser);
+    return utils.sendResponse(res, StatusCodes.OK, messages.userRegisteredSuccessfully, plainUser);
   } catch (error) {
     console.error('🚀 ~ registerNewUser ~ error:', error);
     return utils.sendResponse(res, StatusCodes.INTERNAL_SERVER_ERROR, messages.errorUserRegistered);
