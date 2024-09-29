@@ -1,5 +1,5 @@
-import React, { useEffect, useMemo, useState } from 'react';
-import { Card, Col, Container, Row } from 'reactstrap';
+import React, { useCallback, useEffect, useMemo, useState } from 'react';
+import { Card, Col, Container, Form, Input, Label, OffcanvasBody, Row } from 'reactstrap';
 
 import './users.css';
 
@@ -8,17 +8,39 @@ import BreadCrumb from '../../Components/Common/BreadCrumb';
 
 //redux
 import { useDispatch, useSelector } from 'react-redux';
+import OffCanvas from '../../Components/Common/OffCanvas';
 import TableContainer from '../../Components/Common/TableContainer';
 
+import { useFormik } from 'formik';
 import { createSelector } from 'reselect';
+import SimpleBar from 'simplebar-react';
 import Loader from '../../Components/Common/Loader';
+import RenderFormSingleColumn from '../../Components/Common/RenderFormSingleColumn';
 import { getAllUsersData } from '../../slices/thunks';
-import { usersFormFields } from './formsFields';
+import { usersFieldsInitialValues, usersFormFields, usersFormFieldsValidation } from './formsFields';
 import usersListTableFields from './tableFields';
 
 const UsersList = () => {
   const dispatch = useDispatch();
   const [usersList, setUsersList] = useState([]);
+  const [selectedUser, setSelectedUser] = useState();
+  const [isEdit, setIsEdit] = useState(false);
+  const [isRight, setIsRight] = useState(false);
+  const [modal, setModal] = useState(false);
+
+
+  const toggleRightCanvas = () => {
+    validation.resetForm();
+    setIsRight(!isRight);
+  };
+
+  const toggle = useCallback(() => {
+    if (modal) {
+      setModal(false);
+    } else {
+      setModal(true);
+    }
+  }, [modal]);
 
   const selectLayoutState = (state) => ({
     usersList: state.UsersList,
@@ -29,10 +51,11 @@ const UsersList = () => {
       usersListData: usersList.usersListData,
       error: usersList.error,
       loading: usersList.loading,
+      addEditLoading: usersList.addEditLoading,
     })
   );
   // Inside your component
-  const { usersListData, error, loading } = useSelector(UsersListProperties);
+  const { usersListData, error, loading, addEditLoading } = useSelector(UsersListProperties);
 
   useEffect(() => {
     if (usersList) {
@@ -44,24 +67,50 @@ const UsersList = () => {
     setUsersList(usersListData);
   }, [usersListData]);
 
-  const IsVerified = (cell) => {
+  const Status = (cell) => {
     return (
       <React.Fragment>
-        {cell.getValue() === 'ACTIVE' ? (
+        {cell.getValue() === true ? (
           <span className="badge bg-success-subtle text-success text-uppercase">
-            ACTIVE
+            Active
           </span>
-        ) : cell.getValue() === 'DISABLED' ? (
+        ) : cell.getValue() === false ? (
           <span className="badge bg-warning-subtle text-warning text-uppercase">
-            DISABLED
+            Inactive
           </span>
         ) : null}
       </React.Fragment>
     );
   };
 
+  // Update Data
+  const handleCustomerClick = useCallback(
+    (arg) => {
+      const user = arg;
+        setSelectedUser({
+        id: user._id,
+        firstName: user.firstName,
+        lastName: user.lastName,
+        email: user.email,
+        isActive: user.isActive,
+      });
+
+      setIsEdit(true);
+      toggleRightCanvas();
+      // toggle();
+    },
+    [toggle]
+  );
+
+  const handleCustomerClicks = () => {
+    setUsersList('');
+    setIsEdit(false);
+    toggle();
+  };
+
   // Users Column
-  const columns = useMemo(() => usersListTableFields(IsVerified), [usersList]);
+  const columns = useMemo(() => usersListTableFields(Status, handleCustomerClick), [handleCustomerClick]);
+
 
   // const addPartnerbutton = (
   //   <button
@@ -78,15 +127,75 @@ const UsersList = () => {
   //   </button>
   // );
 
+  const statusOption = [
+    {
+      label: 'Active',
+      value: true,
+    },
+    {
+      label: 'Inactive',
+      value: false,
+    },
+  ];
+
+    // validation
+    const validation = useFormik({
+      // enableReinitialize : use this flag when initial values needs to be changed
+      enableReinitialize: true,
+  
+      initialValues: usersFieldsInitialValues(selectedUser),
+  
+      validationSchema: usersFormFieldsValidation(isEdit),
+      onSubmit: async (values) => {
+        console.log("🚀 ~ onSubmit: ~ values:", values)
+        if (!isEdit && !photos) {
+          return;
+        }
+        if (isEdit) {
+          const updateCategoryData = {
+            id: values.id,
+            firstName: values.firstName,
+            lastName: values.lastName,
+            email: values.email,
+            isActive: values.isActive,
+          };
+          if (values.password) {
+            updateCategoryData['password'] = values.password;
+          }
+          // update category
+          await dispatch(updateCategory(updateCategoryData));
+          setSelectedUser();
+          validation.resetForm();
+          toggleRightCanvas();
+          toggle();
+        } else {
+          const newCustomer = {
+            firstName: values.firstName,
+            lastName: values.lastName,
+            email: values.email,
+            isActive: values.isActive,
+            password: values.password,
+          };
+          // save new category
+          await dispatch(addNewCategory(newCustomer));
+          setSelectedUser();
+          validation.resetForm();
+          toggleRightCanvas();
+        }
+      },
+    });
+
+
+
   const fields = usersFormFields(statusOption);
 
-  const renderFields = (fieldNames) => (
-    <RenderFormSingleColumn
-      fieldNames={fieldNames}
-      fields={fields}
-      validation={validation}
-    />
-  );
+  const renderFields = (fieldNames) => {
+    return <RenderFormSingleColumn
+      	fieldNames={fieldNames}
+      	fields={fields}
+      	validation={validation}
+    	/>
+  }
 
   const renderFieldsData = [
     renderFields(['email', 'firstName', 'lastName', 'password', 'isActive']),
@@ -105,14 +214,14 @@ const UsersList = () => {
         >
           <OffcanvasBody className="p-4 overflow-hidden">
             <SimpleBar style={{ height: '100%' }}>
-              <input type="hidden" id="id-field" />
+              <Input type="hidden" id="id-field" />
               <div className="mb-3" id="id" style={{ display: 'none' }}>
                 <Label htmlFor="id" className="form-label">
                   ID
                 </Label>
                 <Input
                   type="text"
-                  id="id"
+                  id="_id"
                   className="form-control"
                   placeholder="ID"
                   readOnly
@@ -144,11 +253,6 @@ const UsersList = () => {
             <button
               type="submit"
               className={`btn btn-success position-relative d-flex justify-content-center ${addEditLoading && 'opacity-75'}`}
-              onClick={() => {
-                if (!photoPreviews) {
-                  setDisplayPhotoError(true);
-                }
-              }}
             >
               {' '}
               {addEditLoading && (
@@ -182,7 +286,7 @@ const UsersList = () => {
                         isAddUserList={false}
                         customPageSize={8}
                         className="custom-header-css"
-                        // handleCustomerClick={handleCustomerClicks}
+                        handleCustomerClick={handleCustomerClicks}
                         isGlobalFilter={true}
                         title={'Users List'}
                         SearchPlaceholder="Search for users..."

@@ -22,6 +22,7 @@ const updateUserByAdminValidation = Joi.object({
   firstName: Joi.string().min(3).max(30),
   lastName: Joi.string().min(3).max(30),
   password: Joi.string().min(6),
+  isActive: Joi.string(),
 });
 
 module.exports = {

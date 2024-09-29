@@ -71,7 +71,7 @@ const loginUser = async (req, res) => {
 
     // Check if the user already exists
     const isUserExist = await getUserByEmail(email);
-    if (!isUserExist || isUserExist.isActive === 'DISABLED') {
+    if (!isUserExist || !isUserExist.isActive) {
       return utils.sendResponse(res, StatusCodes.UNAUTHORIZED, messages.userNotExistOrDeactivated);
     }
 
@@ -134,7 +134,7 @@ const changeUserStatus = async (req, res) => {
     }
 
     // Update the user's status
-    const newStatus = targetedUser.isActive === 'ACTIVE' ? 'DISABLED' : 'ACTIVE';
+    const newStatus = !targetedUser.isActive;
 
     const updatedUser = await usersModel
       .findByIdAndUpdate(id, { isActive: newStatus }, { new: true, select: '-password' })
@@ -156,16 +156,18 @@ const updateUserByAdmin = async (req, res) => {
     }
 
     // Extract the user data from the request body
-    const { id, firstName, lastName, password } = value;
+    const { id, firstName, lastName, password, isActive } = value;
 
     // Prepare the update object
     const updateData = {};
     if (firstName) updateData.firstName = firstName;
     if (lastName) updateData.lastName = lastName;
+    if (isActive !== undefined) updateData.isActive = isActive === 'true';
     if (password) {
       const hashedPassword = await generatePassword(password);
       updateData.password = hashedPassword;
     }
+    
 
     // Update the user
     const updatedUser = await usersModel.findByIdAndUpdate(id, updateData, { new: true, select: '-password' }).lean();

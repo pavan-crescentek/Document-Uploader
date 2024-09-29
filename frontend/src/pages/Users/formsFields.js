@@ -27,7 +27,7 @@ const usersFormFields = (statusOption) => {
       placeholder: 'Enter user password',
     },
     {
-      name: 'activeStatus',
+      name: 'isActive',
       label: 'Is Active',
       type: 'select',
       placeholder: 'Select Status',
@@ -36,7 +36,7 @@ const usersFormFields = (statusOption) => {
   ];
 };
 
-const usersFormFieldsValidation = Yup.object({
+const usersFormFieldsValidation = (isEdit) => Yup.object({
   email: Yup.string().email('Invalid email').required('Email is required'),
   firstName: Yup.string()
     .min(3, 'First name must be at least 3 characters')
@@ -52,10 +52,12 @@ const usersFormFieldsValidation = Yup.object({
     .test('not-only-spaces', 'Please enter a valid Last Name', (value) => {
       return value && value.trim().length > 0;
     }),
-  password: Yup.string()
-    .min(6, 'Password must be at least 6 characters')
-    .required('Password is required'),
-  activeStatus: Yup.boolean()
+  password: isEdit
+  ? Yup.string().min(8, 'Password must be at least 8 characters').nullable()
+  : Yup.string()
+      .required('Password is required')
+      .min(8, 'Password must be at least 8 characters'),
+  isActive: Yup.boolean()
     .required('Please add status')
     .oneOf([true, false], 'Please add status'),
 });
@@ -66,12 +68,13 @@ const usersFieldsInitialValues = (selectUser) => {
     firstName: selectUser?.firstName || '',
     lastName: selectUser?.lastName || '',
     password: '',
-    activeStatus:
-      selectUser?.activeStatus !== undefined
-        ? selectUser.activeStatus.toString()
+    isActive:
+      selectUser?.isActive !== undefined
+        ? selectUser.isActive.toString()
         : 'true',
     id: selectUser?.id || '',
   };
 };
 
 export { usersFieldsInitialValues, usersFormFields, usersFormFieldsValidation };
+

@@ -18,7 +18,7 @@ const adminAuthCheckMiddleware = async function authFetchChecker(req, res, next)
         !fetchedUser ||
         !fetchedUser.role ||
         !fetchedUser.role.includes('ADMIN') ||
-        fetchedUser.isActive === 'DISABLED'
+        !fetchedUser.isActive
       ) {
         return utils.sendResponse(res, StatusCodes.UNAUTHORIZED, messages.unauthorized);
       }

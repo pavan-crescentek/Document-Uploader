@@ -31,10 +31,9 @@ const usersSchema = new mongoose.Schema(
       default: ["ENDUSER"],
     },
     isActive: {
-      type: String,
-      enum: ["ACTIVE", "DISABLED"],
+      type: Boolean,
       required: true,
-      default: "ACTIVE",
+      default: true,
     },
   },
   { timestamps: true }

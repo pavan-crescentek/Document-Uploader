@@ -1,10 +1,10 @@
 import React from 'react';
 
-const usersListTableFields = (IsVerified) => {
+const usersListTableFields = (IsVerified, handleCustomerClick) => {
   return [
     // {
     //   id: '#',
-    //   accessorKey: 'id',
+    //   accessorKey: '_id',
     //   enableColumnFilter: false,
     //   enableSorting: false,
     // },
@@ -57,6 +57,26 @@ const usersListTableFields = (IsVerified) => {
       enableColumnFilter: false,
       cell: (cell) => {
         return <IsVerified {...cell} />;
+      },
+    },
+    {
+      header: 'Action',
+      cell: (cellProps) => {
+        return (
+          <ul className="list-inline hstack gap-2 mb-0">
+            <li className="list-inline-item edit" title="Edit">
+              <span
+                className="text-primary d-inline-block edit-item-btn cursor-pointer"
+                onClick={() => {
+                  const customerData = cellProps.row.original;
+                  handleCustomerClick(customerData);
+                }}
+              >
+                <i className="ri-pencil-fill fs-16"></i>
+              </span>
+            </li>
+          </ul>
+        );
       },
     },
   ];

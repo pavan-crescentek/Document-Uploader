@@ -14,7 +14,7 @@ const endUserAuthCheckMiddleware = async function authFetchChecker(req, res, nex
       const user = await jwt.verify(token, secret);
       const fetchedUser = await userController.getUserByEmail(user.email);
 
-      if (!fetchedUser || !fetchedUser.role || !fetchedUser.role.includes('ENDUSER') || fetchedUser.isActive === "DISABLED") {
+      if (!fetchedUser || !fetchedUser.role || !fetchedUser.role.includes('ENDUSER') || !fetchedUser.isActive) {
         return utils.sendResponse(res, StatusCodes.UNAUTHORIZED, messages.unauthorized);
       }
       req.user = fetchedUser;
