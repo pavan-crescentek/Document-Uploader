@@ -49,6 +49,29 @@ const fileUploading = async (req, res) => {
   }
 };
 
+// Get file
+const getFiles = async (req, res) => {
+  try {
+    const { user } = req;
+
+    // Fetch files from the database
+    const files = await documentsModel.find({ userId: user._id }).lean().exec();
+
+    // Fetch file URLs for each file
+    const filesWithUrls = await Promise.all(
+      files.map(async (file) => {
+        const fileUrl = await getFile(process.env.BUCKET_NAME, file.media_key);
+        return { ...file, fileUrl };
+      }),
+    );
+
+    return utils.sendResponse(res, StatusCodes.OK, messages.filesRetrievedSuccessfully, filesWithUrls);
+  } catch (error) {
+    console.error('🚀 ~ getFiles ~ error:', error);
+    return utils.sendResponse(res, StatusCodes.INTERNAL_SERVER_ERROR, messages.errorRetrievingFiles);
+  }
+};
+
 const cleanupFile = async (media_data) => {
   if (media_data?.key) {
     await deleteFile(process.env.BUCKET_NAME, media_data.key);
@@ -57,4 +80,5 @@ const cleanupFile = async (media_data) => {
 
 module.exports = {
   fileUploading,
+  getFiles,
 };
