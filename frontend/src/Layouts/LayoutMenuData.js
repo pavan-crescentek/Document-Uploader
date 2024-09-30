@@ -7,6 +7,7 @@ const Navdata = () => {
   const history = useNavigate();
   //state data
   const [isUsers, setIsUsers] = useState(false);
+  const [isDocuments, setDocuments] = useState(false);
 
   const [iscurrentState, setIscurrentState] = useState('Users');
 
@@ -29,7 +30,10 @@ const Navdata = () => {
     if (isUsers !== 'Users') {
       setIsUsers(false);
     }
-  }, [history, isUsers]);
+    if (isDocuments !== 'Documents') {
+      setDocuments(false);
+    }
+  }, [history, isUsers, isDocuments]);
 
   const menuItems = [
     {
@@ -40,7 +44,7 @@ const Navdata = () => {
       id: 'users',
       label: 'Users',
       icon: 'ri-contacts-book-2-fill',
-      link: '/users',
+      link: '/admin/users',
       click: function (e) {
         e.preventDefault();
         setIsUsers(!isUsers);
@@ -48,18 +52,48 @@ const Navdata = () => {
         updateIconSidebar(e);
       },
       stateVariables: isUsers,
-      isForPartner: false,
+      isForEndUser: false,
       isForAdmin: true,
     },
+    {
+      id: 'documents',
+      label: 'Documents',
+      icon: 'ri-folder-open-fill',
+      link: '/admin/documents',
+      click: function (e) {
+        e.preventDefault();
+        setDocuments(!isDocuments);
+        setIscurrentState('Documents');
+        updateIconSidebar(e);
+      },
+      stateVariables: isDocuments,
+      isForEndUser: true,
+      isForAdmin: true,
+    },
+    {
+      id: 'documents',
+      label: 'Documents',
+      icon: 'ri-folder-open-fill',
+      link: '/documents',
+      click: function (e) {
+        e.preventDefault();
+        setDocuments(!isDocuments);
+        setIscurrentState('Documents');
+        updateIconSidebar(e);
+      },
+      stateVariables: isDocuments,
+      isForEndUser: true,
+      isForAdmin: false,
+    },
   ];
-  const partnerItems = menuItems.filter((item) => item.isForPartner);
+  const endUserItems = menuItems.filter((item) => item.isForEndUser);
   const adminItems = menuItems.filter((item) => item.isForAdmin);
   return (
     <React.Fragment>
       {userProfile.role &&
       userProfile.role.some((role) => role.toLowerCase().includes('admin'))
         ? adminItems
-        : partnerItems}
+        : endUserItems}
     </React.Fragment>
   );
 };

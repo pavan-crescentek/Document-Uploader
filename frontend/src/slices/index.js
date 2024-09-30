@@ -10,6 +10,9 @@ import ProfileReducer from './auth/profile/reducer';
 // Category
 import CategoryReducer from './category/reducer';
 
+// documents
+import DocumentReducer from './documents/reducer';
+
 // Partners
 import PartnerReducer from './partner/reducer';
 
@@ -41,6 +44,7 @@ const rootReducer = combineReducers({
   Login: LoginReducer,
   Profile: ProfileReducer,
   Category: CategoryReducer,
+  Document: DocumentReducer,
   Partner: PartnerReducer,
   UsersList: UsersListReducer,
   BookingList: BookingListReducer,

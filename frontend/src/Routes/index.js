@@ -6,7 +6,7 @@ import NonAuthLayout from '../Layouts/NonAuthLayout';
 import VerticalLayout from '../Layouts/index';
 
 //routes
-import { AdminAuthProtected, PartnerAuthProtected } from './AuthProtected';
+import { AdminAuthProtected, EndUserAuthProtected } from './AuthProtected';
 import {
   adminAuthProtectedRoutes,
   endUserAuthProtectedRoutes,
@@ -47,9 +47,9 @@ const Index = () => {
             <Route
               path={route.path}
               element={
-                <PartnerAuthProtected>
+                <EndUserAuthProtected>
                   <VerticalLayout>{route.component}</VerticalLayout>
-                </PartnerAuthProtected>
+                </EndUserAuthProtected>
               }
               key={idx}
               exact={true}

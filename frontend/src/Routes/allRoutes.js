@@ -17,12 +17,13 @@ import BasicPasswCreate from '../pages/AuthenticationInner/PasswordCreate/BasicP
 import UserProfile from '../pages/Authentication/user-profile';
 
 // Bookingd
-import GroundBookings from '../pages/Partnerpages/GroundBookings';
 
 // Categories
 
 // Part Grounds
-import Grounds from '../pages/Partnerpages/Grounds';
+
+// Documents
+import Documents from '../pages/Documents';
 
 // Partners
 
@@ -40,26 +41,24 @@ import Logout from '../pages/Authentication/Logout';
 
 const endUserAuthProtectedRoutes = [
   // { path: '/partner/index', component: <PartnerDashboard /> },
-  { path: '/partner/ground', component: <Grounds /> },
-  { path: '/partner/profile', component: <UserProfile /> },
-  { path: '/partner/bookings', component: <GroundBookings /> },
+  { path: '/profile', component: <UserProfile /> },
+  { path: '/documents', component: <Documents /> },
+  { path: '/', component: <Documents /> },
+  { path: '/index', component: <Documents /> },
 ];
 const adminAuthProtectedRoutes = [
-  // { path: '/index', component: <DashboardEcommerce /> },
-
-  //Api Key
-  // { path: '/apps-api-key', component: <APIKey /> },
-
   //User Profile
-  { path: '/profile', component: <UserProfile /> },
+  { path: '/admin/profile', component: <UserProfile /> },
+
+  { path: '/admin/documents', component: <Documents /> },
 
   //Users
-  { path: '/users', component: <Users /> },
+  { path: '/admin/users', component: <Users /> },
 
   // this route should be at the end of all other routes
   // eslint-disable-next-line react/display-name
   {
-    path: '/',
+    path: '/admin',
     exact: true,
     component: <Navigate to="/users" />,
   },

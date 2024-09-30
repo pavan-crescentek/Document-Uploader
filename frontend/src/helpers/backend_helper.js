@@ -65,6 +65,14 @@ export const deleteCategory = (id) => api.create(url.DELETE_CATEGORY, id);
 export const addNewCategory = (newCategory, headers) =>
   api.create(url.ADD_UPDATE_CATEGORY, newCategory, headers);
 
+// Document
+export const getAllDocuments = () => api.get(url.GET_ALL_DOCUMENTS);
+export const updateDocument = (document, headers) =>
+  api.create(url.UPDATE_DOCUMENT, document, headers);
+export const deleteDocument = (id) => api.create(url.DELETE_DOCUMENT, id);
+export const addNewDocument = (newDocument, headers) =>
+  api.create(url.ADD_NEW_DOCUMENT, newDocument, headers);
+
 // Grrounds
 export const getAllGrounds = () => api.get(url.GET_ALL_GROUNDS);
 export const getGroundsSlot = (groundId) =>

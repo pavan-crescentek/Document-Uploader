@@ -17,6 +17,10 @@ const documentsSchema = new mongoose.Schema(
       required: true,
       trim: true,
     },
+    metadata: {
+      type: String,
+      required: true,
+    },
     media_key: {
       type: String,
       required: true,
@@ -26,6 +30,20 @@ const documentsSchema = new mongoose.Schema(
       type: String,
       required: true,
       trim: true,
+    },
+    media_type: {
+      type: String,
+      required: true,
+      trim: true,
+    },
+    media_type: {
+      type: String,
+      enum: ['IMAGE', 'GIF', 'VIDEO', 'PDF', 'OTHER'],
+      required: true,
+    },
+    mime_type: {
+      type: String,
+      required: true,
     },
   },
   { timestamps: true },

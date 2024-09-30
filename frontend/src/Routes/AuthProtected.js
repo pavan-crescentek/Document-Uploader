@@ -42,7 +42,7 @@ const AdminAuthProtected = (props) => {
   return <>{props.children}</>;
 };
 
-const PartnerAuthProtected = (props) => {
+const EndUserAuthProtected = (props) => {
   const dispatch = useDispatch();
   const { userProfile, loading, token } = useProfile();
 
@@ -67,7 +67,11 @@ const PartnerAuthProtected = (props) => {
   if (
     (!userProfile && loading && !token) ||
     (userProfile.role &&
-      userProfile.role.some((role) => role.toLowerCase().includes('enduser')))
+      !userProfile.role.some(
+        (role) =>
+          role.toLowerCase().includes('enduser') ||
+          role.toLowerCase().includes('admin')
+      ))
   ) {
     dispatch(logoutUser());
     return (
@@ -94,4 +98,4 @@ const AccessRoute = ({ component: Component, ...rest }) => {
   );
 };
 
-export { AccessRoute, AdminAuthProtected, PartnerAuthProtected };
+export { AccessRoute, AdminAuthProtected, EndUserAuthProtected };

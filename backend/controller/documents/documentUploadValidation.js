@@ -16,7 +16,7 @@ const updatingMediaValidator = Joi.object({
   metadata: Joi.string().required(),
   section: Joi.string().required(),
   subsection: Joi.string().required(),
-  file: Joi.object().required(),
+  file: Joi.object().optional(),
 });
 
 module.exports = {

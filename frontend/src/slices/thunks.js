@@ -14,6 +14,9 @@ export * from './partnerDashboard/thunk';
 // Category
 export * from './category/thunk';
 
+// Document
+export * from './documents/thunk';
+
 // Partner
 export * from './partner/thunk';
 

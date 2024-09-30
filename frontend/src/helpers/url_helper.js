@@ -16,6 +16,12 @@ export const GET_ALL_CATEGORY = '/admin/categories';
 export const ADD_UPDATE_CATEGORY = '/admin/add_edit_category';
 export const DELETE_CATEGORY = '/admin/delete_category';
 
+// Document
+export const GET_ALL_DOCUMENTS = '/get-files';
+export const UPDATE_DOCUMENT = '/update-file';
+export const DELETE_DOCUMENT = '/delete-file';
+export const ADD_NEW_DOCUMENT = '/file-upload';
+
 // Grounds
 export const GET_ALL_CATEGORY_FOR_PARTNER = '/partner/categories';
 export const GET_ALL_GROUNDS = '/partner/grounds';

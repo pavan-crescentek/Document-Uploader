@@ -31,8 +31,8 @@ export const loginUser = (user, history) => async (dispatch) => {
         dispatch(loginSuccess(data));
         history(
           data.role.some((role) => role.toLowerCase().includes('admin'))
-            ? '/users'
-            : '/partner/index'
+            ? '/admin/users'
+            : '/'
         );
       } else {
         dispatch(apiError(finalLogin));
