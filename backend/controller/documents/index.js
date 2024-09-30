@@ -1,60 +1,57 @@
-const usersModel = require('../../model/usersSchema');
+const documentsModel = require('../../model/documentsSchema');
 const utils = require('../../utils/utils');
 const { StatusCodes } = require('http-status-codes');
-const { registrationUserSchema, loginUserSchema } = require('./userValidation');
+const { fileUploadValidator } = require('./documentUploadValidation');
 const { messages } = require('../../utils/en');
-const { getFile } = require('../../middlewares/uploadImage');
+const { getFile, deleteFile } = require('../../middlewares/uploadImage');
+const { find } = require('lodash');
 
-// Create a new user
+// Upload file
 const fileUploading = async (req, res) => {
+  const media_data = find(req.files, { fieldname: 'doc' });
+
   try {
-    console.log("🚀 ~ fileUploading ~ req.files:", req.files)
-    const fileData = await getFile(
-      process.env.BUCKET_NAME,
-      req.files[0].key
-    );
-    console.log("🚀 ~ fileUploading ~ req.files:", fileData)
-    return utils.sendResponse(res, StatusCodes.CREATED, messages.userRegisteredSuccessfully, fileData);
-    // // Validate the request body
-    // const { error, value } = registrationUserSchema.validate(req.body);
-    // if (error) {
-    //   return utils.sendResponse(res, StatusCodes.BAD_REQUEST, error.details[0].message);
-    // }
+    // Validate the request body
+    const { error, value } = fileUploadValidator.validate({ ...req.body, file: media_data });
+    if (error) {
+      await cleanupFile(media_data);
+      return utils.sendResponse(res, StatusCodes.BAD_REQUEST, error.details[0].message);
+    }
 
-    // // Extract the user data from the request body
-    // const { email, firstName, lastName, password } = value;
+    const { user } = req;
+    const { section, subsection, metadata } = value;
 
-    // // Check if the user already exists
-    // const isUserExist = await getUserByEmail(email);
-    // if (isUserExist) {
-    //   return utils.sendResponse(res, StatusCodes.BAD_REQUEST, messages.userAlreadyExist);
-    // }
+    if (!media_data?.key) {
+      await cleanupFile(media_data);
+      return utils.sendResponse(res, StatusCodes.BAD_REQUEST, messages.fileUploadFailed);
+    }
 
-    // // Generate a hashed password
-    // const hashedPassword = await generatePassword(password);
+    const documentData = {
+      userId: user._id,
+      metadata,
+      section,
+      subsection,
+      media_key: media_data.key,
+      media_size: media_data.size,
+    };
 
-    // const userData = {
-    //   email,
-    //   firstName,
-    //   lastName,
-    //   password: hashedPassword,
-    // };
+    // Create a new document
+    const newDoc = await documentsModel.create(documentData);
 
-    // if (value.role) {
-    //   userData.role = value.role;
-    // }
+    const fileUrl = await getFile(process.env.BUCKET_NAME, media_data.key);
+    const responseData = { ...newDoc.toObject(), fileUrl };
 
-    // // Create a new user
-    // const newUser = await usersModel.create(userData);
-    // const plainUser = await usersModel.findById(newUser._id).lean().exec();
-
-    // console.log('🚀 ~ registerNewUser ~ plainUser:', plainUser);
-
-    // delete plainUser.password;
-    // return utils.sendResponse(res, StatusCodes.CREATED, messages.userRegisteredSuccessfully, plainUser);
+    return utils.sendResponse(res, StatusCodes.CREATED, messages.fileUploadedSuccessfully, responseData);
   } catch (error) {
-    console.error('🚀 ~ registerNewUser ~ error:', error);
-    return utils.sendResponse(res, StatusCodes.INTERNAL_SERVER_ERROR, messages.errorUserRegistered);
+    console.error('🚀 ~ fileUploading ~ error:', error);
+    await cleanupFile(media_data);
+    return utils.sendResponse(res, StatusCodes.INTERNAL_SERVER_ERROR, messages.errorFileUpload);
+  }
+};
+
+const cleanupFile = async (media_data) => {
+  if (media_data?.key) {
+    await deleteFile(process.env.BUCKET_NAME, media_data.key);
   }
 };
 

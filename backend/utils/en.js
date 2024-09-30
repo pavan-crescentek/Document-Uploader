@@ -16,6 +16,7 @@ const messages = {
   allUsersFound: 'All users found',
   userStatusUpdated: 'User status updated',
   errorInUserUpdate: 'Error in user update',
+  fileUploadedSuccessfully: 'File uploaded successfully',
 };
 
 module.exports = {

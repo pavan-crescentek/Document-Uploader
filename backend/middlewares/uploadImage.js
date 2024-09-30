@@ -35,7 +35,7 @@ const userFileUpload = multer({
   fileFilter: function (req, file, callback) {
     let allowedExtension = ['jpg', 'jpeg', 'png', 'pdf'];
     const fileExtension = path.extname(file.originalname).toLowerCase().substring(1);
-   
+
     if (allowedExtension.includes(fileExtension)) {
       callback(null, true);
     } else {
@@ -74,4 +74,4 @@ const deleteFile = async function (bucketName, fileKey) {
   }
 };
 
-module.exports = { userFileUpload, getFile };
+module.exports = { userFileUpload, getFile, deleteFile };

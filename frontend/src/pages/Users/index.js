@@ -151,7 +151,7 @@ const UsersList = () => {
     onSubmit: async (values) => {
       let result;
       if (isEdit) {
-        const updateCategoryData = {
+        const updateUserData = {
           id: values.id,
           firstName: values.firstName,
           lastName: values.lastName,
@@ -159,10 +159,10 @@ const UsersList = () => {
           isActive: values.isActive,
         };
         if (values.password) {
-          updateCategoryData['password'] = values.password;
+          updateUserData['password'] = values.password;
         }
-        // update category
-        result = await dispatch(updateUser(updateCategoryData));
+        // update user
+        result = await dispatch(updateUser(updateUserData));
         if (!result) {
           return;
         }
@@ -178,7 +178,7 @@ const UsersList = () => {
           isActive: values.isActive,
           password: values.password,
         };
-        // save new category
+        // save new user
         result = await dispatch(addNewUserThunk(newCustomer));
         if (!result) {
           return;
@@ -207,7 +207,7 @@ const UsersList = () => {
     renderFields(['email', 'firstName', 'lastName', 'password', 'isActive']),
   ];
 
-  const createCategory = () => {
+  const createUser = () => {
     return (
       <React.Fragment>
         <Form
@@ -266,7 +266,7 @@ const UsersList = () => {
                   <Loader error={null} />
                 </span>
               )}
-              {!!isEdit ? 'Update' : 'Add Category'}{' '}
+              {!!isEdit ? 'Update User' : 'Add User'}{' '}
             </button>
           </div>
         </Form>
@@ -327,7 +327,7 @@ const UsersList = () => {
         </Container>
       </div>
       <OffCanvas
-        data={createCategory()}
+        data={createUser()}
         title={isEdit ? 'Update User' : 'Create User'}
         isOpen={isRight}
         direction={null}
