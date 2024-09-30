@@ -29,5 +29,6 @@ router.post('/user-update', adminAuthCheckMiddleware, UsersController.updateUser
 router.post('/file-upload', [endUserAuthCheckMiddleware, userFileUpload], DocumentsController.fileUploading);
 router.get('/get-files', endUserAuthCheckMiddleware, DocumentsController.getFiles);
 router.post('/delete-files', endUserAuthCheckMiddleware, DocumentsController.deleteMedia);
+router.post('/update-files', [endUserAuthCheckMiddleware, userFileUpload], DocumentsController.updateMedia);
 
 module.exports = router;

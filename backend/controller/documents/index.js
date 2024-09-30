@@ -1,7 +1,7 @@
 const documentsModel = require('../../model/documentsSchema');
 const utils = require('../../utils/utils');
 const { StatusCodes } = require('http-status-codes');
-const { fileUploadValidator, deleteMediaValidator } = require('./documentUploadValidation');
+const { fileUploadValidator, deleteMediaValidator, updatingMediaValidator } = require('./documentUploadValidation');
 const { messages } = require('../../utils/en');
 const { getFile, deleteFile } = require('../../middlewares/uploadImage');
 const { find } = require('lodash');
@@ -106,6 +106,52 @@ const deleteMedia = async (req, res) => {
   }
 };
 
+// Update file
+const updateMedia = async (req, res) => {
+  const media_data = find(req.files, { fieldname: 'doc' });
+
+  try {
+    const { user } = req;
+    const { error, value } = updatingMediaValidator.validate({ ...req.body, file: media_data });
+    if (error) {
+      await cleanupFile(media_data);
+      return utils.sendResponse(res, StatusCodes.BAD_REQUEST, error.details[0].message);
+    }
+    const { section, subsection, metadata, id } = value;
+
+    const document = await documentsModel.findOne({ _id: id, userId: user._id });
+
+    if (!document) {
+      return utils.sendResponse(res, StatusCodes.NOT_FOUND, messages.mediaNotFound);
+    }
+
+    const updateData = {
+      section,
+      subsection,
+      metadata,
+    };
+
+    if (media_data?.key) {
+      await cleanupFile({ key: document.media_key });
+      updateData.media_key = media_data.key;
+      updateData.media_size = media_data.size;
+    }
+
+    const updatedDoc = await documentsModel.findByIdAndUpdate(id, updateData, { new: true }).lean();
+
+    const fileUrl = await getFile(process.env.BUCKET_NAME, updatedDoc.media_key);
+    const responseData = { ...updatedDoc, fileUrl };
+
+    return utils.sendResponse(res, StatusCodes.OK, messages.mediaUpdatedSuccessfully, responseData);
+  } catch (error) {
+    console.error('🚀 ~ updateMedia ~ error:', error);
+    if (media_data?.key) {
+      await cleanupFile(media_data);
+    }
+    return utils.sendResponse(res, StatusCodes.INTERNAL_SERVER_ERROR, messages.errorUpdatingMedia);
+  }
+};
+
 const cleanupFile = async (media_data) => {
   if (media_data?.key) {
     await deleteFile(process.env.BUCKET_NAME, media_data.key);
@@ -116,4 +162,5 @@ module.exports = {
   fileUploading,
   getFiles,
   deleteMedia,
+  updateMedia,
 };

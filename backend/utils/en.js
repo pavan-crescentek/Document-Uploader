@@ -25,6 +25,8 @@ const messages = {
   filesRetrievedSuccessfully: 'Files retrieved successfully',
   errorRetrievingFiles: 'Error retrieving files',
   errorDeletingMedia: 'Error deleting media',
+  mediaUpdatedSuccessfully: 'Media updated successfully',
+  errorUpdatingMedia: 'Error updating media',
 };
 
 module.exports = {
