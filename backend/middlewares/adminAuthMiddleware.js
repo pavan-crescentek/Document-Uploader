@@ -14,12 +14,7 @@ const adminAuthCheckMiddleware = async function authFetchChecker(req, res, next)
       const user = await jwt.verify(token, secret);
       const fetchedUser = await userController.getUserByEmail(user.email);
 
-      if (
-        !fetchedUser ||
-        !fetchedUser.role ||
-        !fetchedUser.role.includes('ADMIN') ||
-        !fetchedUser.isActive
-      ) {
+      if (!fetchedUser || !fetchedUser.role || !fetchedUser.role.includes('ADMIN') || !fetchedUser.isActive) {
         return utils.sendResponse(res, StatusCodes.UNAUTHORIZED, messages.unauthorized);
       }
       req.user = fetchedUser;

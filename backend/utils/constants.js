@@ -5,5 +5,5 @@ const paginationDefaultPage = 1;
 module.exports = {
   paginationDefaultPageSize,
   paginationDefaultPage,
-  paginationDefaultFullPageSize
+  paginationDefaultFullPageSize,
 };

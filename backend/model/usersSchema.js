@@ -1,4 +1,4 @@
-const mongoose = require("mongoose");
+const mongoose = require('mongoose');
 
 const usersSchema = new mongoose.Schema(
   {
@@ -26,9 +26,9 @@ const usersSchema = new mongoose.Schema(
     },
     role: {
       type: [String],
-      enum: ["ADMIN", "ENDUSER"],
+      enum: ['ADMIN', 'ENDUSER'],
       required: true,
-      default: ["ENDUSER"],
+      default: ['ENDUSER'],
     },
     isActive: {
       type: Boolean,
@@ -36,9 +36,9 @@ const usersSchema = new mongoose.Schema(
       default: true,
     },
   },
-  { timestamps: true }
+  { timestamps: true },
 );
 
-const usersModel = mongoose.model("users", usersSchema);
+const usersModel = mongoose.model('users', usersSchema);
 
 module.exports = usersModel;

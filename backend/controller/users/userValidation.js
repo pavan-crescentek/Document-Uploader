@@ -27,7 +27,6 @@ const updateUserByAdminValidation = Joi.object({
   email: Joi.string().optional(),
 });
 
-
 module.exports = {
   registrationUserSchema,
   loginUserSchema,

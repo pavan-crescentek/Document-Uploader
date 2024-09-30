@@ -167,7 +167,6 @@ const updateUserByAdmin = async (req, res) => {
       const hashedPassword = await generatePassword(password);
       updateData.password = hashedPassword;
     }
-    
 
     // Update the user
     const updatedUser = await usersModel.findByIdAndUpdate(id, updateData, { new: true, select: '-password' }).lean();
