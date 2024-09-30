@@ -9,6 +9,7 @@ const messages = {
   errorInLogin: 'Error in login',
   errorInUsersList: 'Error in getting users list',
   errorInUsersStatusChange: 'Error in changing user status',
+  errorDeletingFile: 'Error deleting file',
   passwordOrEmailIsWrong: 'Password or email is wrong',
   loginSuccessFul: 'Login successful',
   unauthorized: 'You are not an authorized for this action',
@@ -17,6 +18,13 @@ const messages = {
   userStatusUpdated: 'User status updated',
   errorInUserUpdate: 'Error in user update',
   fileUploadedSuccessfully: 'File uploaded successfully',
+  mediaNotFound: 'Document not found',
+  mediaDeletedSuccessfully: 'Media deleted successfully',
+  fileUploadFailed: 'File upload failed',
+  errorFileUpload: 'Error in file upload',
+  filesRetrievedSuccessfully: 'Files retrieved successfully',
+  errorRetrievingFiles: 'Error retrieving files',
+  errorDeletingMedia: 'Error deleting media',
 };
 
 module.exports = {

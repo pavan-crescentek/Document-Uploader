@@ -1,7 +1,7 @@
 const documentsModel = require('../../model/documentsSchema');
 const utils = require('../../utils/utils');
 const { StatusCodes } = require('http-status-codes');
-const { fileUploadValidator } = require('./documentUploadValidation');
+const { fileUploadValidator, deleteMediaValidator } = require('./documentUploadValidation');
 const { messages } = require('../../utils/en');
 const { getFile, deleteFile } = require('../../middlewares/uploadImage');
 const { find } = require('lodash');
@@ -72,6 +72,40 @@ const getFiles = async (req, res) => {
   }
 };
 
+// Delete file
+const deleteMedia = async (req, res) => {
+  try {
+    const { user } = req;
+
+    const { error, value } = deleteMediaValidator.validate(req.body);
+    if (error) {
+      await cleanupFile(media_data);
+      return utils.sendResponse(res, StatusCodes.BAD_REQUEST, error.details[0].message);
+    }
+
+    const { id } = value;
+
+    const document = await documentsModel.findOne({ _id: id, userId: user._id });
+
+    if (!document) {
+      return utils.sendResponse(res, StatusCodes.NOT_FOUND, messages.mediaNotFound);
+    }
+
+    const deleteResult = await deleteFile(process.env.BUCKET_NAME, document.media_key);
+
+    if (!deleteResult) {
+      return utils.sendResponse(res, StatusCodes.INTERNAL_SERVER_ERROR, messages.errorDeletingFile);
+    }
+
+    await documentsModel.findByIdAndDelete(id);
+
+    return utils.sendResponse(res, StatusCodes.OK, messages.mediaDeletedSuccessfully);
+  } catch (error) {
+    console.error('🚀 ~ deleteMedia ~ error:', error);
+    return utils.sendResponse(res, StatusCodes.INTERNAL_SERVER_ERROR, messages.errorDeletingMedia);
+  }
+};
+
 const cleanupFile = async (media_data) => {
   if (media_data?.key) {
     await deleteFile(process.env.BUCKET_NAME, media_data.key);
@@ -81,4 +115,5 @@ const cleanupFile = async (media_data) => {
 module.exports = {
   fileUploading,
   getFiles,
+  deleteMedia,
 };
