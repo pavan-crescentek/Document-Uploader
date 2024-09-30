@@ -33,11 +33,14 @@ const documentsListTableFields = (
       enableColumnFilter: false,
       cell: (cellProps) => {
         return (
-          <img
-            src={cellProps.row.original.fileUrl}
-            alt="Preview"
-            className="document-preview"
-          />
+          <a
+            href={cellProps.row.original.fileUrl}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="document-view-link"
+          >
+            View File
+          </a>
         );
       },
     },
