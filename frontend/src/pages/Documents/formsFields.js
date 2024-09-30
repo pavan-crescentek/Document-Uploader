@@ -1,19 +1,37 @@
 import * as Yup from 'yup';
 
 const documentFormFields = (statusOption) => {
+  const sectionOptions = statusOption.map((item) => ({
+    value: item.section,
+    label: item.section.toUpperCase(),
+  }));
+  const subsectionOptions = statusOption.flatMap((item) =>
+    item.subsection.map((sub) => ({
+      value: sub,
+      label: sub,
+    }))
+  );
+
   return [
     {
-      name: 'name',
-      label: 'Partner Name',
+      name: 'metadata',
+      label: 'Metadata',
       type: 'text',
-      placeholder: 'Enter Partner Name',
+      placeholder: 'Enter document metadata',
     },
     {
-      name: 'activeStatus',
-      label: 'Is Active',
+      name: 'section',
+      label: 'Section',
       type: 'select',
-      placeholder: 'Select Status',
-      options: statusOption,
+      placeholder: 'Select Section',
+      options: sectionOptions,
+    },
+    {
+      name: 'subsection',
+      label: 'Subsection',
+      type: 'select',
+      placeholder: 'Select Subsection',
+      options: subsectionOptions,
     },
   ];
 };

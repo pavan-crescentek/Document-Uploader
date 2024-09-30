@@ -31,12 +31,12 @@ import {
 import { useDispatch, useSelector } from 'react-redux';
 import TableContainer from '../../Components/Common/TableContainer';
 
-import Dropzone from 'react-dropzone';
 import { createSelector } from 'reselect';
 import SimpleBar from 'simplebar-react';
 import Loader from '../../Components/Common/Loader';
 import OffCanvas from '../../Components/Common/OffCanvas';
 import RenderFormSingleColumn from '../../Components/Common/RenderFormSingleColumn';
+import { sectionSubsection } from '../../Components/constants/sectionSubsection';
 import { useProfile } from '../../Components/Hooks/UserHooks';
 import { api } from '../../config';
 import {
@@ -259,28 +259,23 @@ const Documents = () => {
     );
   };
 
-  const statusOption = [
-    {
-      label: 'Active',
-      value: true,
-    },
-    {
-      label: 'Inactive',
-      value: false,
-    },
-  ];
+  const statusOption = sectionSubsection;
 
   const fields = documentFormFields(statusOption);
 
-  const renderFields = (fieldNames) => (
-    <RenderFormSingleColumn
-      fieldNames={fieldNames}
-      fields={fields}
-      validation={validation}
-    />
-  );
+  const renderFields = (fieldNames) => {
+    return (
+      <RenderFormSingleColumn
+        fieldNames={fieldNames}
+        fields={fields}
+        validation={validation}
+      />
+    );
+  };
 
-  const renderFieldsData = [renderFields(['name', 'activeStatus'])];
+  const renderFieldsData = [
+    renderFields(['metadata', 'section', 'subsection']),
+  ];
 
   const createDocument = () => {
     return (
@@ -316,7 +311,7 @@ const Documents = () => {
                   </Row>
                 ))}
               <Row className="m-0" style={{ padding: '12px' }}>
-                <Label className="form-label p-0">
+                {/* <Label className="form-label p-0">
                   Photos{' '}
                   <span
                     className="text-danger"
@@ -343,13 +338,6 @@ const Documents = () => {
                           >
                             <i className="ri-pencil-fill fs-10"></i>
                           </button>
-                          {/* <button
-                            type="button"
-                            className="btn btn-danger btn-sm position-absolute top-0 end-0"
-                            onClick={() => handleRemoveImage()}
-                          >
-                            &times;
-                          </button> */}
                           <input
                             type="file"
                             id={`file-input`}
@@ -393,7 +381,7 @@ const Documents = () => {
                       Please upload at least one photo.
                     </Col>
                   )}
-                </div>
+                </div> */}
               </Row>
             </SimpleBar>
           </OffcanvasBody>
