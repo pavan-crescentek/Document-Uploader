@@ -106,6 +106,7 @@ const getUsersList = async (req, res) => {
     const allUsers = await usersModel
       .find({ _id: { $ne: user._id } })
       .select('-password')
+      .sort({ createdAt: -1 })
       .lean()
       .exec();
     return utils.sendResponse(res, StatusCodes.OK, messages.allUsersFound, allUsers);

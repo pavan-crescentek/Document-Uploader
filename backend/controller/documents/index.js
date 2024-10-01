@@ -40,7 +40,7 @@ const fileUploading = async (req, res) => {
     // Create a new document
     const newDoc = await documentsModel.create(documentData);
 
-    const fileUrl = await getFile(process.env.BUCKET_NAME, media_data.key);
+    const fileUrl = await getFile(process.env.BUCKET_NAME, media_data.key, media_data.mimetype);
     const responseData = { ...newDoc.toObject(), fileUrl };
 
     return utils.sendResponse(res, StatusCodes.OK, messages.fileUploadedSuccessfully, responseData);
@@ -57,12 +57,12 @@ const getFiles = async (req, res) => {
     const { user } = req;
 
     // Fetch files from the database
-    const files = await documentsModel.find({ userId: user._id }).lean().exec();
+    const files = await documentsModel.find({ userId: user._id }).sort({ createdAt: -1 }).lean().exec();
 
     // Fetch file URLs for each file
     const filesWithUrls = await Promise.all(
       files.map(async (file) => {
-        const fileUrl = await getFile(process.env.BUCKET_NAME, file.media_key);
+        const fileUrl = await getFile(process.env.BUCKET_NAME, file.media_key, file.mime_type);
         return { ...file, fileUrl };
       }),
     );
@@ -143,7 +143,7 @@ const updateMedia = async (req, res) => {
 
     const updatedDoc = await documentsModel.findByIdAndUpdate(id, updateData, { new: true }).lean();
 
-    const fileUrl = await getFile(process.env.BUCKET_NAME, updatedDoc.media_key);
+    const fileUrl = await getFile(process.env.BUCKET_NAME, updatedDoc.media_key, updatedDoc.mime_type);
     const responseData = { ...updatedDoc, fileUrl };
 
     return utils.sendResponse(res, StatusCodes.OK, messages.mediaUpdatedSuccessfully, responseData);
@@ -166,6 +166,11 @@ const getMediaType = (mimeType) => {
   if (mimeType.startsWith('image/')) return mimeType === 'image/gif' ? 'GIF' : 'IMAGE';
   if (mimeType.startsWith('video/')) return 'VIDEO';
   if (mimeType === 'application/pdf') return 'PDF';
+  if (
+    mimeType === 'application/msword' ||
+    mimeType === 'application/vnd.openxmlformats-officedocument.wordprocessingml.document'
+  )
+    return 'DOCUMENT';
   return 'OTHER';
 };
 

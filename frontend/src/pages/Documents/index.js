@@ -525,6 +525,7 @@ const Documents = () => {
                   setDisplayPhotoError(true);
                 }
               }}
+              disabled={addEditLoading}
             >
               {' '}
               {addEditLoading && (

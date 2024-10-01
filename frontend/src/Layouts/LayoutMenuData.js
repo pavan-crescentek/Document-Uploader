@@ -67,7 +67,7 @@ const Navdata = () => {
         updateIconSidebar(e);
       },
       stateVariables: isDocuments,
-      isForEndUser: true,
+      isForEndUser: false,
       isForAdmin: true,
     },
     {

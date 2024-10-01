@@ -33,12 +33,7 @@ const documentsSchema = new mongoose.Schema(
     },
     media_type: {
       type: String,
-      required: true,
-      trim: true,
-    },
-    media_type: {
-      type: String,
-      enum: ['IMAGE', 'GIF', 'VIDEO', 'PDF', 'OTHER'],
+      enum: ['IMAGE', 'GIF', 'VIDEO', 'PDF', 'DOCUMENT', 'OTHER'],
       required: true,
     },
     mime_type: {

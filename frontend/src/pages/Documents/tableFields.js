@@ -28,8 +28,8 @@ const documentsListTableFields = (
       enableColumnFilter: false,
     },
     {
-      header: 'Logo',
-      accessorKey: 'image',
+      header: 'Link',
+      accessorKey: 'doc',
       enableColumnFilter: false,
       cell: (cellProps) => {
         return (
@@ -51,15 +51,25 @@ const documentsListTableFields = (
       cell: (cellProps) => {
         return (
           <div>
-            <span>{`${cellProps.row.original?.media_type || ''}${cellProps.row.original?.mime_type ? '-' + cellProps.row.original?.mime_type : ''}`}</span>
+            <span>{`${cellProps.row.original?.media_type || ''}`}</span>
           </div>
         );
       },
     },
     {
-      header: 'Size (Bytes)',
+      header: 'Size',
       accessorKey: 'media_size',
       enableColumnFilter: false,
+      cell: (cellProps) => {
+        const sizeInBytes = cellProps.row.original.media_size;
+        const sizeInKB = sizeInBytes / 1024;
+        if (sizeInKB < 1024) {
+          return <span>{sizeInKB.toFixed(2)} KB</span>;
+        } else {
+          const sizeInMB = sizeInKB / 1024;
+          return <span>{sizeInMB.toFixed(2)} MB</span>;
+        }
+      },
     },
     {
       header: 'Action',

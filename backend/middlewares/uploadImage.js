@@ -5,6 +5,9 @@ const { getSignedUrl } = require('@aws-sdk/s3-request-presigner');
 const path = require('path');
 const config = require('../config/config').config();
 const dotenv = require('dotenv');
+const utils = require('../utils/utils');
+const { messages } = require('../utils/en');
+const { StatusCodes } = require('http-status-codes');
 
 dotenv.config({ path: config });
 
@@ -33,27 +36,53 @@ const userFileUpload = multer({
     fileSize: MAX_FILE_SIZE,
   },
   fileFilter: function (req, file, callback) {
-    let allowedExtension = ['jpg', 'jpeg', 'png', 'pdf'];
+    let allowedExtension = ['jpg', 'jpeg', 'png', 'pdf', 'doc', 'docx'];
     const fileExtension = path.extname(file.originalname).toLowerCase().substring(1);
 
     if (allowedExtension.includes(fileExtension)) {
       callback(null, true);
     } else {
-      callback(new Error('Invalid file type. Only PDF, JPEG, and PNG are allowed.'), false);
+      callback(new Error('Invalid file type. Only PDF, JPEG, PNG, DOC and DOCX are allowed.'), false);
     }
   },
 }).any();
 
-const getFile = async function (bucketName, file) {
+const handleFileUpload = (req, res, next) => {
+  userFileUpload(req, res, (err) => {
+    if (err instanceof multer.MulterError) {
+      if (err.code === 'LIMIT_FILE_SIZE') {
+        return utils.sendResponse(
+          res,
+          StatusCodes.BAD_REQUEST,
+          `File size exceeds the limit of ${MAX_FILE_SIZE / (1024 * 1024)} MB.`,
+        );
+      }
+      return utils.sendResponse(res, StatusCodes.BAD_REQUEST, err.message);
+    } else if (err) {
+      return utils.sendResponse(
+        res,
+        StatusCodes.BAD_REQUEST,
+        'Invalid file type. Only PDF, JPEG, and PNG are allowed.',
+      );
+    }
+    next();
+  });
+};
+
+const getFile = async function (bucketName, file, mime_type) {
   const params = {
     Bucket: bucketName,
     Key: file,
+    ResponseContentType: mime_type,
+    ResponseContentDisposition: 'attachment; filename="' + file + '"',
   };
+
   try {
     const command = new GetObjectCommand(params);
     const url = await getSignedUrl(s3Client, command, { expiresIn: 3600 });
     return url;
   } catch (err) {
+    console.error('Error getting file from S3:', err);
     return '';
   }
 };
@@ -74,4 +103,4 @@ const deleteFile = async function (bucketName, fileKey) {
   }
 };
 
-module.exports = { userFileUpload, getFile, deleteFile };
+module.exports = { userFileUpload, getFile, deleteFile, handleFileUpload };

@@ -5,7 +5,7 @@ const router = express.Router();
 const UsersController = require('../controller/users');
 const DocumentsController = require('../controller/documents');
 const { adminAuthCheckMiddleware } = require('../middlewares/adminAuthMiddleware');
-const { userFileUpload } = require('../middlewares/uploadImage');
+const { userFileUpload, handleFileUpload } = require('../middlewares/uploadImage');
 const { endUserAuthCheckMiddleware } = require('../middlewares/endUserAuthCheckMiddleware');
 
 // middleware to use application type
@@ -26,9 +26,9 @@ router.get('/users-list', adminAuthCheckMiddleware, UsersController.getUsersList
 router.post('/user-update', adminAuthCheckMiddleware, UsersController.updateUserByAdmin);
 
 // File upload
-router.post('/file-upload', [endUserAuthCheckMiddleware, userFileUpload], DocumentsController.fileUploading);
+router.post('/file-upload', [endUserAuthCheckMiddleware, handleFileUpload], DocumentsController.fileUploading);
 router.get('/get-files', endUserAuthCheckMiddleware, DocumentsController.getFiles);
 router.post('/delete-file', endUserAuthCheckMiddleware, DocumentsController.deleteMedia);
-router.post('/update-file', [endUserAuthCheckMiddleware, userFileUpload], DocumentsController.updateMedia);
+router.post('/update-file', [endUserAuthCheckMiddleware, handleFileUpload], DocumentsController.updateMedia);
 
 module.exports = router;
