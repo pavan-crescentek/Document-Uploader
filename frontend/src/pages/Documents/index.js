@@ -4,6 +4,8 @@ import {
   Col,
   Container,
   Form,
+  FormFeedback,
+  FormGroup,
   Input,
   Label,
   OffcanvasBody,
@@ -31,14 +33,13 @@ import {
 import { useDispatch, useSelector } from 'react-redux';
 import TableContainer from '../../Components/Common/TableContainer';
 
+import Dropzone from 'react-dropzone';
 import { createSelector } from 'reselect';
 import SimpleBar from 'simplebar-react';
 import Loader from '../../Components/Common/Loader';
 import OffCanvas from '../../Components/Common/OffCanvas';
-import RenderFormSingleColumn from '../../Components/Common/RenderFormSingleColumn';
 import { sectionSubsection } from '../../Components/constants/sectionSubsection';
 import { useProfile } from '../../Components/Hooks/UserHooks';
-import { api } from '../../config';
 import {
   documentFieldsInitialValues,
   documentFormFields,
@@ -65,6 +66,8 @@ const Documents = () => {
   const [selectedDocument, setSelectedDocument] = useState();
 
   const [documents, setDocuments] = useState([]);
+  const [allSections, setAllSections] = useState([]);
+  const [allSubSections, setAllSubSections] = useState([]);
   const [photos, setPhotos] = useState();
   const [photoPreviews, setPhotoPreviews] = useState();
   const [documentForDelete, setDocumentForDelete] = useState();
@@ -106,30 +109,38 @@ const Documents = () => {
 
     validationSchema: documentFormFieldsValidation,
     onSubmit: async (values) => {
-      if (!isEdit && !photos) {
-        return;
-      }
+      // if (!isEdit && !photos) {
+      //   return;
+      // }
       if (isEdit) {
         const updateDocumentData = {
-          id: values._id,
-          name: values.name,
-          active: values.activeStatus,
-          image: photos,
+          id: selectedDocument.id,
+          metadata: values.metadata,
+          section: values.section,
+          subsection: values.subsection,
+          doc: photos,
         };
         // update document
-        await dispatch(updateDocument(updateDocumentData));
+        const response = await dispatch(updateDocument(updateDocumentData));
+        if (!response) {
+          return;
+        }
         setSelectedDocument();
         validation.resetForm();
         toggleRightCanvas();
         toggle();
       } else {
         const newCustomer = {
-          name: values.name,
-          active: values.activeStatus,
-          image: photos,
+          metadata: values.metadata,
+          section: values.section,
+          subsection: values.subsection,
+          doc: photos,
         };
         // save new document
-        await dispatch(addNewDocument(newCustomer));
+        const response = await dispatch(addNewDocument(newCustomer));
+        if (!response) {
+          return;
+        }
         setSelectedDocument();
         validation.resetForm();
         toggleRightCanvas();
@@ -150,14 +161,22 @@ const Documents = () => {
     (arg) => {
       const document = arg;
       const modifiedDocument = { ...arg };
-      (modifiedDocument['path'] =
-        api.API_URL + '/public/categories_images/' + modifiedDocument.image),
-        setPhotoPreviews(modifiedDocument.path);
+      const subSectionOptions =
+        sectionSubsection
+          .find((item) => item.section === modifiedDocument.section)
+          ?.subsection.map((sub) => ({
+            value: sub,
+            label: sub,
+          })) || [];
+      setAllSubSections(subSectionOptions);
+
+      setPhotoPreviews(modifiedDocument.fileUrl);
       setSelectedDocument({
         id: document._id,
-        name: document.name,
-        active: document.active,
-        image: setPhotos(modifiedDocument.image),
+        metadata: modifiedDocument.metadata,
+        section: modifiedDocument.section,
+        subsection: modifiedDocument.subsection,
+        doc: setPhotos(modifiedDocument.fileUrl),
       });
 
       setIsEdit(true);
@@ -176,7 +195,7 @@ const Documents = () => {
       const newPreview = reader.result;
       setPhotos(newPhoto);
       setPhotoPreviews(newPreview);
-      validation.setFieldValue('image', newPhoto);
+      validation.setFieldValue('doc', newPhoto);
       validation.enableReinitialize = false;
       setDisplayPhotoError(false);
     };
@@ -212,6 +231,14 @@ const Documents = () => {
   useEffect(() => {
     setDocuments(documentData);
   }, [documentData]);
+
+  useEffect(() => {
+    const sectionOptions = sectionSubsection.map((item) => ({
+      value: item.section,
+      label: item.section.toUpperCase(),
+    }));
+    setAllSections(sectionOptions);
+  }, []);
 
   // Add Data
   const handleCustomerClicks = () => {
@@ -259,17 +286,108 @@ const Documents = () => {
     );
   };
 
-  const statusOption = sectionSubsection;
+  const handleCountryChange = async (e) => {
+    const selectedSection = e.target.value;
+    validation.handleChange(e);
+    validation.setFieldValue('section', selectedSection);
+    const subSectionOptions =
+      sectionSubsection
+        .find((item) => item.section === selectedSection)
+        ?.subsection.map((sub) => ({
+          value: sub,
+          label: sub,
+        })) || [];
+    setAllSubSections(subSectionOptions);
+    validation.setFieldValue('subsection', '');
+  };
 
-  const fields = documentFormFields(statusOption);
+  const fields = documentFormFields(allSections, allSubSections);
 
   const renderFields = (fieldNames) => {
     return (
-      <RenderFormSingleColumn
-        fieldNames={fieldNames}
-        fields={fields}
-        validation={validation}
-      />
+      <>
+        {fieldNames.map((name, index) => {
+          const field = fields.find((field) => field.name === name);
+          return (
+            <Col md={12} key={index}>
+              <FormGroup className="mb-3">
+                <Label htmlFor={`${field.name}-field`} className="form-label">
+                  {field.label}
+                </Label>
+                {field.type === 'select' ? (
+                  <Input
+                    name={field.name}
+                    id={`${field.name}-field`}
+                    className="form-control"
+                    type={field.type}
+                    onChange={
+                      field.name === 'section'
+                        ? handleCountryChange
+                        : validation.handleChange
+                    }
+                    onBlur={validation.handleBlur}
+                    value={validation.values[field.name] || ''}
+                    invalid={
+                      validation.touched[field.name] &&
+                      validation.errors[field.name]
+                        ? true
+                        : false
+                    }
+                  >
+                    <option value="">Select {field.label}</option>
+                    {Array.isArray(field.options) &&
+                      field.options.map((option, idx) => (
+                        <option key={idx} value={option.value}>
+                          {option.label}
+                        </option>
+                      ))}
+                  </Input>
+                ) : field.type === 'textarea' && field.name !== 'details' ? (
+                  <Input
+                    name={field.name}
+                    id={`${field.name}-field`}
+                    className="form-control class-for-textarea"
+                    type={field.type}
+                    placeholder={field.placeholder}
+                    onChange={validation.handleChange}
+                    onBlur={validation.handleBlur}
+                    value={validation.values[field.name] || ''}
+                    invalid={
+                      validation.touched[field.name] &&
+                      validation.errors[field.name]
+                        ? true
+                        : false
+                    }
+                  />
+                ) : (
+                  <Input
+                    name={field.name}
+                    id={`${field.name}-field`}
+                    className="form-control"
+                    type={field.type}
+                    placeholder={field.placeholder}
+                    onChange={validation.handleChange}
+                    onBlur={validation.handleBlur}
+                    value={validation.values[field.name] || ''}
+                    invalid={
+                      validation.touched[field.name] &&
+                      validation.errors[field.name]
+                        ? true
+                        : false
+                    }
+                  />
+                )}
+                {validation.touched[field.name] &&
+                validation.errors[field.name] ? (
+                  <FormFeedback type="invalid">
+                    {validation.errors[field.name]}
+                  </FormFeedback>
+                ) : null}
+              </FormGroup>
+            </Col>
+          );
+        })}
+      </>
     );
   };
 
@@ -311,13 +429,13 @@ const Documents = () => {
                   </Row>
                 ))}
               <Row className="m-0" style={{ padding: '12px' }}>
-                {/* <Label className="form-label p-0">
-                  Photos{' '}
+                <Label className="form-label p-0">
+                  Media{' '}
                   <span
                     className="text-danger"
                     style={{ paddingLeft: '6px', fontSize: '10px' }}
                   >
-                    Image field is required
+                    Media field is required
                   </span>
                 </Label>
                 <div className="previewImageMainDiv">
@@ -381,7 +499,7 @@ const Documents = () => {
                       Please upload at least one photo.
                     </Col>
                   )}
-                </div> */}
+                </div>
               </Row>
             </SimpleBar>
           </OffcanvasBody>

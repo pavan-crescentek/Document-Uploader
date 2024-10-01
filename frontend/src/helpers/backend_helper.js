@@ -67,7 +67,7 @@ export const addNewCategory = (newCategory, headers) =>
 
 // Document
 export const getAllDocuments = () => api.get(url.GET_ALL_DOCUMENTS);
-export const updateDocument = (document, headers) =>
+export const updateSingleDocument = (document, headers) =>
   api.create(url.UPDATE_DOCUMENT, document, headers);
 export const deleteDocument = (id) => api.create(url.DELETE_DOCUMENT, id);
 export const addNewDocument = (newDocument, headers) =>

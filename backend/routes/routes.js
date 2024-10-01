@@ -29,19 +29,6 @@ router.post('/user-update', adminAuthCheckMiddleware, UsersController.updateUser
 router.post('/file-upload', [endUserAuthCheckMiddleware, userFileUpload], DocumentsController.fileUploading);
 router.get('/get-files', endUserAuthCheckMiddleware, DocumentsController.getFiles);
 router.post('/delete-file', endUserAuthCheckMiddleware, DocumentsController.deleteMedia);
-router.post(
-  '/update-file',
-  [
-    endUserAuthCheckMiddleware,
-    (req, res, next) => {
-      if (req.files && req.files.length > 0) {
-        userFileUpload(req, res, next);
-      } else {
-        next();
-      }
-    },
-  ],
-  DocumentsController.updateMedia,
-);
+router.post('/update-file', [endUserAuthCheckMiddleware, userFileUpload], DocumentsController.updateMedia);
 
 module.exports = router;

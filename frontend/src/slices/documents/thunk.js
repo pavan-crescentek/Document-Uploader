@@ -3,7 +3,7 @@ import {
   addNewDocument as addNewDocumentApi,
   deleteDocument as deleteDocumentApi,
   getAllDocuments as getAllDocumentsApi,
-  updateDocument as updateDocumentApi,
+  updateSingleDocument as updateDocumentApi,
 } from '../../helpers/backend_helper';
 import {
   apiError,
@@ -92,7 +92,7 @@ export const addNewDocument = (newDocument) => async (dispatch) => {
     };
     const response = await addNewDocumentApi(formData, headers);
 
-    if (response.code === 200) {
+    if (response?.code === 200) {
       dispatch(documentCreatedSuccess(response.data));
       return true;
     } else {

@@ -1,17 +1,6 @@
 import * as Yup from 'yup';
 
-const documentFormFields = (statusOption) => {
-  const sectionOptions = statusOption.map((item) => ({
-    value: item.section,
-    label: item.section.toUpperCase(),
-  }));
-  const subsectionOptions = statusOption.flatMap((item) =>
-    item.subsection.map((sub) => ({
-      value: sub,
-      label: sub,
-    }))
-  );
-
+const documentFormFields = (sectionOptions, subsectionOptions) => {
   return [
     {
       name: 'metadata',
@@ -37,23 +26,20 @@ const documentFormFields = (statusOption) => {
 };
 
 const documentFormFieldsValidation = Yup.object({
-  name: Yup.string()
-    .required('Please Partner Name')
-    .test('not-only-spaces', 'Please enter a valid Partner Name', (value) => {
+  metadata: Yup.string()
+    .required('Please metadata')
+    .test('not-only-spaces', 'Please enter a valid metadata', (value) => {
       return value && value.trim().length > 0;
     }),
-  activeStatus: Yup.boolean()
-    .required('Please add status')
-    .oneOf([true, false], 'Please add status'),
+  section: Yup.string().required('Section is required'),
+  subsection: Yup.string().required('Section is required'),
 });
 
 const documentFieldsInitialValues = (selectCategory) => {
   return {
-    name: selectCategory?.name || '',
-    activeStatus:
-      selectCategory && selectCategory?.active.toString() !== undefined
-        ? selectCategory.active.toString()
-        : 'true',
+    metadata: selectCategory?.metadata || '',
+    section: selectCategory?.section || '',
+    subsection: selectCategory?.subsection || '',
     id: selectCategory?.id || '',
   };
 };

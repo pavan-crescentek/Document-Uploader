@@ -43,7 +43,7 @@ const fileUploading = async (req, res) => {
     const fileUrl = await getFile(process.env.BUCKET_NAME, media_data.key);
     const responseData = { ...newDoc.toObject(), fileUrl };
 
-    return utils.sendResponse(res, StatusCodes.CREATED, messages.fileUploadedSuccessfully, responseData);
+    return utils.sendResponse(res, StatusCodes.OK, messages.fileUploadedSuccessfully, responseData);
   } catch (error) {
     console.error('🚀 ~ fileUploading ~ error:', error);
     await cleanupFile(media_data);
