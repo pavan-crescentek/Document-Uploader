@@ -53,8 +53,8 @@ const Sidebar = ({ layoutType }) => {
               userProfile.role.some((role) =>
                 role.toLowerCase().includes('admin')
               )
-                ? '/'
-                : '/partner/index'
+                ? '/admin/users'
+                : '/'
             }
             className="logo logo-dark"
           >
@@ -71,8 +71,8 @@ const Sidebar = ({ layoutType }) => {
               userProfile.role.some((role) =>
                 role.toLowerCase().includes('admin')
               )
-                ? '/'
-                : '/partner/index'
+                ? '/admin/users'
+                : '/'
             }
             className="logo logo-light"
           >

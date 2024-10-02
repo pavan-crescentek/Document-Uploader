@@ -26,7 +26,7 @@ export const loginUser = (user, history) => async (dispatch) => {
       var finalLogin = JSON.stringify(data);
       finalLogin = JSON.parse(finalLogin);
       data = finalLogin.data;
-      if (finalLogin.code) {
+      if (finalLogin.code === 200) {
         setAuthorization(data.token);
         dispatch(loginSuccess(data));
         history(

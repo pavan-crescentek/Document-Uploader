@@ -84,8 +84,8 @@ const ProfileDropdown = () => {
                 userProfile.role.some((role) =>
                   role.toLowerCase().includes('admin')
                 )
-                  ? '/profile'
-                  : '/partner/profile'
+                  ? '/admin/profile'
+                  : '/profile'
               }
               className="dropdown-item"
             >

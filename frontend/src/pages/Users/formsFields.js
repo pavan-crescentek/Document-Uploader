@@ -36,31 +36,32 @@ const usersFormFields = (statusOption) => {
   ];
 };
 
-const usersFormFieldsValidation = (isEdit) => Yup.object({
-  email: Yup.string().email('Invalid email').required('Email is required'),
-  firstName: Yup.string()
-    .min(3, 'First name must be at least 3 characters')
-    .max(30, 'First name must not exceed 30 characters')
-    .required('First name is required')
-    .test('not-only-spaces', 'Please enter a valid First Name', (value) => {
-      return value && value.trim().length > 0;
-    }),
-  lastName: Yup.string()
-    .min(3, 'Last name must be at least 3 characters')
-    .max(30, 'Last name must not exceed 30 characters')
-    .required('Last name is required')
-    .test('not-only-spaces', 'Please enter a valid Last Name', (value) => {
-      return value && value.trim().length > 0;
-    }),
-  password: isEdit
-  ? Yup.string().min(8, 'Password must be at least 8 characters').nullable()
-  : Yup.string()
-      .required('Password is required')
-      .min(8, 'Password must be at least 8 characters'),
-  isActive: Yup.boolean()
-    .required('Please add status')
-    .oneOf([true, false], 'Please add status'),
-});
+const usersFormFieldsValidation = (isEdit) =>
+  Yup.object({
+    email: Yup.string().email('Invalid email').required('Email is required'),
+    firstName: Yup.string()
+      .min(3, 'First name must be at least 3 characters')
+      .max(30, 'First name must not exceed 30 characters')
+      .required('First name is required')
+      .test('not-only-spaces', 'Please enter a valid First Name', (value) => {
+        return value && value.trim().length > 0;
+      }),
+    lastName: Yup.string()
+      .min(3, 'Last name must be at least 3 characters')
+      .max(30, 'Last name must not exceed 30 characters')
+      .required('Last name is required')
+      .test('not-only-spaces', 'Please enter a valid Last Name', (value) => {
+        return value && value.trim().length > 0;
+      }),
+    password: isEdit
+      ? Yup.string().min(8, 'Password must be at least 8 characters').nullable()
+      : Yup.string()
+          .required('Password is required')
+          .min(8, 'Password must be at least 8 characters'),
+    isActive: Yup.boolean()
+      .required('Please add status')
+      .oneOf([true, false], 'Please add status'),
+  });
 
 const usersFieldsInitialValues = (selectUser) => {
   return {
@@ -77,4 +78,3 @@ const usersFieldsInitialValues = (selectUser) => {
 };
 
 export { usersFieldsInitialValues, usersFormFields, usersFormFieldsValidation };
-

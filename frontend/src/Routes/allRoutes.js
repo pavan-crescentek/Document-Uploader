@@ -16,47 +16,26 @@ import BasicPasswCreate from '../pages/AuthenticationInner/PasswordCreate/BasicP
 // User Profile
 import UserProfile from '../pages/Authentication/user-profile';
 
-// Bookingd
-
-// Categories
-
-// Part Grounds
-
 // Documents
 import Documents from '../pages/Documents';
-
-// Partners
 
 // Users
 import Users from '../pages/Users/index';
 
-// Send Notification
-
-//APi Key
-
 //login
 import Login from '../pages/Authentication/Login';
-// import ForgetPasswordPage from "../pages/Authentication/ForgetPassword";
 import Logout from '../pages/Authentication/Logout';
 
 const endUserAuthProtectedRoutes = [
-  // { path: '/partner/index', component: <PartnerDashboard /> },
   { path: '/profile', component: <UserProfile /> },
   { path: '/documents', component: <Documents /> },
   { path: '/', component: <Documents /> },
   { path: '/index', component: <Documents /> },
 ];
 const adminAuthProtectedRoutes = [
-  //User Profile
   { path: '/admin/profile', component: <UserProfile /> },
-
   { path: '/admin/documents', component: <Documents /> },
-
-  //Users
   { path: '/admin/users', component: <Users /> },
-
-  // this route should be at the end of all other routes
-  // eslint-disable-next-line react/display-name
   {
     path: '/admin',
     exact: true,
