@@ -189,6 +189,19 @@ const Documents = () => {
   const handleFileChange = async (files) => {
     const newPhoto = files[0];
 
+    const maxSize = 5 * 1024 * 1024;
+    if (newPhoto.size > maxSize) {
+      toast.error('File size exceeds 5MB limit');
+      return;
+    }
+
+    const allowedExtensions = ['jpg', 'jpeg', 'png', 'pdf', 'doc', 'docx'];
+    const fileExtension = newPhoto.name.split('.').pop().toLowerCase();
+    if (!allowedExtensions.includes(fileExtension)) {
+      toast.error('Invalid file type. Allowed types: jpg, jpeg, png, pdf');
+      return;
+    }
+
     const reader = new FileReader();
     reader.readAsDataURL(newPhoto);
     reader.onloadend = () => {
@@ -496,7 +509,7 @@ const Documents = () => {
                   )}
                   {displayPhotoError && (
                     <Col md={12} className="text-danger">
-                      Please upload at least one photo.
+                      Please upload at least one media.
                     </Col>
                   )}
                 </div>

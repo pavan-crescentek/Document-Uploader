@@ -96,44 +96,22 @@ const RenderFormSingleColumn = ({
                 }
               />
             ) : field.type === 'password' ? (
-              <div className="d-flex">
-                <Input
-                  name={field.name}
-                  id={`${field.name}-field`}
-                  className="form-control"
-                  type={field.type}
-                  placeholder={field.placeholder}
-                  onChange={validation.handleChange}
-                  onBlur={validation.handleBlur}
-                  value={validation.values[field.name] || ''}
-                  invalid={
-                    validation.touched[field.name] &&
-                    validation.errors[field.name]
-                      ? true
-                      : false
-                  }
-                  style={{ position: 'relative' }}
-                />
-                <button
-                  type="button"
-                  style={{
-                    marginLeft: '10px',
-                    border: 'none',
-                    borderRadius: '50%',
-                    background: 'transparent',
-                    position: 'absolute',
-                    right: '0',
-                    marginRight: '16px',
-                    top: '26px',
-                  }}
-                >
-                  <i
-                    className="ri-rotate-lock-fill align-bottom"
-                    style={{ fontSize: '26px' }}
-                    onClick={() => passwordGenerator()}
-                  ></i>
-                </button>
-              </div>
+              <Input
+                name={field.name}
+                id={`${field.name}-field`}
+                className="form-control"
+                type={field.type}
+                placeholder={field.placeholder}
+                onChange={validation.handleChange}
+                onBlur={validation.handleBlur}
+                value={validation.values[field.name] || ''}
+                invalid={
+                  validation.touched[field.name] &&
+                  validation.errors[field.name]
+                    ? true
+                    : false
+                }
+              />
             ) : field.type === 'email' ? (
               <Input
                 name={field.name}

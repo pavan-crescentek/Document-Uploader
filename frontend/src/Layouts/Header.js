@@ -10,7 +10,6 @@ import logoSm from '../assets/images/logo-sm.png';
 //import Components
 import LightDark from '../Components/Common/LightDark';
 import ProfileDropdown from '../Components/Common/ProfileDropdown';
-import SearchOption from '../Components/Common/SearchOption';
 
 import { useDispatch, useSelector } from 'react-redux';
 import { createSelector } from 'reselect';
@@ -127,7 +126,7 @@ const Header = ({ onChangeLayoutMode, layoutModeType, headerClass }) => {
                 </span>
               </button>
 
-              <SearchOption />
+              {/* <SearchOption /> */}
             </div>
 
             <div className="d-flex align-items-center">

@@ -40,3 +40,10 @@
   display: flex;
   justify-content: flex-end;
 }
+.img-thumbnail {
+  max-width: 110px !important;
+  max-height: 110px !important;
+  min-width: 110px !important;
+  min-height: 110px !important;
+  object-fit: cover;
+}
