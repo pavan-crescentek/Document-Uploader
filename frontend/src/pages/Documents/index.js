@@ -1,6 +1,5 @@
 import React, { useCallback, useEffect, useMemo, useState } from 'react';
 import {
-  Button,
   Card,
   Col,
   Container,
@@ -38,9 +37,9 @@ import { useDispatch, useSelector } from 'react-redux';
 import TableContainer from '../../Components/Common/TableContainer';
 
 import Dropzone from 'react-dropzone';
-import { Link } from 'react-router-dom';
 import { createSelector } from 'reselect';
 import SimpleBar from 'simplebar-react';
+import FileViewerComponent from '../../Components/Common/FileViewer';
 import Loader from '../../Components/Common/Loader';
 import OffCanvas from '../../Components/Common/OffCanvas';
 import { sectionSubsection } from '../../Components/constants/sectionSubsection';
@@ -654,22 +653,10 @@ const Documents = () => {
         <ModalHeader className="modal-title" />
 
         <ModalBody className="text-center p-5">
-          <div className="mt-4">
-            <h4 className="mb-3">Oops something went wrong!</h4>
-            <p className="text-muted mb-4">
-              {' '}
-              The transfer was not successfully received by us. the email of the
-              recipient wasn't correct.
-            </p>
-            <div className="hstack gap-2 justify-content-center">
-              <Button color="light" onClick={() => setmodal_center(false)}>
-                Close
-              </Button>
-              <Link to="#" className="btn btn-danger">
-                Try Again
-              </Link>
-            </div>
-          </div>
+          <FileViewerComponent
+            fileUrl={singleFileUrl}
+            fileType={singleFileType}
+          />
         </ModalBody>
       </Modal>
       <OffCanvas
