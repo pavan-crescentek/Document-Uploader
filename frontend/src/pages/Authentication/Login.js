@@ -28,7 +28,6 @@ import * as Yup from 'yup';
 import { loginUser, resetLoginFlag } from '../../slices/thunks';
 
 import { createSelector } from 'reselect';
-import logoLight from '../../assets/images/logo-light.png';
 //import images
 
 const Login = (props) => {
@@ -82,13 +81,13 @@ const Login = (props) => {
       }, 3000);
     }
   }, [dispatch, errorMsg]);
-  document.title = 'Basic SignIn | Velzon - React Admin & Dashboard Template';
+  document.title = 'Basic SignIn | Documents Uploader';
   return (
     <React.Fragment>
       <ParticlesAuth>
         <div className="auth-page-content mt-lg-5">
           <Container>
-            <Row>
+            {/* <Row>
               <Col lg={12}>
                 <div className="text-center mt-sm-5 mb-4 text-white-50">
                   <div>
@@ -101,10 +100,10 @@ const Login = (props) => {
                   </p>
                 </div>
               </Col>
-            </Row>
+            </Row> */}
 
-            <Row className="justify-content-center">
-              <Col md={8} lg={6} xl={5}>
+            <Row className="justify-content-center mt-4">
+              <Col md={8} lg={6} xl={5} style={{ marginTop: 160 }}>
                 <Card className="mt-4 card-bg-fill">
                   <CardBody className="p-4">
                     <div className="text-center mt-2">

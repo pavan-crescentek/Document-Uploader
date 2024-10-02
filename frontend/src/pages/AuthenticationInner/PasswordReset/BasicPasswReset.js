@@ -6,21 +6,21 @@ import {
   CardBody,
   Col,
   Container,
-  Row,
   Form,
-  Label,
-  Input,
   FormFeedback,
+  Input,
+  Label,
+  Row,
 } from 'reactstrap';
-import ParticlesAuth from '../ParticlesAuth';
 import logoLight from '../../../assets/images/logo-light.png';
+import ParticlesAuth from '../ParticlesAuth';
 
 //formik
 import { useFormik } from 'formik';
 import * as Yup from 'yup';
 
 const BasicPasswReset = () => {
-  document.title = 'Reset Password | Velzon - React Admin & Dashboard Template';
+  document.title = 'Reset Password | Documents Uploader';
 
   const validation = useFormik({
     enableReinitialize: true,

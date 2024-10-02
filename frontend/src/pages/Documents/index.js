@@ -1,5 +1,6 @@
 import React, { useCallback, useEffect, useMemo, useState } from 'react';
 import {
+  Button,
   Card,
   Col,
   Container,
@@ -8,6 +9,9 @@ import {
   FormGroup,
   Input,
   Label,
+  Modal,
+  ModalBody,
+  ModalHeader,
   OffcanvasBody,
   Row,
 } from 'reactstrap';
@@ -34,6 +38,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import TableContainer from '../../Components/Common/TableContainer';
 
 import Dropzone from 'react-dropzone';
+import { Link } from 'react-router-dom';
 import { createSelector } from 'reselect';
 import SimpleBar from 'simplebar-react';
 import Loader from '../../Components/Common/Loader';
@@ -77,6 +82,7 @@ const Documents = () => {
   const [displayPhotoError, setDisplayPhotoError] = useState(false);
   const [deleteModalMulti, setDeleteModalMulti] = useState(false);
   const [isRight, setIsRight] = useState(false);
+  const [modal_center, setmodal_center] = useState(false);
 
   const [modal, setModal] = useState(false);
 
@@ -554,9 +560,19 @@ const Documents = () => {
     );
   };
 
+  function tog_center(data) {
+    console.log('🚀 ~ tog_center ~ data:', data);
+    setmodal_center(!modal_center);
+  }
   // Customers Column
   const columns = useMemo(
-    () => documentsListTableFields(Status, handleCustomerClick, onClickDelete),
+    () =>
+      documentsListTableFields(
+        Status,
+        handleCustomerClick,
+        onClickDelete,
+        tog_center
+      ),
     [handleCustomerClick]
   );
 
@@ -578,7 +594,7 @@ const Documents = () => {
     </button>
   );
 
-  document.title = 'Documents | Velzon - React Admin & Dashboard Template';
+  document.title = 'Documents | Documents Uploader';
   return (
     <React.Fragment>
       <div className="page-content">
@@ -628,6 +644,34 @@ const Documents = () => {
           </Row>
         </Container>
       </div>
+      <Modal
+        isOpen={modal_center}
+        toggle={() => {
+          tog_center();
+        }}
+        centered
+      >
+        <ModalHeader className="modal-title" />
+
+        <ModalBody className="text-center p-5">
+          <div className="mt-4">
+            <h4 className="mb-3">Oops something went wrong!</h4>
+            <p className="text-muted mb-4">
+              {' '}
+              The transfer was not successfully received by us. the email of the
+              recipient wasn't correct.
+            </p>
+            <div className="hstack gap-2 justify-content-center">
+              <Button color="light" onClick={() => setmodal_center(false)}>
+                Close
+              </Button>
+              <Link to="#" className="btn btn-danger">
+                Try Again
+              </Link>
+            </div>
+          </div>
+        </ModalBody>
+      </Modal>
       <OffCanvas
         data={createDocument()}
         title={isEdit ? 'Update Document' : 'Create Document'}

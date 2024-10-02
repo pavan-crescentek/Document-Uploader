@@ -8,7 +8,7 @@ import avatar1 from '../../../assets/images/users/avatar-1.jpg';
 import AuthSlider from '../authCarousel';
 
 const CoverLockScreen = () => {
-  document.title = 'Lock Screen | Velzon - React Admin & Dashboard Template';
+  document.title = 'Lock Screen | Documents Uploader';
   return (
     <React.Fragment>
       <div className="auth-page-wrapper auth-bg-cover py-5 d-flex justify-content-center align-items-center min-vh-100">

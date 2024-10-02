@@ -3,7 +3,8 @@ import React from 'react';
 const documentsListTableFields = (
   Status,
   handleCustomerClick,
-  onClickDelete
+  onClickDelete,
+  tog_center
 ) => {
   return [
     // {
@@ -33,14 +34,21 @@ const documentsListTableFields = (
       enableColumnFilter: false,
       cell: (cellProps) => {
         return (
-          <a
-            href={cellProps.row.original.fileUrl}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="document-view-link"
+          <span
+            onClick={() => {
+              tog_center(cellProps.row.original);
+            }}
           >
-            View File
-          </a>
+            View
+          </span>
+          // <a
+          //   href={cellProps.row.original.fileUrl}
+          //   target="_blank"
+          //   rel="noopener noreferrer"
+          //   className="document-view-link"
+          // >
+          //   View File
+          // </a>
         );
       },
     },

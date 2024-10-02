@@ -124,7 +124,7 @@ const UserProfile = () => {
     },
   });
 
-  document.title = 'Profile | Velzon - React Admin & Dashboard Template';
+  document.title = 'Profile | Documents Uploader';
   return (
     <React.Fragment>
       <div className="page-content mt-lg-5">
