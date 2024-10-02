@@ -8,6 +8,6 @@ module.exports = {
     APP_ID: '',
   },
   api: {
-    API_URL: 'http://localhost:3333',
+    API_URL: process.env.REACT_APP_API_URL,
   },
 };
