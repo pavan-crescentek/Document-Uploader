@@ -35,12 +35,12 @@ const documentFormFieldsValidation = Yup.object({
   subsection: Yup.string().required('Section is required'),
 });
 
-const documentFieldsInitialValues = (selectCategory) => {
+const documentFieldsInitialValues = (selectDocument) => {
   return {
-    metadata: selectCategory?.metadata || '',
-    section: selectCategory?.section || '',
-    subsection: selectCategory?.subsection || '',
-    id: selectCategory?.id || '',
+    metadata: selectDocument?.metadata || '',
+    section: selectDocument?.section || '',
+    subsection: selectDocument?.subsection || '',
+    id: selectDocument?.id || '',
   };
 };
 

@@ -50,7 +50,8 @@
   }
 
   /* Make the specific invoice section visible */
-  #invoice-to-print, #invoice-to-print * {
+  #invoice-to-print,
+  #invoice-to-print * {
     visibility: visible;
   }
 
@@ -65,6 +66,4 @@
   .no-print {
     display: none;
   }
-
-  
 }

@@ -90,8 +90,8 @@ const Header = ({ onChangeLayoutMode, layoutModeType, headerClass }) => {
                     userProfile.role.some((role) =>
                       role.toLowerCase().includes('admin')
                     )
-                      ? '/'
-                      : '/partner/index'
+                      ? '/admin/users'
+                      : '/'
                   }
                   className="logo logo-dark"
                 >

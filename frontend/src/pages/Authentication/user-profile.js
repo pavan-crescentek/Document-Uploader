@@ -2,7 +2,6 @@ import { isEmpty } from 'lodash';
 import React, { useEffect, useState } from 'react';
 import {
   Alert,
-  Button,
   Card,
   CardBody,
   Col,
@@ -25,11 +24,10 @@ import { useDispatch, useSelector } from 'react-redux';
 import avatar from '../../assets/images/users/avatar-1.jpg';
 // actions
 import { createSelector } from 'reselect';
-import Loader from '../../Components/Common/Loader';
 import { useProfile } from '../../Components/Hooks/UserHooks';
 import {
   editProfileForAdmin,
-  editProfileForPartner,
+  editProfileForUser,
   resetProfileFlag,
 } from '../../slices/thunks';
 
@@ -39,7 +37,8 @@ const UserProfile = () => {
 
   const [email, setEmail] = useState('admin@gmail.com');
   const [idx, setIdx] = useState('1');
-  const [userName, setUserName] = useState('Admin');
+  const [firstName, setFirstName] = useState('Admin');
+  const [lastName, setLastName] = useState('Admin');
 
   const selectLayoutState = (state) => state.Profile;
   const userprofileData = createSelector(selectLayoutState, (state) => ({
@@ -59,11 +58,13 @@ const UserProfile = () => {
 
       if (!isEmpty(user)) {
         obj.firstName = user.firstName;
+        obj.lastName = user.lastName;
         sessionStorage.removeItem('authUser');
         sessionStorage.setItem('authUser', JSON.stringify(obj));
       }
 
-      setUserName(obj.firstName);
+      setFirstName(obj.firstName);
+      setLastName(obj.lastName);
       setEmail(obj.email);
       setIdx(obj._id || '1');
 
@@ -76,7 +77,8 @@ const UserProfile = () => {
   const validation = useFormik({
     enableReinitialize: true,
     initialValues: {
-      firstName: userName || 'Admin',
+      firstName: firstName || 'Admin',
+      lastName: lastName || 'Admin',
       old_password: '',
       new_password: '',
       confirm_password: '',
@@ -84,6 +86,7 @@ const UserProfile = () => {
     },
     validationSchema: Yup.object({
       firstName: Yup.string().required('Please Enter Your UserName'),
+      lastName: Yup.string().required('Please Enter Your LastName'),
       old_password: Yup.string().required('Please Enter Your Old Password'),
       new_password: Yup.string()
         .required('Please Enter Your New Password')
@@ -95,6 +98,7 @@ const UserProfile = () => {
     onSubmit: async (values) => {
       const payload = {
         firstName: values.firstName,
+        lastName: values.lastName,
         password: values.new_password,
         old_password: values.old_password,
       };
@@ -104,7 +108,7 @@ const UserProfile = () => {
       ) {
         response = await dispatch(editProfileForAdmin(payload));
       } else {
-        response = await dispatch(editProfileForPartner(payload));
+        response = await dispatch(editProfileForUser(payload));
       }
       console.log('response: ', response);
       if (response) {
@@ -112,7 +116,8 @@ const UserProfile = () => {
         validation.setFieldValue('new_password', '', false);
         validation.setFieldValue('confirm_password', '', false);
         const obj = JSON.parse(sessionStorage.getItem('authUser'));
-        setUserName(obj.name);
+        setFirstName(obj.firstName);
+        setLastName(obj.lastName);
         setEmail(obj.email);
         setIdx(obj.id || '1');
       }
@@ -143,7 +148,10 @@ const UserProfile = () => {
                     </div>
                     <div className="flex-grow-1 align-self-center">
                       <div className="text-muted">
-                        <h5>{userName || 'Admin'}</h5>
+                        <h5>
+                          {firstName || 'Admin'}
+                          {lastName ? `-${lastName}` : ''}
+                        </h5>
                         <p className="mb-1">Email Id : {email}</p>
                         <p className="mb-0">Id No : #{idx}</p>
                       </div>
@@ -154,7 +162,7 @@ const UserProfile = () => {
             </Col>
           </Row>
 
-          <h4 className="card-title mb-4">Change User Name & Password</h4>
+          <h4 className="card-title mb-4">User</h4>
 
           <Card>
             <CardBody>
@@ -167,7 +175,7 @@ const UserProfile = () => {
                 }}
               >
                 <FormGroup className="mb-3">
-                  <Label className="form-label">User Name</Label>
+                  <Label className="form-label">First Name</Label>
                   <Input
                     name="firstName"
                     className="form-control"
@@ -182,6 +190,7 @@ const UserProfile = () => {
                         ? true
                         : false
                     }
+                    disabled={true}
                   />
                   {validation.touched.firstName &&
                   validation.errors.firstName ? (
@@ -192,6 +201,30 @@ const UserProfile = () => {
                   <Input name="idx" value={idx} type="hidden" />
                 </FormGroup>
                 <FormGroup className="mb-3">
+                  <Label className="form-label">Last Name</Label>
+                  <Input
+                    name="lastName"
+                    className="form-control"
+                    placeholder="Enter User Name"
+                    type="text"
+                    onChange={validation.handleChange}
+                    onBlur={validation.handleBlur}
+                    value={validation.values.lastName || ''}
+                    invalid={
+                      validation.touched.lastName && validation.errors.lastName
+                        ? true
+                        : false
+                    }
+                    disabled={true}
+                  />
+                  {validation.touched.lastName && validation.errors.lastName ? (
+                    <FormFeedback type="invalid">
+                      {validation.errors.lastName}
+                    </FormFeedback>
+                  ) : null}
+                  <Input name="idx" value={idx} type="hidden" />
+                </FormGroup>
+                {/* <FormGroup className="mb-3">
                   <Label className="form-label">Old Password</Label>
                   <Input
                     name="old_password"
@@ -262,8 +295,8 @@ const UserProfile = () => {
                       {validation.errors.confirm_password}
                     </FormFeedback>
                   ) : null}
-                </FormGroup>
-                <div className="text-center mt-4">
+                </FormGroup> */}
+                {/* <div className="text-center mt-4">
                   <Button
                     type="submit"
                     className={`btn btn-success position-relative d-flex justify-content-center ${
@@ -278,7 +311,7 @@ const UserProfile = () => {
                     )}
                     Update Profile
                   </Button>
-                </div>
+                </div> */}
               </Form>
             </CardBody>
           </Card>

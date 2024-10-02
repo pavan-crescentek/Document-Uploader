@@ -1,7 +1,7 @@
 //Include Both Helper File with needed methods
 import {
   updateProfileForAdmin as updateProfileForAdminApi,
-  updateProfileForPartner as updateProfileForPartnerAPI,
+  updateProfileForUser as updateProfileForUserAPI,
 } from '../../../helpers/backend_helper';
 
 // action
@@ -13,10 +13,10 @@ import {
   stopLoader,
 } from './reducer';
 
-export const editProfileForPartner = (data) => async (dispatch) => {
+export const editProfileForUser = (data) => async (dispatch) => {
   try {
     dispatch(startLoader());
-    let response = await updateProfileForPartnerAPI(data);
+    let response = await updateProfileForUserAPI(data);
 
     console.log('response.status: ', response.status);
 

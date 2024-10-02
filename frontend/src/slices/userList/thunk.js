@@ -33,10 +33,10 @@ export const getAllUsersData = () => async (dispatch) => {
   }
 };
 
-export const addNewUserThunk = (newPartner) => async (dispatch) => {
+export const addNewUserThunk = (newUser) => async (dispatch) => {
   try {
     dispatch(startAddEditLoader());
-    const response = await addNewUserApi(newPartner);
+    const response = await addNewUserApi(newUser);
 
     if (response.code === 200) {
       dispatch(userCreatedSuccess(response.data));
@@ -52,10 +52,10 @@ export const addNewUserThunk = (newPartner) => async (dispatch) => {
   }
 };
 
-export const updateUser = (partner) => async (dispatch) => {
+export const updateUser = (user) => async (dispatch) => {
   try {
     dispatch(startAddEditLoader());
-    const response = await updateUserApi(partner);
+    const response = await updateUserApi(user);
 
     if (response.code === 200) {
       dispatch(userUpdatedSuccess(response.data));
