@@ -1,6 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import {
+  Button,
   Card,
   CardBody,
   Col,
@@ -8,7 +9,6 @@ import {
   Input,
   Label,
   Row,
-  Button,
 } from 'reactstrap';
 import ParticlesAuth from '../ParticlesAuth';
 
@@ -16,7 +16,7 @@ import ParticlesAuth from '../ParticlesAuth';
 import logoLight from '../../../assets/images/logo-light.png';
 
 const BasicSignIn = () => {
-  document.title = 'Basic SignIn | Velzon - React Admin & Dashboard Template';
+  document.title = 'Basic SignIn | Documents Uploader';
   return (
     <React.Fragment>
       <ParticlesAuth>

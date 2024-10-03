@@ -1,10 +1,6 @@
 import React, { useEffect } from 'react';
-import { Link } from 'react-router-dom';
 import SimpleBar from 'simplebar-react';
 //import logo
-import logoDark from '../assets/images/logo-dark.png';
-import logoLight from '../assets/images/logo-light.png';
-import logoSm from '../assets/images/logo-sm.png';
 
 //Import Components
 import { Container } from 'reactstrap';
@@ -48,7 +44,7 @@ const Sidebar = ({ layoutType }) => {
     <React.Fragment>
       <div className="app-menu navbar-menu">
         <div className="navbar-brand-box">
-          <Link
+          {/* <Link
             to={
               userProfile.role.some((role) =>
                 role.toLowerCase().includes('admin')
@@ -64,9 +60,9 @@ const Sidebar = ({ layoutType }) => {
             <span className="logo-lg">
               <img src={logoDark} alt="" height="17" />
             </span>
-          </Link>
+          </Link> */}
 
-          <Link
+          {/* <Link
             to={
               userProfile.role.some((role) =>
                 role.toLowerCase().includes('admin')
@@ -82,7 +78,7 @@ const Sidebar = ({ layoutType }) => {
             <span className="logo-lg">
               <img src={logoLight} alt="" height="17" />
             </span>
-          </Link>
+          </Link> */}
           <button
             onClick={addEventListenerOnSmHoverMenu}
             type="button"
