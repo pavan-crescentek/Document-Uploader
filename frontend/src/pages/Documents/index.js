@@ -176,7 +176,7 @@ const Documents = () => {
         metadata: modifiedDocument.metadata,
         section: modifiedDocument.section,
         subsection: modifiedDocument.subsection,
-        doc: setPhotos(modifiedDocument.fileUrl),
+        doc: setPhotos(modifiedDocument.readAbleFileUrl),
       });
 
       setIsEdit(true);
