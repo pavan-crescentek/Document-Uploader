@@ -35,20 +35,13 @@ const documentsListTableFields = (
       cell: (cellProps) => {
         return (
           <span
+            className="document-view-link"
             onClick={() => {
               tog_center(cellProps.row.original);
             }}
           >
             View
           </span>
-          // <a
-          //   href={cellProps.row.original.fileUrl}
-          //   target="_blank"
-          //   rel="noopener noreferrer"
-          //   className="document-view-link"
-          // >
-          //   View File
-          // </a>
         );
       },
     },
@@ -84,6 +77,17 @@ const documentsListTableFields = (
       cell: (cellProps) => {
         return (
           <ul className="list-inline hstack gap-2 mb-0">
+            <li className="list-inline-item" title="Download">
+              <span className="text-primary d-inline-block cursor-pointer">
+                <a
+                  href={cellProps.row.original.downloadAbleFileUrl}
+                  download={cellProps.row.original.metadata}
+                  target="_blank"
+                >
+                  <i className="ri-folder-download-fill fs-16"></i>
+                </a>
+              </span>
+            </li>
             <li className="list-inline-item edit" title="Edit">
               <span
                 className="text-primary d-inline-block edit-item-btn cursor-pointer"

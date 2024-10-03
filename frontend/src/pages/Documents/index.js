@@ -68,6 +68,8 @@ const Documents = () => {
 
   const [isEdit, setIsEdit] = useState(false);
   const [selectedDocument, setSelectedDocument] = useState();
+  const [singleFileUrl, setSingleFileUrl] = useState('');
+  const [singleFileType, setSingleFileType] = useState('');
 
   const [documents, setDocuments] = useState([]);
   const [allSections, setAllSections] = useState([]);
@@ -194,9 +196,9 @@ const Documents = () => {
   const handleFileChange = async (files) => {
     const newPhoto = files[0];
 
-    const maxSize = 5 * 1024 * 1024;
-    if (newPhoto.size > maxSize) {
-      toast.error('File size exceeds 5MB limit');
+    const maxSize = 100 * 1024 * 1024;
+    if (newPhoto && newPhoto.size > maxSize) {
+      toast.error(`File size exceeds ${maxSize / (1024 * 1024)}MB limit`);
       return;
     }
 
@@ -560,7 +562,10 @@ const Documents = () => {
   };
 
   function tog_center(data) {
-    console.log('🚀 ~ tog_center ~ data:', data);
+    if (data && data.readAbleFileUrl && data.mime_type) {
+      setSingleFileUrl(data.readAbleFileUrl);
+      setSingleFileType(data.mime_type);
+    }
     setmodal_center(!modal_center);
   }
   // Customers Column
@@ -644,6 +649,7 @@ const Documents = () => {
         </Container>
       </div>
       <Modal
+        size="xl"
         isOpen={modal_center}
         toggle={() => {
           tog_center();
@@ -653,10 +659,7 @@ const Documents = () => {
         <ModalHeader className="modal-title" />
 
         <ModalBody className="text-center p-5">
-          <FileViewerComponent
-            fileUrl={singleFileUrl}
-            fileType={singleFileType}
-          />
+          <FileViewerComponent mime_type={singleFileType} url={singleFileUrl} />
         </ModalBody>
       </Modal>
       <OffCanvas

@@ -50,7 +50,6 @@ const UserProfile = () => {
 
   // Inside your component
   const { user, success, error, loading } = useSelector(userprofileData);
-  console.log('loading: ', loading);
 
   useEffect(() => {
     if (sessionStorage.getItem('authUser')) {
@@ -110,7 +109,6 @@ const UserProfile = () => {
       } else {
         response = await dispatch(editProfileForUser(payload));
       }
-      console.log('response: ', response);
       if (response) {
         validation.setFieldValue('old_password', '', false);
         validation.setFieldValue('new_password', '', false);
