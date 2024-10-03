@@ -177,7 +177,7 @@ const Documents = () => {
           })) || [];
       setAllSubSections(subSectionOptions);
 
-      setPhotoPreviews(modifiedDocument.fileUrl);
+      setPhotoPreviews(modifiedDocument.readAbleFileUrl);
       setSelectedDocument({
         id: document._id,
         metadata: modifiedDocument.metadata,
