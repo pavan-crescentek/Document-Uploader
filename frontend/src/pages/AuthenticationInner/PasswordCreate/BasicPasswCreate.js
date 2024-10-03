@@ -6,22 +6,21 @@ import {
   CardBody,
   Col,
   Container,
-  Row,
   Form,
+  FormFeedback,
   Input,
   Label,
-  FormFeedback,
+  Row,
 } from 'reactstrap';
-import ParticlesAuth from '../ParticlesAuth';
 import logoLight from '../../../assets/images/logo-light.png';
+import ParticlesAuth from '../ParticlesAuth';
 
 //formik
 import { useFormik } from 'formik';
 import * as Yup from 'yup';
 
 const BasicPasswCreate = () => {
-  document.title =
-    'Create New Password | Velzon - React Admin & Dashboard Template';
+  document.title = 'Create New Password | Documents Uploader';
 
   const [passwordShow, setPasswordShow] = useState(false);
   const [confrimPasswordShow, setConfrimPasswordShow] = useState(false);

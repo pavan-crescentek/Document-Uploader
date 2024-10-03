@@ -20,7 +20,7 @@ const s3Client = new S3Client({
 });
 
 const bucketName = process.env.BUCKET_NAME;
-const MAX_FILE_SIZE = 5 * 1024 * 1024;
+const MAX_FILE_SIZE = 100 * 1024 * 1024;
 
 const userFileUpload = multer({
   storage: multerS3({
@@ -70,7 +70,13 @@ const handleFileUpload = (req, res, next) => {
 };
 
 const getFile = async function (bucketName, file, mime_type) {
-  const params = {
+  const readAbleFileParams = {
+    Bucket: bucketName,
+    Key: file,
+    ResponseContentType: mime_type,
+    ResponseContentDisposition: 'inline; filename="' + file + '"',
+  };
+  const downloadAbleFileParams = {
     Bucket: bucketName,
     Key: file,
     ResponseContentType: mime_type,
@@ -78,9 +84,11 @@ const getFile = async function (bucketName, file, mime_type) {
   };
 
   try {
-    const command = new GetObjectCommand(params);
-    const url = await getSignedUrl(s3Client, command, { expiresIn: 3600 });
-    return url;
+    const command1 = new GetObjectCommand(readAbleFileParams);
+    const command2 = new GetObjectCommand(downloadAbleFileParams);
+    const readAbleFileUrl = await getSignedUrl(s3Client, command1, { expiresIn: 3600 });
+    const downloadAbleFileUrl = await getSignedUrl(s3Client, command2, { expiresIn: 3600 });
+    return { readAbleFileUrl, downloadAbleFileUrl };
   } catch (err) {
     console.error('Error getting file from S3:', err);
     return '';

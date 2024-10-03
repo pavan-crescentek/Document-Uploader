@@ -1,11 +1,7 @@
 import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
 import { Dropdown, DropdownMenu, DropdownToggle, Form } from 'reactstrap';
 
 //import images
-import logoDark from '../assets/images/logo-dark.png';
-import logoLight from '../assets/images/logo-light.png';
-import logoSm from '../assets/images/logo-sm.png';
 
 //import Components
 import LightDark from '../Components/Common/LightDark';
@@ -85,7 +81,7 @@ const Header = ({ onChangeLayoutMode, layoutModeType, headerClass }) => {
           <div className="navbar-header">
             <div className="d-flex">
               <div className="navbar-brand-box horizontal-logo">
-                <Link
+                {/* <Link
                   to={
                     userProfile.role.some((role) =>
                       role.toLowerCase().includes('admin')
@@ -101,16 +97,16 @@ const Header = ({ onChangeLayoutMode, layoutModeType, headerClass }) => {
                   <span className="logo-lg">
                     <img src={logoDark} alt="" height="17" />
                   </span>
-                </Link>
+                </Link> */}
 
-                <Link to="/" className="logo logo-light">
+                {/* <Link to="/" className="logo logo-light">
                   <span className="logo-sm">
                     <img src={logoSm} alt="" height="22" />
                   </span>
                   <span className="logo-lg">
                     <img src={logoLight} alt="" height="17" />
                   </span>
-                </Link>
+                </Link> */}
               </div>
 
               <button

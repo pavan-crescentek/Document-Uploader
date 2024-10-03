@@ -35,6 +35,7 @@
 .document-view-link {
   text-decoration: underline;
   color: blue;
+  cursor: pointer;
 }
 .actionButons {
   display: flex;

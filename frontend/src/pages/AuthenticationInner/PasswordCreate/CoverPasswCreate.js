@@ -5,11 +5,11 @@ import {
   Card,
   Col,
   Container,
-  Row,
   Form,
-  Label,
-  Input,
   FormFeedback,
+  Input,
+  Label,
+  Row,
 } from 'reactstrap';
 
 import AuthSlider from '../authCarousel';
@@ -19,8 +19,7 @@ import { useFormik } from 'formik';
 import * as Yup from 'yup';
 
 const CoverPasswCreate = () => {
-  document.title =
-    'Create New Password | Velzon - React Admin & Dashboard Template';
+  document.title = 'Create New Password | Documents Uploader';
 
   const [passwordShow, setPasswordShow] = useState(false);
   const [confrimPasswordShow, setConfrimPasswordShow] = useState(false);

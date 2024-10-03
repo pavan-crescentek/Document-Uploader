@@ -1,14 +1,13 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { Card, CardBody, Col, Container, Row, Button } from 'reactstrap';
+import { Button, Card, CardBody, Col, Container, Row } from 'reactstrap';
 import ParticlesAuth from '../ParticlesAuth';
 
 //import images
 import logoLight from '../../../assets/images/logo-light.png';
 
 const BasicTwosVerify = () => {
-  document.title =
-    'Two Step Verification | Velzon - React Admin & Dashboard Template';
+  document.title = 'Two Step Verification | Documents Uploader';
 
   const getInputElement = (index) => {
     return document.getElementById('digit' + index + '-input');

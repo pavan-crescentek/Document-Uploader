@@ -41,7 +41,11 @@ const fileUploading = async (req, res) => {
     const newDoc = await documentsModel.create(documentData);
 
     const fileUrl = await getFile(process.env.BUCKET_NAME, media_data.key, media_data.mimetype);
-    const responseData = { ...newDoc.toObject(), fileUrl };
+    const responseData = {
+      ...newDoc.toObject(),
+      readAbleFileUrl: fileUrl.readAbleFileUrl,
+      downloadAbleFileUrl: fileUrl.downloadAbleFileUrl,
+    };
 
     return utils.sendResponse(res, StatusCodes.OK, messages.fileUploadedSuccessfully, responseData);
   } catch (error) {
@@ -63,7 +67,7 @@ const getFiles = async (req, res) => {
     const filesWithUrls = await Promise.all(
       files.map(async (file) => {
         const fileUrl = await getFile(process.env.BUCKET_NAME, file.media_key, file.mime_type);
-        return { ...file, fileUrl };
+        return { ...file, readAbleFileUrl: fileUrl.readAbleFileUrl, downloadAbleFileUrl: fileUrl.downloadAbleFileUrl };
       }),
     );
 
@@ -144,7 +148,11 @@ const updateMedia = async (req, res) => {
     const updatedDoc = await documentsModel.findByIdAndUpdate(id, updateData, { new: true }).lean();
 
     const fileUrl = await getFile(process.env.BUCKET_NAME, updatedDoc.media_key, updatedDoc.mime_type);
-    const responseData = { ...updatedDoc, fileUrl };
+    const responseData = {
+      ...updatedDoc,
+      readAbleFileUrl: fileUrl.readAbleFileUrl,
+      downloadAbleFileUrl: fileUrl.downloadAbleFileUrl,
+    };
 
     return utils.sendResponse(res, StatusCodes.OK, messages.mediaUpdatedSuccessfully, responseData);
   } catch (error) {

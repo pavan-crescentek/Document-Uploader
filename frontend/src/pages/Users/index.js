@@ -289,7 +289,7 @@ const UsersList = () => {
     </button>
   );
 
-  document.title = 'Users | Velzon - React Admin & Dashboard Template';
+  document.title = 'Users | Documents Uploader';
   return (
     <React.Fragment>
       <div className="page-content">

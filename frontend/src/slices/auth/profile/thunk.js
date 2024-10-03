@@ -18,8 +18,6 @@ export const editProfileForUser = (data) => async (dispatch) => {
     dispatch(startLoader());
     let response = await updateProfileForUserAPI(data);
 
-    console.log('response.status: ', response.status);
-
     if (response.status) {
       const sessionUser = JSON.parse(sessionStorage.getItem('authUser'));
 

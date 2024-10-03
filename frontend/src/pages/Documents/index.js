@@ -8,6 +8,9 @@ import {
   FormGroup,
   Input,
   Label,
+  Modal,
+  ModalBody,
+  ModalHeader,
   OffcanvasBody,
   Row,
 } from 'reactstrap';
@@ -36,6 +39,7 @@ import TableContainer from '../../Components/Common/TableContainer';
 import Dropzone from 'react-dropzone';
 import { createSelector } from 'reselect';
 import SimpleBar from 'simplebar-react';
+import FileViewerComponent from '../../Components/Common/FileViewer';
 import Loader from '../../Components/Common/Loader';
 import OffCanvas from '../../Components/Common/OffCanvas';
 import { sectionSubsection } from '../../Components/constants/sectionSubsection';
@@ -64,6 +68,8 @@ const Documents = () => {
 
   const [isEdit, setIsEdit] = useState(false);
   const [selectedDocument, setSelectedDocument] = useState();
+  const [singleFileUrl, setSingleFileUrl] = useState('');
+  const [singleFileType, setSingleFileType] = useState('');
 
   const [documents, setDocuments] = useState([]);
   const [allSections, setAllSections] = useState([]);
@@ -77,6 +83,7 @@ const Documents = () => {
   const [displayPhotoError, setDisplayPhotoError] = useState(false);
   const [deleteModalMulti, setDeleteModalMulti] = useState(false);
   const [isRight, setIsRight] = useState(false);
+  const [modal_center, setmodal_center] = useState(false);
 
   const [modal, setModal] = useState(false);
 
@@ -189,9 +196,9 @@ const Documents = () => {
   const handleFileChange = async (files) => {
     const newPhoto = files[0];
 
-    const maxSize = 5 * 1024 * 1024;
-    if (newPhoto.size > maxSize) {
-      toast.error('File size exceeds 5MB limit');
+    const maxSize = 100 * 1024 * 1024;
+    if (newPhoto && newPhoto.size > maxSize) {
+      toast.error(`File size exceeds ${maxSize / (1024 * 1024)}MB limit`);
       return;
     }
 
@@ -554,9 +561,22 @@ const Documents = () => {
     );
   };
 
+  function tog_center(data) {
+    if (data && data.readAbleFileUrl && data.mime_type) {
+      setSingleFileUrl(data.readAbleFileUrl);
+      setSingleFileType(data.mime_type);
+    }
+    setmodal_center(!modal_center);
+  }
   // Customers Column
   const columns = useMemo(
-    () => documentsListTableFields(Status, handleCustomerClick, onClickDelete),
+    () =>
+      documentsListTableFields(
+        Status,
+        handleCustomerClick,
+        onClickDelete,
+        tog_center
+      ),
     [handleCustomerClick]
   );
 
@@ -578,7 +598,7 @@ const Documents = () => {
     </button>
   );
 
-  document.title = 'Documents | Velzon - React Admin & Dashboard Template';
+  document.title = 'Documents | Documents Uploader';
   return (
     <React.Fragment>
       <div className="page-content">
@@ -628,6 +648,20 @@ const Documents = () => {
           </Row>
         </Container>
       </div>
+      <Modal
+        size="xl"
+        isOpen={modal_center}
+        toggle={() => {
+          tog_center();
+        }}
+        centered
+      >
+        <ModalHeader className="modal-title" />
+
+        <ModalBody className="text-center p-5">
+          <FileViewerComponent mime_type={singleFileType} url={singleFileUrl} />
+        </ModalBody>
+      </Modal>
       <OffCanvas
         data={createDocument()}
         title={isEdit ? 'Update Document' : 'Create Document'}

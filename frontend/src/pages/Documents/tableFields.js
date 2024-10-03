@@ -3,7 +3,8 @@ import React from 'react';
 const documentsListTableFields = (
   Status,
   handleCustomerClick,
-  onClickDelete
+  onClickDelete,
+  tog_center
 ) => {
   return [
     // {
@@ -33,14 +34,14 @@ const documentsListTableFields = (
       enableColumnFilter: false,
       cell: (cellProps) => {
         return (
-          <a
-            href={cellProps.row.original.fileUrl}
-            target="_blank"
-            rel="noopener noreferrer"
+          <span
             className="document-view-link"
+            onClick={() => {
+              tog_center(cellProps.row.original);
+            }}
           >
-            View File
-          </a>
+            View
+          </span>
         );
       },
     },
@@ -76,6 +77,17 @@ const documentsListTableFields = (
       cell: (cellProps) => {
         return (
           <ul className="list-inline hstack gap-2 mb-0">
+            <li className="list-inline-item" title="Download">
+              <span className="text-primary d-inline-block cursor-pointer">
+                <a
+                  href={cellProps.row.original.downloadAbleFileUrl}
+                  download={cellProps.row.original.metadata}
+                  target="_blank"
+                >
+                  <i className="ri-folder-download-fill fs-16"></i>
+                </a>
+              </span>
+            </li>
             <li className="list-inline-item edit" title="Edit">
               <span
                 className="text-primary d-inline-block edit-item-btn cursor-pointer"
