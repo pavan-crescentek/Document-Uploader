@@ -161,7 +161,7 @@ const CoverTwosVerify = () => {
               <Col lg={12}>
                 <div className="text-center">
                   <p className="mb-0">
-                    &copy; {new Date().getFullYear()} Documents Uploader
+                    &copy; {new Date().getFullYear()} © Documents Uploader
                   </p>
                 </div>
               </Col>

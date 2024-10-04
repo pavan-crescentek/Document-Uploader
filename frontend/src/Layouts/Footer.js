@@ -7,7 +7,7 @@ const Footer = () => {
       <footer className="footer galaxy-border-none">
         <Container fluid>
           <Row>
-            <Col sm={6}>{new Date().getFullYear()} © </Col>
+            <Col sm={6}>{new Date().getFullYear()} © Documents Uploader </Col>
           </Row>
         </Container>
       </footer>

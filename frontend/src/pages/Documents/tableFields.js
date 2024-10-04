@@ -29,7 +29,7 @@ const documentsListTableFields = (
       enableColumnFilter: false,
     },
     {
-      header: 'Link',
+      header: 'View',
       accessorKey: 'doc',
       enableColumnFilter: false,
       cell: (cellProps) => {
