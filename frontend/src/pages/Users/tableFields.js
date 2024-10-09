@@ -9,12 +9,12 @@ const usersListTableFields = (IsVerified, handleCustomerClick) => {
     //   enableSorting: false,
     // },
     {
-      header: 'First Name',
+      header: 'First name',
       accessorKey: 'firstName',
       enableColumnFilter: false,
     },
     {
-      header: 'Last Name',
+      header: 'Last name',
       accessorKey: 'lastName',
       enableColumnFilter: false,
     },
@@ -46,13 +46,18 @@ const usersListTableFields = (IsVerified, handleCustomerClick) => {
         const roles = cell.getValue();
         return (
           <div className="d-flex align-items-center">
-            {Array.isArray(roles) && roles.length > 0 ? roles.join(', ') : '-'}
+            {Array.isArray(roles) && roles.length > 0
+              ? roles
+                  .map((role) => (role === 'ENDUSER' ? 'EMPLOYEE' : role))
+                  .join(', ')
+              : '-'}
           </div>
         );
       },
     },
+
     {
-      header: 'Is Active',
+      header: 'Is active',
       accessorKey: 'isActive',
       enableColumnFilter: false,
       cell: (cell) => {

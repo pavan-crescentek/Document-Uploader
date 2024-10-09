@@ -14,7 +14,7 @@ const documentsListTableFields = (
     //   enableSorting: false,
     // },
     {
-      header: 'Name',
+      header: 'File name',
       accessorKey: 'metadata',
       enableColumnFilter: false,
     },
@@ -24,7 +24,7 @@ const documentsListTableFields = (
       enableColumnFilter: false,
     },
     {
-      header: 'Subsection',
+      header: 'Sub-section',
       accessorKey: 'subsection',
       enableColumnFilter: false,
     },

@@ -395,6 +395,7 @@ const Documents = () => {
                         ? true
                         : false
                     }
+                    autoComplete="off"
                   />
                 )}
                 {validation.touched[field.name] &&
@@ -450,12 +451,12 @@ const Documents = () => {
                 ))}
               <Row className="m-0" style={{ padding: '12px' }}>
                 <Label className="form-label p-0">
-                  Media{' '}
+                  Choose your file{' '}
                   <span
                     className="text-danger"
                     style={{ paddingLeft: '6px', fontSize: '10px' }}
                   >
-                    Media field is required
+                    File is required
                   </span>
                 </Label>
                 <div className="previewImageMainDiv">
@@ -506,7 +507,7 @@ const Documents = () => {
                                   style={{ fontSize: '20px' }}
                                 />
                               </div>
-                              <h6>Drop files here or click to upload.</h6>
+                              <h6>Drop file here or click to upload.</h6>
                               <input {...getInputProps()} />
                             </div>
                           </div>
@@ -516,7 +517,7 @@ const Documents = () => {
                   )}
                   {displayPhotoError && (
                     <Col md={12} className="text-danger">
-                      Please upload at least one media.
+                      Please upload file.
                     </Col>
                   )}
                 </div>
@@ -553,7 +554,7 @@ const Documents = () => {
                   <Loader error={null} />
                 </span>
               )}
-              {!!isEdit ? 'Update' : 'Add Document'}{' '}
+              {!!isEdit ? 'Update' : 'Add document'}{' '}
             </button>
           </div>
         </Form>
@@ -594,7 +595,7 @@ const Documents = () => {
         toggleRightCanvas();
       }}
     >
-      <i className="ri-add-line align-bottom me-1"></i> Add Document
+      <i className="ri-add-line align-bottom me-1"></i> Add document
     </button>
   );
 
@@ -631,7 +632,7 @@ const Documents = () => {
                         className="custom-header-css"
                         handleCustomerClick={handleCustomerClicks}
                         isGlobalFilter={true}
-                        title={'Documents List'}
+                        title={'Documents list'}
                         SearchPlaceholder="Search for documents..."
                         addContentButton={addDocumentButton}
                         divClass="table-responsive table-card"
@@ -664,7 +665,7 @@ const Documents = () => {
       </Modal>
       <OffCanvas
         data={createDocument()}
-        title={isEdit ? 'Update Document' : 'Create Document'}
+        title={isEdit ? 'Update document' : 'Create document'}
         isOpen={isRight}
         direction={null}
         toggleFunction={toggleRightCanvas}

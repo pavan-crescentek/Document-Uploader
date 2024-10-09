@@ -4,33 +4,33 @@ const usersFormFields = (statusOption) => {
   return [
     {
       name: 'email',
-      label: 'User Email',
+      label: 'User email',
       type: 'email',
       placeholder: 'Enter user email',
     },
     {
       name: 'firstName',
-      label: 'User First Name',
+      label: 'First name',
       type: 'text',
       placeholder: 'Enter first name',
     },
     {
       name: 'lastName',
-      label: 'User Last Name',
+      label: 'Last name',
       type: 'text',
-      placeholder: 'Enter last email',
+      placeholder: 'Enter last name',
     },
     {
       name: 'password',
-      label: 'User Password',
+      label: 'Password',
       type: 'password',
-      placeholder: 'Enter user password',
+      placeholder: 'Enter password',
     },
     {
       name: 'isActive',
-      label: 'Is Active',
+      label: 'Is active',
       type: 'select',
-      placeholder: 'Select Status',
+      placeholder: 'Select status',
       options: statusOption,
     },
   ];

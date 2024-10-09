@@ -11,7 +11,7 @@ import { createSelector } from 'reselect';
 
 //import images
 import { capitalize } from 'lodash';
-import avatar1 from '../../assets/images/users/avatar-1.jpg';
+import userDummy from '../../assets/images/users/user-dummy-img.jpg';
 import { useProfile } from '../Hooks/UserHooks';
 
 const ProfileDropdown = () => {
@@ -57,7 +57,7 @@ const ProfileDropdown = () => {
           <span className="d-flex align-items-center">
             <img
               className="rounded-circle header-profile-user"
-              src={avatar1}
+              src={userDummy}
               alt="Header Avatar"
             />
             <span className="text-start ms-xl-2">

@@ -266,7 +266,7 @@ const UsersList = () => {
                   <Loader error={null} />
                 </span>
               )}
-              {!!isEdit ? 'Update User' : 'Add User'}{' '}
+              {!!isEdit ? 'Update user' : 'Add user'}{' '}
             </button>
           </div>
         </Form>
@@ -285,7 +285,7 @@ const UsersList = () => {
         toggleRightCanvas();
       }}
     >
-      <i className="ri-add-line align-bottom me-1"></i> Add User
+      <i className="ri-add-line align-bottom me-1"></i> Add user
     </button>
   );
 
@@ -309,7 +309,7 @@ const UsersList = () => {
                         className="custom-header-css"
                         handleCustomerClick={handleCustomerClicks}
                         isGlobalFilter={true}
-                        title={'Users List'}
+                        title={'Users list'}
                         SearchPlaceholder="Search for users..."
                         addContentButton={addUserButton}
                         divClass="table-responsive table-card"
@@ -328,7 +328,7 @@ const UsersList = () => {
       </div>
       <OffCanvas
         data={createUser()}
-        title={isEdit ? 'Update User' : 'Create User'}
+        title={isEdit ? 'Update user' : 'Create user'}
         isOpen={isRight}
         direction={null}
         toggleFunction={toggleRightCanvas}

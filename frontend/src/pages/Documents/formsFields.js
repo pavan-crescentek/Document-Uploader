@@ -4,22 +4,22 @@ const documentFormFields = (sectionOptions, subsectionOptions) => {
   return [
     {
       name: 'metadata',
-      label: 'Metadata',
+      label: 'File name',
       type: 'text',
-      placeholder: 'Enter document metadata',
+      placeholder: 'Enter file name',
     },
     {
       name: 'section',
       label: 'Section',
       type: 'select',
-      placeholder: 'Select Section',
+      placeholder: 'Select section',
       options: sectionOptions,
     },
     {
       name: 'subsection',
-      label: 'Subsection',
+      label: 'Sub-section',
       type: 'select',
-      placeholder: 'Select Subsection',
+      placeholder: 'Select sub-section',
       options: subsectionOptions,
     },
   ];
@@ -27,12 +27,12 @@ const documentFormFields = (sectionOptions, subsectionOptions) => {
 
 const documentFormFieldsValidation = Yup.object({
   metadata: Yup.string()
-    .required('Please metadata')
-    .test('not-only-spaces', 'Please enter a valid metadata', (value) => {
+    .required('Enter file name')
+    .test('not-only-spaces', 'Enter a valid file name', (value) => {
       return value && value.trim().length > 0;
     }),
   section: Yup.string().required('Section is required'),
-  subsection: Yup.string().required('Section is required'),
+  subsection: Yup.string().required('Sub-section is required'),
 });
 
 const documentFieldsInitialValues = (selectDocument) => {

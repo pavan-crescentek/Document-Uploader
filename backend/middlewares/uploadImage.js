@@ -29,7 +29,17 @@ const userFileUpload = multer({
     contentDisposition: 'inline',
     contentType: multerS3.AUTO_CONTENT_TYPE,
     key: function (req, file, cb) {
-      cb(null, file.fieldname + '_' + Date.now() + path.extname(file.originalname));
+      cb(
+        null,
+        (req?.body?.metadata?.slice(0, 20) || 'metadata') +
+          '_' +
+          (req?.body?.section || 'section') +
+          '_' +
+          (req?.body?.subsection || 'subsection') +
+          '_' +
+          Date.now() +
+          path.extname(file.originalname),
+      );
     },
   }),
   limits: {

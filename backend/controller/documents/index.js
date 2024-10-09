@@ -61,7 +61,7 @@ const getFiles = async (req, res) => {
     const { user } = req;
 
     // Fetch files from the database
-    const files = await documentsModel.find({ userId: user._id }).sort({ createdAt: -1 }).lean().exec();
+    const files = await documentsModel.find().sort({ createdAt: -1 }).lean().exec();
 
     // Fetch file URLs for each file
     const filesWithUrls = await Promise.all(
@@ -91,7 +91,7 @@ const deleteMedia = async (req, res) => {
 
     const { id } = value;
 
-    const document = await documentsModel.findOne({ _id: id, userId: user._id });
+    const document = await documentsModel.findOne({ _id: id });
 
     if (!document) {
       return utils.sendResponse(res, StatusCodes.NOT_FOUND, messages.mediaNotFound);
@@ -125,7 +125,7 @@ const updateMedia = async (req, res) => {
     }
     const { section, subsection, metadata, id } = value;
 
-    const document = await documentsModel.findOne({ _id: id, userId: user._id });
+    const document = await documentsModel.findOne({ _id: id });
 
     if (!document) {
       return utils.sendResponse(res, StatusCodes.NOT_FOUND, messages.mediaNotFound);
