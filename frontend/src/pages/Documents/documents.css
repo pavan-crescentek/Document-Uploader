@@ -20,16 +20,16 @@
   display: contents;
 }
 .my-custom-dropzone {
-  max-width: 110px !important;
-  max-height: 110px !important;
-  min-width: 110px !important;
-  min-height: 110px !important;
+  max-width: 160px !important;
+  max-height: 160px !important;
+  min-width: 160px !important;
+  min-height: 160px !important;
 }
 .document-preview {
-  max-width: 110px !important;
-  max-height: 110px !important;
-  min-width: 110px !important;
-  min-height: 110px !important;
+  max-width: 160px !important;
+  max-height: 160px !important;
+  min-width: 160px !important;
+  min-height: 160px !important;
   object-fit: cover;
 }
 .document-view-link {
@@ -42,9 +42,9 @@
   justify-content: flex-end;
 }
 .img-thumbnail {
-  max-width: 110px !important;
-  max-height: 110px !important;
-  min-width: 110px !important;
-  min-height: 110px !important;
+  max-width: 160px !important;
+  max-height: 160px !important;
+  min-width: 160px !important;
+  min-height: 160px !important;
   object-fit: cover;
 }

@@ -50,6 +50,8 @@ import {
   documentFormFieldsValidation,
 } from './formsFields';
 import documentsListTableFields from './tableFields';
+import fileIcon from '../../assets/images/file.png';
+import pdfIcon from '../../assets/images/pdf.png';
 
 const Documents = () => {
   const { userProfile } = useProfile();
@@ -77,6 +79,8 @@ const Documents = () => {
   const [photos, setPhotos] = useState();
   const [photoPreviews, setPhotoPreviews] = useState();
   const [photoPreviewsFileName, setPhotoPreviewsFileName] = useState('');
+  const [fileTypeForIcon, setFileTypeForIcon] = useState('');
+  const [fileError, setFileError] = useState('');
   const [documentForDelete, setDocumentForDelete] = useState();
 
   // Delete Document
@@ -117,9 +121,9 @@ const Documents = () => {
 
     validationSchema: documentFormFieldsValidation,
     onSubmit: async (values) => {
-      // if (!isEdit && !photos) {
-      //   return;
-      // }
+      if (!isEdit && !photos) {
+        return;
+      }
       if (isEdit) {
         const updateDocumentData = {
           id: selectedDocument.id,
@@ -196,20 +200,29 @@ const Documents = () => {
 
   const handleFileChange = async (files) => {
     const newPhoto = files[0];
+    setFileError('');
 
     const maxSize = 100 * 1024 * 1024;
     if (newPhoto && newPhoto.size > maxSize) {
-      toast.error(`File size exceeds ${maxSize / (1024 * 1024)}MB limit`);
+      setDisplayPhotoError(true);
+      setFileError(`File size exceeds ${maxSize / (1024 * 1024)}MB limit`);
       return;
     }
 
     const allowedExtensions = ['jpg', 'jpeg', 'png', 'pdf', 'doc', 'docx'];
-    const fileExtension = newPhoto.name.split('.').pop().toLowerCase();
+    const fileExtension = newPhoto?.name.split('.').pop().toLowerCase();
     if (!allowedExtensions.includes(fileExtension)) {
-      toast.error(
-        'Invalid file type. Only PDF, JPEG, PNG, DOC and DOCX are allowed.'
+      setDisplayPhotoError(true);
+      setFileError(
+        'Invalid file type, only PDF, JPEG, PNG, DOC and DOCX are allowed.'
       );
       return;
+    }
+    if (fileExtension === 'pdf') {
+      setFileTypeForIcon('pdf');
+    }
+    if (fileExtension === 'doc' || fileExtension === 'docx') {
+      setFileTypeForIcon('doc');
     }
 
     const reader = new FileReader();
@@ -454,22 +467,23 @@ const Documents = () => {
                   </Row>
                 ))}
               <Row className="m-0" style={{ padding: '12px' }}>
-                <Label className="form-label p-0">
-                  Choose your file{' '}
-                  <span
-                    className="text-danger"
-                    style={{ paddingLeft: '6px', fontSize: '10px' }}
-                  >
-                    File is required
-                  </span>
-                </Label>
+                <Label className="form-label p-0">Choose your file </Label>
+                <span style={{ padding: '0 0 10px 0', fontSize: '12px' }}>
+                  Allowed file types: PDF, JPEG, PNG, DOC and DOCX
+                </span>
                 <div className="previewImageMainDiv">
                   {photoPreviews && (
                     <div>
                       <div className="image-preview">
                         <div className="position-relative d-inline-block me-3 mb-2">
                           <img
-                            src={photoPreviews}
+                            src={
+                              fileTypeForIcon === 'pdf'
+                                ? pdfIcon
+                                : fileTypeForIcon === 'doc'
+                                  ? fileIcon
+                                  : photoPreviews
+                            }
                             alt="Preview"
                             className="img-thumbnail"
                           />
@@ -512,7 +526,10 @@ const Documents = () => {
                                   style={{ fontSize: '20px' }}
                                 />
                               </div>
-                              <h6>Drop file here or click to upload.</h6>
+                              <h6>
+                                Drag and drop your <br /> file here or <br />
+                                click to upload.
+                              </h6>
                               <input {...getInputProps()} />
                             </div>
                           </div>
@@ -522,7 +539,7 @@ const Documents = () => {
                   )}
                   {displayPhotoError && (
                     <Col md={12} className="text-danger">
-                      Please upload file.
+                      {fileError}
                     </Col>
                   )}
                 </div>
@@ -540,7 +557,7 @@ const Documents = () => {
               disabled={addEditLoading}
             >
               {' '}
-              Close{' '}
+              Cancel{' '}
             </button>
 
             <button
@@ -549,6 +566,7 @@ const Documents = () => {
               onClick={() => {
                 if (!photoPreviews) {
                   setDisplayPhotoError(true);
+                  setFileError('Please upload file.');
                 }
               }}
               disabled={addEditLoading}
@@ -597,6 +615,9 @@ const Documents = () => {
         setPhotos();
         setSelectedDocument();
         setIsEdit(false);
+        setDisplayPhotoError(false);
+        setFileError('');
+        setFileTypeForIcon('');
         toggleRightCanvas();
       }}
     >
@@ -655,7 +676,7 @@ const Documents = () => {
         </Container>
       </div>
       <Modal
-        size="xl"
+        size="lg"
         isOpen={modal_center}
         toggle={() => {
           tog_center();

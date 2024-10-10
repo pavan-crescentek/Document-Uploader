@@ -24,9 +24,9 @@ const messages = {
   errorFileUpload: 'Error in file upload',
   filesRetrievedSuccessfully: 'Files retrieved successfully',
   errorRetrievingFiles: 'Error retrieving files',
-  errorDeletingMedia: 'Error deleting media',
-  mediaUpdatedSuccessfully: 'Media updated successfully',
-  errorUpdatingMedia: 'Error updating media',
+  errorDeletingMedia: 'Error deleting file',
+  mediaUpdatedSuccessfully: 'File updated successfully',
+  errorUpdatingMedia: 'Error updating file',
 };
 
 module.exports = {

@@ -253,7 +253,7 @@ const UsersList = () => {
               disabled={addEditLoading}
             >
               {' '}
-              Close{' '}
+              Cancel{' '}
             </button>
 
             <button

@@ -54,10 +54,12 @@ const usersFormFieldsValidation = (isEdit) =>
         return value && value.trim().length > 0;
       }),
     password: isEdit
-      ? Yup.string().min(8, 'Password must be at least 8 characters').nullable()
+      ? Yup.string()
+          .min(12, 'Password must be at least 12 characters')
+          .nullable()
       : Yup.string()
           .required('Password is required')
-          .min(8, 'Password must be at least 8 characters'),
+          .min(12, 'Password must be at least 12 characters'),
     isActive: Yup.boolean()
       .required('Please add status')
       .oneOf([true, false], 'Please add status'),

@@ -66,8 +66,12 @@ const Login = (props) => {
       password: userLogin.password,
     },
     validationSchema: Yup.object({
-      email: Yup.string().required('Please Enter Your Email'),
-      password: Yup.string().required('Please Enter Your Password'),
+      email: Yup.string().required(
+        'Email is required. Please enter your email address.'
+      ),
+      password: Yup.string().required(
+        'Password is required. Please enter your password.'
+      ),
     }),
     onSubmit: (values) => {
       dispatch(loginUser(values, props.router.navigate));
@@ -107,9 +111,9 @@ const Login = (props) => {
                 <Card className="mt-4 card-bg-fill">
                   <CardBody className="p-4">
                     <div className="text-center mt-2">
-                      <h5 className="text-primary">Welcome Back !</h5>
+                      <h5 className="text-primary">Welcome</h5>
                       <p className="text-muted">
-                        Sign in to continue to Velzon.
+                        Sign in to continue to document uploader.
                       </p>
                     </div>
                     {error && error ? (
@@ -153,11 +157,11 @@ const Login = (props) => {
                         </div>
 
                         <div className="mb-3">
-                          <div className="float-end">
+                          {/* <div className="float-end">
                             <Link to="/forgot-password" className="text-muted">
                               Forgot password?
                             </Link>
-                          </div>
+                          </div> */}
                           <Label
                             className="form-label"
                             htmlFor="password-input"
@@ -170,7 +174,7 @@ const Login = (props) => {
                               value={validation.values.password || ''}
                               type={passwordShow ? 'text' : 'password'}
                               className="form-control pe-5"
-                              placeholder="Enter Password"
+                              placeholder="Enter password"
                               onChange={validation.handleChange}
                               onBlur={validation.handleBlur}
                               invalid={
@@ -187,32 +191,18 @@ const Login = (props) => {
                                 {validation.errors.password}
                               </FormFeedback>
                             ) : null}
-                            <button
-                              className="btn btn-link position-absolute end-0 top-0 text-decoration-none text-muted material-shadow-none"
-                              type="button"
-                              id="password-addon"
-                              onClick={() => setPasswordShow(!passwordShow)}
-                            >
-                              <i className="ri-eye-fill align-middle"></i>
-                            </button>
+                            {validation.values.password && (
+                              <button
+                                className="btn btn-link position-absolute end-0 top-0 text-decoration-none text-muted material-shadow-none"
+                                type="button"
+                                id="password-addon"
+                                onClick={() => setPasswordShow(!passwordShow)}
+                              >
+                                <i className="ri-eye-fill align-middle"></i>
+                              </button>
+                            )}
                           </div>
                         </div>
-
-                        <div className="form-check">
-                          <Input
-                            className="form-check-input"
-                            type="checkbox"
-                            value=""
-                            id="auth-remember-check"
-                          />
-                          <Label
-                            className="form-check-label"
-                            htmlFor="auth-remember-check"
-                          >
-                            Remember me
-                          </Label>
-                        </div>
-
                         <div className="mt-4">
                           <Button
                             color="success"
@@ -226,7 +216,7 @@ const Login = (props) => {
                                 Loading...{' '}
                               </Spinner>
                             ) : null}
-                            Sign In
+                            Sign in
                           </Button>
                         </div>
                       </Form>
