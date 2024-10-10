@@ -71,7 +71,8 @@ const getFiles = async (req, res) => {
       }),
     );
 
-    return utils.sendResponse(res, StatusCodes.OK, messages.filesRetrievedSuccessfully, filesWithUrls);
+    return utils.sendResponse(res, StatusCodes.OK, '', filesWithUrls);
+    // return utils.sendResponse(res, StatusCodes.OK, messages.filesRetrievedSuccessfully, filesWithUrls);
   } catch (error) {
     console.error('🚀 ~ getFiles ~ error:', error);
     return utils.sendResponse(res, StatusCodes.INTERNAL_SERVER_ERROR, messages.errorRetrievingFiles);

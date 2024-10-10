@@ -21,12 +21,12 @@ export const getAllUsersData = () => async (dispatch) => {
 
     if (response.code === 200) {
       dispatch(usersFetchedSuccess(response));
+      dispatch(stopLoader());
       return true;
-    } else {
-      dispatch(apiError(response));
-      return false;
     }
+    dispatch(apiError(response));
     dispatch(stopLoader());
+    return false;
   } catch (error) {
     dispatch(stopLoader());
     dispatch(apiError(error));
@@ -41,11 +41,11 @@ export const addNewUserThunk = (newUser) => async (dispatch) => {
     if (response.code === 200) {
       dispatch(userCreatedSuccess(response.data));
       return true;
-    } else {
-      dispatch(apiError(response));
-      return false;
     }
+    dispatch(apiError(response));
     dispatch(stopLoader());
+    dispatch(apiError(''));
+    return false;
   } catch (error) {
     dispatch(stopLoader());
     dispatch(apiError(error));
@@ -60,11 +60,10 @@ export const updateUser = (user) => async (dispatch) => {
     if (response.code === 200) {
       dispatch(userUpdatedSuccess(response.data));
       return true;
-    } else {
-      dispatch(apiError(response));
-      return false;
     }
+    dispatch(apiError(response));
     dispatch(stopLoader());
+    return false;
   } catch (error) {
     dispatch(stopLoader());
     dispatch(apiError(error));

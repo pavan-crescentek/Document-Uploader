@@ -109,7 +109,8 @@ const getUsersList = async (req, res) => {
       .sort({ createdAt: -1 })
       .lean()
       .exec();
-    return utils.sendResponse(res, StatusCodes.OK, messages.allUsersFound, allUsers);
+    return utils.sendResponse(res, StatusCodes.OK, '', allUsers);
+    // return utils.sendResponse(res, StatusCodes.OK, messages.allUsersFound, allUsers);
   } catch (error) {
     console.error('🚀 ~ getUsersList ~ error:', error);
     return utils.sendResponse(res, StatusCodes.INTERNAL_SERVER_ERROR, messages.errorInUsersList);

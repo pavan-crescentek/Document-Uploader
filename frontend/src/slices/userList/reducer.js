@@ -22,6 +22,7 @@ const UserListSlice = createSlice({
       state.usersList = action.payload.data;
       state.loading = false;
       state.errorMsg = false;
+      state.error = '';
     },
     startLoader(state) {
       state.loading = true;
