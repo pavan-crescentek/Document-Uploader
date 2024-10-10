@@ -16,5 +16,14 @@
         "Access-Control-Allow-Headers": "X-Requested-With, Content-Type, Authorization"
       }
     }
-  ]
+  ],
+  "functions": {
+    "app.js": {
+      "memory": 1024,
+      "maxDuration": 60,
+      "bodyParser": {
+        "sizeLimit": "100mb"
+      }
+    }
+  }
 }
