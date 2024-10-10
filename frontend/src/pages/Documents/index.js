@@ -354,7 +354,7 @@ const Documents = () => {
                         : false
                     }
                   >
-                    <option value="">Select {field.label}</option>
+                    <option value="">{field.placeholder}</option>
                     {Array.isArray(field.options) &&
                       field.options.map((option, idx) => (
                         <option key={idx} value={option.value}>
