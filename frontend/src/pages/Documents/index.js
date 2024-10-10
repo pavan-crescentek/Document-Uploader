@@ -76,6 +76,7 @@ const Documents = () => {
   const [allSubSections, setAllSubSections] = useState([]);
   const [photos, setPhotos] = useState();
   const [photoPreviews, setPhotoPreviews] = useState();
+  const [photoPreviewsFileName, setPhotoPreviewsFileName] = useState('');
   const [documentForDelete, setDocumentForDelete] = useState();
 
   // Delete Document
@@ -205,7 +206,9 @@ const Documents = () => {
     const allowedExtensions = ['jpg', 'jpeg', 'png', 'pdf', 'doc', 'docx'];
     const fileExtension = newPhoto.name.split('.').pop().toLowerCase();
     if (!allowedExtensions.includes(fileExtension)) {
-      toast.error('Invalid file type. Allowed types: jpg, jpeg, png, pdf');
+      toast.error(
+        'Invalid file type. Only PDF, JPEG, PNG, DOC and DOCX are allowed.'
+      );
       return;
     }
 
@@ -213,6 +216,7 @@ const Documents = () => {
     reader.readAsDataURL(newPhoto);
     reader.onloadend = () => {
       const newPreview = reader.result;
+      setPhotoPreviewsFileName(newPhoto.name);
       setPhotos(newPhoto);
       setPhotoPreviews(newPreview);
       validation.setFieldValue('doc', newPhoto);
@@ -485,6 +489,7 @@ const Documents = () => {
                           />
                         </div>
                       </div>
+                      {photoPreviewsFileName}
                     </div>
                   )}
                   {!photoPreviews && (
