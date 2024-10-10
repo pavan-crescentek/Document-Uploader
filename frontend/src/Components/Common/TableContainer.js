@@ -57,16 +57,42 @@ const DebouncedInput = ({
     return () => clearTimeout(timeout);
   }, [debounce, onChange, value]);
 
+  const handleClear = () => {
+    setValue('');
+    onChange('');
+  };
+
   return (
-    <input
-      {...props}
-      value={value}
-      id="search-bar-0"
-      className="form-control search"
-      onChange={(e) => setValue(e.target.value)}
-    />
+    <div className="position-relative" style={{ maxWidth: '300px' }}>
+      <input
+        {...props}
+        value={value}
+        id="search-bar-0"
+        className="form-control search"
+        onChange={(e) => setValue(e.target.value)}
+        style={{
+          paddingRight: '26px',
+          textOverflow: 'ellipsis',
+        }}
+      />
+      {value && (
+        <button
+          className="btn btn-link position-absolute"
+          style={{
+            right: '0',
+            top: '50%',
+            transform: 'translateY(-50%)',
+            padding: '2px 6px',
+          }}
+          onClick={handleClear}
+        >
+          <i className="ri-close-circle-fill"></i>
+        </button>
+      )}
+    </div>
   );
 };
+
 const TableContainer = ({
   columns,
   data,
