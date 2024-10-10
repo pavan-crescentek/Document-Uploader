@@ -142,6 +142,7 @@ const Login = (props) => {
                                 ? true
                                 : false
                             }
+                            autoComplete="new-email"
                           />
                           {validation.touched.email &&
                           validation.errors.email ? (
@@ -178,6 +179,7 @@ const Login = (props) => {
                                   ? true
                                   : false
                               }
+                              autoComplete="new-password"
                             />
                             {validation.touched.password &&
                             validation.errors.password ? (
