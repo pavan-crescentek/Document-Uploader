@@ -22,6 +22,7 @@ import * as Yup from 'yup';
 import { useDispatch, useSelector } from 'react-redux';
 
 import avatar from '../../assets/images/users/avatar-1.jpg';
+import userDummy from '../../assets/images/users/user-dummy-img.jpg';
 // actions
 import { createSelector } from 'reselect';
 import { useProfile } from '../../Components/Hooks/UserHooks';
@@ -139,7 +140,7 @@ const UserProfile = () => {
                   <div className="d-flex">
                     <div className="mx-3">
                       <img
-                        src={avatar}
+                        src={userDummy}
                         alt=""
                         className="avatar-md rounded-circle img-thumbnail"
                       />

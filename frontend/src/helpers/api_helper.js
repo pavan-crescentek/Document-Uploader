@@ -21,7 +21,7 @@ axios.interceptors.response.use(
   function (error) {
     // Any status codes that falls outside the range of 2xx cause this function to trigger
     let message;
-    switch (error.response.status) {
+    switch (error?.response?.status) {
       case 500:
         message = 'Internal Server Error';
         break;
@@ -123,7 +123,7 @@ class APIClient {
     const response = axios.patch(url, data);
     return response
       .then((res) => {
-        if (res.status !== 200) {
+        if (res?.status !== 200) {
           res.message && toast.error(res.message);
           return res;
         }
@@ -141,7 +141,7 @@ class APIClient {
     const response = axios.put(url, data);
     return response
       .then((res) => {
-        if (res.status !== 200) {
+        if (res?.status !== 200) {
           res.message && toast.error(res.message);
           return res;
         }
@@ -161,7 +161,7 @@ class APIClient {
     const response = axios.delete(url, { ...config });
     return response
       .then((res) => {
-        if (res.status !== 200) {
+        if (res?.status !== 200) {
           res.message && toast.error(res.message);
           return res;
         }
