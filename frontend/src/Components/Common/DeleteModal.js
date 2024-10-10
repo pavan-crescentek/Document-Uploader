@@ -14,10 +14,10 @@ const DeleteModal = ({ show, onDeleteClick, onCloseClick }) => {
             style={{ width: '100px', height: '100px' }}
           ></lord-icon>
           <div className="mt-4 pt-2 fs-15 mx-4 mx-sm-5">
-            <h4>Are you sure ?</h4>
-            <p className="text-muted mx-4 mb-0">
+            <h4>Are you sure you want to delete this record?</h4>
+            {/* <p className="text-muted mx-4 mb-0">
               Are you sure you want to remove this record ?
-            </p>
+            </p> */}
           </div>
         </div>
         <div className="d-flex gap-2 justify-content-center mt-4 mb-2">
@@ -35,7 +35,7 @@ const DeleteModal = ({ show, onDeleteClick, onCloseClick }) => {
             id="delete-record"
             onClick={onDeleteClick}
           >
-            Yes, Delete It!
+            Delete
           </button>
         </div>
       </ModalBody>
