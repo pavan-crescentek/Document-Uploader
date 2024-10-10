@@ -74,6 +74,7 @@ const DebouncedInput = ({
           paddingRight: '26px',
           textOverflow: 'ellipsis',
         }}
+        autoComplete="off"
       />
       {value && (
         <button

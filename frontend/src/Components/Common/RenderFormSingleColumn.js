@@ -94,6 +94,7 @@ const RenderFormSingleColumn = ({
                     ? true
                     : false
                 }
+                autoComplete="off"
               />
             ) : field.type === 'password' ? (
               <Input
@@ -111,7 +112,7 @@ const RenderFormSingleColumn = ({
                     ? true
                     : false
                 }
-                autoComplete="off"
+                autoComplete="new-password"
               />
             ) : field.type === 'email' ? (
               <Input
@@ -130,7 +131,7 @@ const RenderFormSingleColumn = ({
                     : false
                 }
                 disabled={isEdit}
-                autoComplete="off"
+                autoComplete="new-email"
               />
             ) : (
               <Input
