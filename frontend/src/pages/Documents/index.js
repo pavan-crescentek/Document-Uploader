@@ -654,7 +654,7 @@ const Documents = () => {
                         columns={columns}
                         data={documents || []}
                         isAddUserList={false}
-                        customPageSize={8}
+                        // customPageSize={8}
                         className="custom-header-css"
                         handleCustomerClick={handleCustomerClicks}
                         isGlobalFilter={true}

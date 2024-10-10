@@ -305,7 +305,7 @@ const UsersList = () => {
                         columns={columns}
                         data={usersList || []}
                         isAddUserList={false}
-                        customPageSize={8}
+                        // customPageSize={8}
                         className="custom-header-css"
                         handleCustomerClick={handleCustomerClicks}
                         isGlobalFilter={true}

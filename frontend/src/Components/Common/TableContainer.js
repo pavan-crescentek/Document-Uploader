@@ -8,17 +8,13 @@ import {
   getFilteredRowModel,
   getPaginationRowModel,
   getSortedRowModel,
-  // Table as ReactTable,
   useReactTable,
 } from '@tanstack/react-table';
 
 import { rankItem } from '@tanstack/match-sorter-utils';
 
 // Column Filter
-const Filter = ({
-  column,
-  // table
-}) => {
+const Filter = ({ column }) => {
   const columnFilterValue = column.getFilterValue();
 
   return (
@@ -121,6 +117,8 @@ const TableContainer = ({
 }) => {
   const [columnFilters, setColumnFilters] = useState([]);
   const [globalFilter, setGlobalFilter] = useState('');
+  const [pageSize, setPageSize] = useState(customPageSize || 10);
+  const [pageIndex, setPageIndex] = useState(0);
 
   const fuzzyFilter = (row, columnId, value, addMeta) => {
     const itemRank = rankItem(row.getValue(columnId), value);
@@ -128,6 +126,16 @@ const TableContainer = ({
       itemRank,
     });
     return itemRank.passed;
+  };
+  const setPagination = (updater) => {
+    if (typeof updater === 'function') {
+      const nextState = updater(table.getState().pagination);
+      setPageSize(nextState.pageSize);
+      setPageIndex(nextState.pageIndex);
+    } else {
+      setPageSize(updater.pageSize);
+      setPageIndex(updater.pageIndex);
+    }
   };
 
   const table = useReactTable({
@@ -139,6 +147,10 @@ const TableContainer = ({
     state: {
       columnFilters,
       globalFilter,
+      pagination: {
+        pageSize,
+        pageIndex,
+      },
     },
     onColumnFiltersChange: setColumnFilters,
     onGlobalFilterChange: setGlobalFilter,
@@ -147,6 +159,7 @@ const TableContainer = ({
     getFilteredRowModel: getFilteredRowModel(),
     getPaginationRowModel: getPaginationRowModel(),
     getSortedRowModel: getSortedRowModel(),
+    onPaginationChange: setPagination,
   });
 
   const {
@@ -155,16 +168,21 @@ const TableContainer = ({
     getCanPreviousPage,
     getCanNextPage,
     getPageOptions,
-    setPageIndex,
     nextPage,
     previousPage,
-    setPageSize,
     getState,
   } = table;
 
   useEffect(() => {
     customPageSize && setPageSize(customPageSize);
-  }, [customPageSize, setPageSize]);
+  }, [customPageSize]);
+
+  const handlePageSizeChange = (e) => {
+    const newPageSize =
+      e.target.value === 'all' ? data.length : Number(e.target.value);
+    setPageSize(newPageSize);
+    setPageIndex(0);
+  };
 
   return (
     <Fragment>
@@ -203,21 +221,6 @@ const TableContainer = ({
               </div>
             </Row>
           </CardHeader>
-          {/* <CardBody className="border border-dashed border-end-0 border-start-0 border-top-0 ">
-              <Row>
-                {isProductsFilter && <ProductsGlobalFilter />}
-                {isCustomerFilter && <CustomersGlobalFilter />}
-                {isOrderFilter && <OrderGlobalFilter />}
-                {isContactsFilter && <ContactsGlobalFilter />}
-                {isCompaniesFilter && <CompaniesGlobalFilter />}
-                {isLeadsFilter && <LeadsGlobalFilter />}
-                {isCryptoOrdersFilter && <CryptoOrdersGlobalFilter />}
-                {isInvoiceListFilter && <InvoiceListGlobalSearch />}
-                {isTicketsListFilter && <TicketsListGlobalFilter />}
-                {isNFTRankingFilter && <NFTRankingGlobalFilter />}
-                {isTaskListFilter && <TaskListGlobalFilter />}
-              </Row>
-            </CardBody> */}
         </form>
       </Row>
 
@@ -291,10 +294,25 @@ const TableContainer = ({
           <div className="text-muted">
             Showing
             <span className="fw-semibold ms-1">
-              {getState().pagination.pageSize}
+              {pageIndex * pageSize + 1} to{' '}
+              {Math.min((pageIndex + 1) * pageSize, data.length)}
             </span>{' '}
-            of <span className="fw-semibold">{data.length}</span> Results
+            of {data.length} Results
           </div>
+        </div>
+        <div className="col-sm-auto">
+          <select
+            className="form-select"
+            value={pageSize === data.length ? 'all' : pageSize}
+            onChange={handlePageSizeChange}
+          >
+            {[10, 20, 30, 40, 50].map((size) => (
+              <option key={size} value={size}>
+                Show {size}
+              </option>
+            ))}
+            <option value="all">Show All</option>
+          </select>
         </div>
         <div className="col-sm-auto">
           <ul className="pagination pagination-separated pagination-md justify-content-center justify-content-sm-start mb-0">
@@ -313,9 +331,7 @@ const TableContainer = ({
                   <Link
                     to="#"
                     className={
-                      getState().pagination.pageIndex === item
-                        ? 'page-link active'
-                        : 'page-link'
+                      pageIndex === item ? 'page-link active' : 'page-link'
                     }
                     onClick={() => setPageIndex(item)}
                   >
