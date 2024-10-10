@@ -56,10 +56,18 @@ const usersFormFieldsValidation = (isEdit) =>
     password: isEdit
       ? Yup.string()
           .min(12, 'Password must be at least 12 characters')
+          .matches(
+            /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*()_+\-=\[\]{};':"\\|,.<>/?])[A-Za-z\d!@#$%^&*()_+\-=\[\]{};':"\\|,.<>/?]{12,}$/,
+            'Password must contain at least one uppercase letter, one lowercase letter, one number, and one special character'
+          )
           .nullable()
       : Yup.string()
           .required('Password is required')
-          .min(12, 'Password must be at least 12 characters'),
+          .min(12, 'Password must be at least 12 characters')
+          .matches(
+            /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*()_+\-=\[\]{};':"\\|,.<>/?])[A-Za-z\d!@#$%^&*()_+\-=\[\]{};':"\\|,.<>/?]{12,}$/,
+            'Password must contain at least one uppercase letter, one lowercase letter, one number, and one special character'
+          ),
     isActive: Yup.boolean()
       .required('Please add status')
       .oneOf([true, false], 'Please add status'),
