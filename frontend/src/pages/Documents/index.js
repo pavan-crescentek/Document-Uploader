@@ -662,9 +662,9 @@ const Documents = () => {
         }}
         centered
       >
-        <ModalHeader className="modal-title" />
+        <ModalHeader className="modal-title p-0" />
 
-        <ModalBody className="text-center p-5">
+        <ModalBody className="text-center p-0">
           <FileViewerComponent mime_type={singleFileType} url={singleFileUrl} />
         </ModalBody>
       </Modal>
