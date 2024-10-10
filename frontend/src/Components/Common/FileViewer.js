@@ -21,24 +21,45 @@ const FileViewerComponent = ({ mime_type, url }) => {
 
   const fileExtension = getFileExtension(mime_type);
 
-  // Render based on file type
+  const viewerStyle = {
+    width: '100%',
+    height: '80vh',
+    maxWidth: '90vw',
+    margin: '0 auto',
+    display: 'flex',
+    justifyContent: 'center',
+    alignItems: 'center',
+  };
+
+  const imageStyle = {
+    maxWidth: '100%',
+    maxHeight: '100%',
+    objectFit: 'contain',
+  };
+
+  const pdfDocStyle = {
+    width: '100%',
+    height: '100%',
+    minWidth: '800px',
+    minHeight: '600px',
+  };
+
   return (
-    <div className="p-0">
+    <div className="p-0" style={viewerStyle}>
       {fileExtension === 'jpg' ||
       fileExtension === 'jpeg' ||
       fileExtension === 'png' ? (
         <img
           src={url}
           alt={`file of type ${fileExtension}`}
-          style={{ maxWidth: '100%', height: 'auto' }}
+          style={imageStyle}
         />
       ) : fileExtension === 'pdf' ? (
-        <embed src={url} type="application/pdf" width="100%" height="605px" />
+        <embed src={url} type="application/pdf" style={pdfDocStyle} />
       ) : fileExtension === 'doc' || fileExtension === 'docx' ? (
         <iframe
           src={`https://docs.google.com/viewer?url=${encodeURIComponent(url)}&embedded=true`}
-          width="100%"
-          height="605px"
+          style={pdfDocStyle}
           frameBorder="0"
         ></iframe>
       ) : (

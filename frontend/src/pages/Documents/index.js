@@ -676,17 +676,25 @@ const Documents = () => {
         </Container>
       </div>
       <Modal
-        size="lg"
+        size="xl"
         isOpen={modal_center}
         toggle={() => {
           tog_center();
         }}
         centered
+        contentClassName="bg-transparent border-0 w-auto"
+        className="d-flex justify-content-center"
       >
         <ModalHeader className="modal-title p-0" />
 
         <ModalBody className="text-center p-0">
-          <FileViewerComponent mime_type={singleFileType} url={singleFileUrl} />
+          <FileViewerComponent
+            mime_type={singleFileType}
+            url={singleFileUrl}
+            onClose={() => {
+              tog_center();
+            }}
+          />
         </ModalBody>
       </Modal>
       <OffCanvas
