@@ -32,7 +32,7 @@ const UserListSlice = createSlice({
     },
     userCreatedSuccess(state, action) {
       const newUser = action.payload;
-      state.usersList.push(newUser);
+      state.usersList.unshift(newUser);
       state.loading = false;
       state.addEditLoading = false;
       state.errorMsg = false;

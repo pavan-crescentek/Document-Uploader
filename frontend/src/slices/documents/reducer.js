@@ -52,7 +52,7 @@ const DocumentSlice = createSlice({
     },
     documentCreatedSuccess(state, action) {
       const newDocument = action.payload;
-      state.documentData.push(newDocument);
+      state.documentData.unshift(newDocument);
       state.addEditLoading = false;
       state.errorMsg = false;
     },
