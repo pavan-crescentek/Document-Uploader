@@ -27,7 +27,7 @@ const documentFormFields = (sectionOptions, subsectionOptions) => {
 
 const documentFormFieldsValidation = Yup.object({
   metadata: Yup.string()
-    .required('Enter file name')
+    .required('Fine name is required')
     .test('not-only-spaces', 'Enter a valid file name', (value) => {
       return value && value.trim().length > 0;
     }),

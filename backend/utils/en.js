@@ -19,7 +19,7 @@ const messages = {
   errorInUserUpdate: 'Error in user update',
   fileUploadedSuccessfully: 'File uploaded successfully',
   mediaNotFound: 'Document not found',
-  mediaDeletedSuccessfully: 'Media deleted successfully',
+  mediaDeletedSuccessfully: 'File deleted successfully.',
   fileUploadFailed: 'File upload failed',
   errorFileUpload: 'Error in file upload',
   filesRetrievedSuccessfully: 'Files retrieved successfully',
