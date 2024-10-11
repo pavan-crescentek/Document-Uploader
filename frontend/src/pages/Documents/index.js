@@ -182,7 +182,13 @@ const Documents = () => {
           })) || [];
       setAllSubSections(subSectionOptions);
 
-      setPhotoPreviews(modifiedDocument.readAbleFileUrl);
+      setPhotoPreviews(
+        modifiedDocument.media_type === 'PDF'
+          ? pdfIcon
+          : modifiedDocument.media_type === 'DOCUMENT'
+            ? fileIcon
+            : modifiedDocument.readAbleFileUrl
+      );
       setSelectedDocument({
         id: document._id,
         metadata: modifiedDocument.metadata,
