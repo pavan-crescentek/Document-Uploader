@@ -22,6 +22,12 @@ const documentFormFields = (sectionOptions, subsectionOptions) => {
       placeholder: 'Select sub-section',
       options: subsectionOptions,
     },
+    {
+      name: 'documentDate',
+      label: 'Document date',
+      type: 'date',
+      placeholder: 'Select date',
+    },
   ];
 };
 
@@ -33,6 +39,7 @@ const documentFormFieldsValidation = Yup.object({
     }),
   section: Yup.string().required('Section is required'),
   subsection: Yup.string().required('Sub-section is required'),
+  documentDate: Yup.date().required('Date is required'),
 });
 
 const documentFieldsInitialValues = (selectDocument) => {
@@ -41,6 +48,9 @@ const documentFieldsInitialValues = (selectDocument) => {
     section: selectDocument?.section || '',
     subsection: selectDocument?.subsection || '',
     id: selectDocument?.id || '',
+    documentDate: selectDocument?.documentDate
+      ? new Date(selectDocument.documentDate).toISOString().split('T')[0]
+      : new Date().toISOString().split('T')[0],
   };
 };
 

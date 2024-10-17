@@ -5,6 +5,7 @@ const fileUploadValidator = Joi.object({
   section: Joi.string().required(),
   subsection: Joi.string().required(),
   file: Joi.object().required(),
+  documentDate: Joi.date().required(),
 });
 
 const deleteMediaValidator = Joi.object({
@@ -18,6 +19,7 @@ const updatingMediaValidator = Joi.object({
   subsection: Joi.string().required(),
   file: Joi.object().optional(),
   doc: Joi.string().optional(),
+  documentDate: Joi.date().required(),
 });
 
 module.exports = {

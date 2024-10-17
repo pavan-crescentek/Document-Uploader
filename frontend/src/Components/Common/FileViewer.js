@@ -40,7 +40,7 @@ const FileViewerComponent = ({ mime_type, url }) => {
   const pdfDocStyle = {
     width: '100%',
     height: '100%',
-    minWidth: '800px',
+    minWidth: '850px',
     minHeight: '600px',
   };
 

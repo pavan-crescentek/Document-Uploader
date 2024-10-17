@@ -40,6 +40,10 @@ const documentsSchema = new mongoose.Schema(
       type: String,
       required: true,
     },
+    documentDate: {
+      type: Date,
+      required: true,
+    },
   },
   { timestamps: true },
 );

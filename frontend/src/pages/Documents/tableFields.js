@@ -29,6 +29,17 @@ const documentsListTableFields = (
       enableColumnFilter: false,
     },
     {
+      header: 'Document date',
+      accessorKey: 'documentDate',
+      enableColumnFilter: false,
+      cell: (cellProps) => {
+        if (!cellProps.row.original.documentDate) return '';
+        const date = new Date(cellProps.row.original.documentDate);
+        return date.toISOString().split('T')[0];
+      },
+    },
+
+    {
       header: 'View',
       accessorKey: 'doc',
       enableColumnFilter: false,

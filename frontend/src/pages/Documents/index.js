@@ -52,6 +52,7 @@ import {
 import documentsListTableFields from './tableFields';
 import fileIcon from '../../assets/images/file.png';
 import pdfIcon from '../../assets/images/pdf.png';
+import Flatpickr from 'react-flatpickr';
 
 const Documents = () => {
   const { userProfile } = useProfile();
@@ -130,6 +131,7 @@ const Documents = () => {
           metadata: values.metadata,
           section: values.section,
           subsection: values.subsection,
+          documentDate: values?.documentDate || new Date(),
           doc: photos,
         };
         // update document
@@ -146,6 +148,7 @@ const Documents = () => {
           metadata: values.metadata,
           section: values.section,
           subsection: values.subsection,
+          documentDate: values?.documentDate || new Date(),
           doc: photos,
         };
         // save new document
@@ -194,6 +197,7 @@ const Documents = () => {
         metadata: modifiedDocument.metadata,
         section: modifiedDocument.section,
         subsection: modifiedDocument.subsection,
+        documentDate: modifiedDocument?.documentDate || new Date(),
         doc: setPhotos(modifiedDocument.readAbleFileUrl),
       });
 
@@ -346,6 +350,10 @@ const Documents = () => {
 
   const fields = documentFormFields(allSections, allSubSections);
 
+  const handleDateChange = (dateStr) => {
+    validation.setFieldValue('documentDate', dateStr);
+  };
+
   const renderFields = (fieldNames) => {
     return (
       <>
@@ -402,6 +410,19 @@ const Documents = () => {
                         : false
                     }
                   />
+                ) : field.type === 'date' ? (
+                  <Flatpickr
+                    className={`form-control ${validation.touched.documentDate && validation.errors.documentDate ? 'is-invalid' : ''}`}
+                    options={{
+                      // dateFormat: 'Y-m-d',
+                      defaultDate: validation.values.documentDate || new Date(),
+                      maxDate: new Date(),
+                    }}
+                    onChange={(selectedDates, dateStr, date) => {
+                      handleDateChange(dateStr);
+                    }}
+                    value={validation.values.documentDate || ''}
+                  />
                 ) : (
                   <Input
                     name={field.name}
@@ -436,7 +457,7 @@ const Documents = () => {
   };
 
   const renderFieldsData = [
-    renderFields(['metadata', 'section', 'subsection']),
+    renderFields(['metadata', 'section', 'subsection', 'documentDate']),
   ];
 
   const createDocument = () => {

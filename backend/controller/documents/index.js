@@ -19,7 +19,7 @@ const fileUploading = async (req, res) => {
     }
 
     const { user } = req;
-    const { section, subsection, metadata } = value;
+    const { section, subsection, metadata, documentDate } = value;
 
     if (!media_data?.key) {
       await cleanupFile(media_data);
@@ -35,6 +35,7 @@ const fileUploading = async (req, res) => {
       media_size: media_data.size,
       media_type: getMediaType(media_data.mimetype),
       mime_type: media_data.mimetype,
+      documentDate,
     };
 
     // Create a new document
@@ -124,7 +125,7 @@ const updateMedia = async (req, res) => {
       if (media_data) await cleanupFile(media_data);
       return utils.sendResponse(res, StatusCodes.BAD_REQUEST, error.details[0].message);
     }
-    const { section, subsection, metadata, id } = value;
+    const { section, subsection, metadata, id, documentDate } = value;
 
     const document = await documentsModel.findOne({ _id: id });
 
@@ -136,6 +137,7 @@ const updateMedia = async (req, res) => {
       section,
       subsection,
       metadata,
+      documentDate,
     };
 
     if (media_data?.key) {
